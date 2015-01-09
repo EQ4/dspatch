@@ -30,7 +30,7 @@ bool DSPatch::AddGlobalComponent( DspComponent* component, std::string component
 
 //-------------------------------------------------------------------------------------------------
 
-void DSPatch::RemoveGlobalComponent( DspComponent* component, bool deleteComponent )
+void DSPatch::RemoveGlobalComponent( DspComponent* component )
 {
 	if( _globalCircuit != NULL )
 	{

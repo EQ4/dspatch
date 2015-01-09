@@ -34,7 +34,8 @@ class DspCircuitThread;
 //=================================================================================================
 /// Workspace for adding and routing components
 
-/** DspComponents can be added to a DspCircuit and routed to and from other DspComponents. When a
+/**
+DspComponents can be added to a DspCircuit and routed to and from other DspComponents. When a
 DspComponent is added to a DspCircuit, a unique string ID is optional. This name can be used to
 identify the component within the circuit's component collection. ConnectOutToIn and
 DisconnectOutToIn provide a means of routing component outputs to other component inputs, while
@@ -55,7 +56,8 @@ DspCircuit is derived from DspComponent and therefore inherits all DspComponent 
 means that a DspCircuit can be added to, and routed within another DspCircuit as a component. This
 also means a circuit object needs to be Tick()ed and Reset()ed as a component (see DspComponent).
 The DspCircuit Process_() method simply runs through it's internal array of components and calls each
-component's Tick() and Reset() methods.*/
+component's Tick() and Reset() methods.
+*/
 
 class DLLEXPORT DspCircuit : public DspComponent
 {
@@ -72,7 +74,9 @@ public:
 	bool AddComponent( DspComponent& component, std::string componentName = "" );
 
 	void RemoveComponent( DspComponent* component);
+	void RemoveComponent( DspComponent& component);
 	void RemoveComponent( std::string componentName );
+
 	void RemoveAllComponents();
 
 	template< class ComponentType >

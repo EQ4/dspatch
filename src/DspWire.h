@@ -32,10 +32,12 @@ class DspComponent;
 //=================================================================================================
 /// Connection between two components
 
-/** DspComponents process and transfer data between each other in the form of signals via
+/**
+DspComponents process and transfer data between each other in the form of signals via
 interconnecting "wires". Each wire contains references to the linked component, the source output
 signal, and the destination input signal. The DspWire struct simply stores these references for use
-in retrieving and providing signals across component connections.*/
+in retrieving and providing signals across component connections.
+*/
 
 struct DspWire
 {

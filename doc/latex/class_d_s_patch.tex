@@ -18,7 +18,7 @@ static bool {\bfseries Is\-This\-Global\-Circuit} ({\bf Dsp\-Component} $\ast$th
 static bool {\bfseries Add\-Global\-Component} ({\bf Dsp\-Component} $\ast$component, std\-::string component\-Name=\char`\"{}\char`\"{})\label{class_d_s_patch_aced2c04b2179152bd6768703f16f463c}
 
 \item 
-static void {\bfseries Remove\-Global\-Component} ({\bf Dsp\-Component} $\ast$component, bool delete\-Component=false)\label{class_d_s_patch_a67f61ffc54150718c1d2ee2abc1a4ee9}
+static void {\bfseries Remove\-Global\-Component} ({\bf Dsp\-Component} $\ast$component)\label{class_d_s_patch_aaf9d3d6290e44e71c0ea31be3917141e}
 
 \item 
 static unsigned long {\bfseries Get\-Global\-Component\-Count} ()\label{class_d_s_patch_abcdb2127295fcfcb464c951363fb3bd4}
@@ -40,8 +40,6 @@ static void {\bfseries Finalize} ()\label{class_d_s_patch_aed47908ddab1d38d540f8
 
 \subsection{Detailed Description}
 System-\/wide \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} functionality. 
-
-This class provides global \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} functionality.
 
 At the core of the \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} framework is what's known as the \char`\"{}global circuit\char`\"{}. The \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} class and hence, the global circuit provides a transparent workspace for \char`\"{}global scoped components\char`\"{} (components not within a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}) to benefit from circuit parallel processing. As it is not required that components be explicitly added to a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} in order to be routed etc., in order for these global scoped components to benefit from the multi threading associated with the circuit scheduler, they are automatically added to the \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} global circuit when parallel processing is required (i.\-e. Start\-Auto\-Tick() is called). Although global circuit operations are automatic and transparent to the user, if required, the user is may set the number of threads used by the global circuit by calling Set\-Global\-Thread\-Count().
 

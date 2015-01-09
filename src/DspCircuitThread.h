@@ -36,7 +36,8 @@ class DspComponent;
 //=================================================================================================
 /// Thread class for ticking and reseting circuit components
 
-/** A DspCircuitThread is responsible for ticking and reseting all components in a DspCircuit.
+/**
+A DspCircuitThread is responsible for ticking and reseting all components in a DspCircuit.
 On construction, a reference to the vector of circuit components must be provided for the thread
 _Run() method to loop through. Each DspCircuitThread has a thread number (threadNo), which also
 can be provided on construction. When creating multiple DspCircuitThreads, each thread must have
@@ -55,7 +56,8 @@ immediately upon unblocking the calling thread.
 
 The Sync() method, when called, will block the calling thread until the circuit thread is done
 processing. If the circuit thread is already awaiting the next Resume() request, this method will
-return immediately.*/
+return immediately.
+*/
 
 class DLLEXPORT DspCircuitThread : public DspThread
 {

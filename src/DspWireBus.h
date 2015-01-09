@@ -37,10 +37,12 @@ class DspComponent;
 //=================================================================================================
 /// DspWire container
 
-/** A DspWireBus contains DspWires (see DspWire). Each component contains an input wire bus. Via
+/**
+A DspWireBus contains DspWires (see DspWire). Each component contains an input wire bus. Via
 the Tick() method, a DspComponent uses it's input wire bus to retrieve it's input signals from
 incoming linked components, as mapped out in each DspWire. The DspCircuit class has an additional 2
-wire buses use to connect the circuit's IO signals to and from it's internal components.*/
+wire buses use to connect the circuit's IO signals to and from it's internal components.
+*/
 
 class DLLEXPORT DspWireBus
 {

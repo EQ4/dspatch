@@ -28,13 +28,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //=================================================================================================
 /// Cross-platform, object-oriented thread
 
-/** An class that is required to run actions in a parallel thread can be derived from DspThread in
+/**
+An class that is required to run actions in a parallel thread can be derived from DspThread in
 order to inherit multi-threading abilities. The Start() method initiates a parallel thread and
 executes the private virtual _Run() method in that thread. The derived class must override this
 _Run() method with one that executes the required parallel actions. Other threads may use the
 static MsSleep() and SetPriority() methods without having to derive from, or create an instance of
 DspThread. Priority for the created thread, or calling threads (via SetPriority()), may be selected
-from the public enumeration: Priority.*/
+from the public enumeration: Priority.
+*/
 
 class DspThread
 {
@@ -64,9 +66,11 @@ public:
 //=================================================================================================
 /// Cross-platform, object-oriented mutex
 
-/** DspMutex is a simple mutex that can lock a critical section of code for exclusive access by
+/**
+DspMutex is a simple mutex that can lock a critical section of code for exclusive access by
 the calling thread. Other threads attempting to acquire a lock while another has acquired it
-will wait at the Lock() method call until the thread that owns the mutex calls Unlock(). */
+will wait at the Lock() method call until the thread that owns the mutex calls Unlock().
+*/
 
 class DspMutex
 {
@@ -82,9 +86,11 @@ public:
 //=================================================================================================
 /// Cross-platform, object-oriented conditional wait
 
-/** A wait condition works like an indefinite sleep. When a thread calls the Wait() function it
+/**
+A wait condition works like an indefinite sleep. When a thread calls the Wait() function it
 is put to sleep until it is woken by the WakeAll() function of the same DspWaitCondition object.
-This is used to synchronize actions between threads. */
+This is used to synchronize actions between threads.
+*/
 
 class DspWaitCondition
 {

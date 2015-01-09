@@ -30,52 +30,16 @@ void {\bfseries Set\-Parent\-Circuit} ({\bf Dsp\-Circuit} $\ast$parent\-Circuit)
 {\bf Dsp\-Circuit} $\ast$ {\bfseries Get\-Parent\-Circuit} ()\label{class_dsp_component_a001f3cdb3b8e9c3ec9f609c681ed4a6c}
 
 \item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_abf0509fa67bc2c4864f2a32cd116ca33}
+{\footnotesize template$<$class From\-Output\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$from\-Component, From\-Output\-Type from\-Output, To\-Input\-Type to\-Input)\label{class_dsp_component_ae869dcdec6ddf965a32673cba187427d}
 
 \item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, unsigned long from\-Output, std\-::string to\-Input)\label{class_dsp_component_a1ec17cb9a313684edc296040cf5249e8}
+{\footnotesize template$<$class From\-Output\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&from\-Component, From\-Output\-Type from\-Output, To\-Input\-Type to\-Input)\label{class_dsp_component_aa1875c94b32363d92121d0e5c19f14eb}
 
 \item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, std\-::string from\-Output, unsigned long to\-Input)\label{class_dsp_component_aade1de6c58d1dff3a54880248fa60d38}
+{\footnotesize template$<$class From\-Output\-Type , class To\-Input\-Type $>$ }\\void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$from\-Component, From\-Output\-Type from\-Output, To\-Input\-Type to\-Input)\label{class_dsp_component_ac709429ee2df3502f53bef06eda1f541}
 
 \item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_aed39e15f7c71d0da6153e928f40cb62d}
-
-\item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_af59aa529298a2d39e87fb82ab0d3c6e9}
-
-\item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, std\-::string to\-Input)\label{class_dsp_component_aefd323ff61567f51e407c04a37d986d7}
-
-\item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, unsigned long to\-Input)\label{class_dsp_component_abedd938e2138e1b95a1b78a24237f220}
-
-\item 
-bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_a7ebdc419dc5cd71f10c52773d25c075c}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_a43d992808c64dd04892b06e40503b203}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, unsigned long from\-Output, std\-::string to\-Input)\label{class_dsp_component_aa20f2aa1fb46fa451d1b9530b8b6ad40}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, std\-::string from\-Output, unsigned long to\-Input)\label{class_dsp_component_a2756ab3f42d0d3bccc9a007c3126267c}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_ac3830e4de1507f860a1cc70a0fecbe33}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_a2c90e7e0022d1cbac60f5f51203b2a1c}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, std\-::string to\-Input)\label{class_dsp_component_aaccb8ceeb64186a36661d9c635df672a}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, unsigned long to\-Input)\label{class_dsp_component_ab9b750e30433bac7575c4a8bc1af5ed4}
-
-\item 
-void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_a7e4ab98da1a1138f480399fc99744eb9}
+{\footnotesize template$<$class From\-Output\-Type , class To\-Input\-Type $>$ }\\void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&from\-Component, From\-Output\-Type from\-Output, To\-Input\-Type to\-Input)\label{class_dsp_component_a3440367642d893fb6d4565ac4f266f7a}
 
 \item 
 void {\bfseries Disconnect\-Input} (unsigned long input\-Index)\label{class_dsp_component_a9fa9f43913650641233ac88d17bd620f}

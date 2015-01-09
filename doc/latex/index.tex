@@ -9,15 +9,15 @@ The two most important classes to consider are \doxyref{Dsp\-Component}{p.}{clas
 \section{Features}\label{index_features_sec}
 
 \begin{DoxyItemize}
-\item Automatic branch synchronization.
-\item Dynamic thread count adjustment.
-\item Easy-\/to-\/use object-\/oriented A\-P\-I.
-\item Feedback loops.
-\item High performance parallel processing.
-\item Integrated circuits.
-\item Non-\/threaded platform support.
-\item Run-\/time circuit wiring.
-\item Run-\/time adaptive signal types.
+\item {\bfseries Automatic branch synchronization} -\/ The result of data diverging across parallel branches is guaranteed to arrive synchronized at a converging point.
+\item {\bfseries Dynamic thread count adjustment} -\/ Specify at run-\/time, the number of threads in which you require a circuit to process.
+\item {\bfseries Easy-\/to-\/use object-\/oriented A\-P\-I} -\/ \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} is modeled around real-\/world circuit entities and concepts, making code more readable and easy to understand.
+\item {\bfseries Feedback loops} -\/ Create true closed-\/circuit systems by feeding resultant signals back into previous component inputs.
+\item {\bfseries High performance parallel processing} -\/ Circuits use advanced multi-\/threaded scheduling to maximize data flow efficiency.
+\item {\bfseries Integrated circuits} -\/ Build circuits within circuits to encapsulate complex component networks into single circuit components.
+\item {\bfseries Non-\/threaded platform support} -\/ Develop for (or port to) platforms without multi-\/threading support and process complex circuit systems in a single thread.
+\item {\bfseries Run-\/time circuit wiring} -\/ Connect and disconnect wires on the fly whilst maintaining steady data flow through the system.
+\item {\bfseries Run-\/time adaptive signal types} -\/ Component inputs can accept values of run-\/time varying types allowing you to create more flexible, multi-\/purpose component processes.
 \end{DoxyItemize}
 
 \par
@@ -45,10 +45,10 @@ We begin by deriving our new \char`\"{}\-Dsp\-And\char`\"{} component from \doxy
 
 
 \begin{DoxyCode}
-// 1. Derive component class from DspComponent
-// ===========================================
-class DspAnd : public DspComponent
-{
+\textcolor{comment}{// 1. Derive component class from DspComponent}
+\textcolor{comment}{// ===========================================}
+\textcolor{keyword}{class }DspAnd : \textcolor{keyword}{public} DspComponent
+\{
 \end{DoxyCode}
 
 
@@ -56,18 +56,18 @@ The next step is to configure our component's input and output buses. This is ac
 
 
 \begin{DoxyCode}
-public:
-        // 2. Configure component IO buses
-        // ===============================
-        DspAnd()
-        {
-                // add 2 inputs
-                AddInput_( "input1" );
-                AddInput_( "input2" );
+\textcolor{keyword}{public}:
+  \textcolor{comment}{// 2. Configure component IO buses}
+  \textcolor{comment}{// ===============================}
+  DspAnd()
+  \{
+    \textcolor{comment}{// add 2 inputs}
+    AddInput\_( \textcolor{stringliteral}{"input1"} );
+    AddInput\_( \textcolor{stringliteral}{"input2"} );
 
-                // add 1 output
-                AddOutput_( "output" );
-        }
+    \textcolor{comment}{// add 1 output}
+    AddOutput\_( \textcolor{stringliteral}{"output"} );
+  \}
 \end{DoxyCode}
 
 
@@ -77,28 +77,25 @@ Lastly, our component must implement the \doxyref{Dsp\-Component}{p.}{class_dsp_
 
 
 \begin{DoxyCode}
-protected:
-        // 3. Implement virtual Process_() method
-        // ======================================
-        virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
-        {
-                // create local stack variables to hold input values
-                bool bool1 = false;
-                bool bool2 = false;
+\textcolor{keyword}{protected}:
+  \textcolor{comment}{// 3. Implement virtual Process\_() method}
+  \textcolor{comment}{// ======================================}
+  \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} Process\_( DspSignalBus& inputs, DspSignalBus& outputs )
+  \{
+    \textcolor{comment}{// create local stack variables to hold input values}
+    \textcolor{keywordtype}{bool} bool1 = \textcolor{keyword}{false};
+    \textcolor{keywordtype}{bool} bool2 = \textcolor{keyword}{false};
 
-                // get values from inputs bus ( GetValue() returns true if
-       successful )
-                if( inputs.GetValue( 0, bool1 ) && //OR inputs.GetValue(
-       "input1", bool1 );
-                    inputs.GetValue( 1, bool2 ) )  //OR inputs.GetValue(
-       "input2", bool2 );
-                {
-                        // set output as the result of bool1 AND bool2
-                        outputs.SetValue( 0, bool1 && bool2 ); //OR
-       outputs.SetValue( "output", bool1 && bool2 );
-                }
-        }
-};
+    \textcolor{comment}{// get values from inputs bus ( GetValue() returns true if successful )}
+    \textcolor{keywordflow}{if}( inputs.GetValue( 0, bool1 ) && \textcolor{comment}{//OR inputs.GetValue( "input1", bool1 );}
+        inputs.GetValue( 1, bool2 ) )  \textcolor{comment}{//OR inputs.GetValue( "input2", bool2 );}
+    \{
+      \textcolor{comment}{// set output as the result of bool1 AND bool2}
+      outputs.SetValue( 0, bool1 && bool2 ); \textcolor{comment}{//OR outputs.SetValue( "output",
+       bool1 && bool2 );}
+    \}
+  \}
+\};
 \end{DoxyCode}
 
 
@@ -112,8 +109,8 @@ First we must include the \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} header and 
 
 
 \begin{DoxyCode}
-#include "DSPatch.h"
-#include "components.h"
+\textcolor{preprocessor}{#include "DSPatch.h"}
+\textcolor{preprocessor}{#include "components.h"}
 \end{DoxyCode}
 
 
@@ -121,18 +118,18 @@ Next, we must instantiate our \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} obje
 
 
 \begin{DoxyCode}
-void main()
-{
-        // 1. Create a DspCircuit where we can route our components
-        // ========================================================
-        DspCircuit circuit;
+\textcolor{keywordtype}{void} main()
+\{
+  \textcolor{comment}{// 1. Create a DspCircuit where we can route our components}
+  \textcolor{comment}{// ========================================================}
+  DspCircuit circuit;
 
-        // 2. Create instances of the components needed for our circuit
-        // ============================================================
-        DspRandBool randBoolGen1;
-        DspRandBool randBoolGen2;
-        DspAnd logicAnd;
-        DspPrintBool boolPrinter;
+  \textcolor{comment}{// 2. Create instances of the components needed for our circuit}
+  \textcolor{comment}{// ============================================================}
+  DspRandBool randBoolGen1;
+  DspRandBool randBoolGen2;
+  DspAnd logicAnd;
+  DspPrintBool boolPrinter;
 \end{DoxyCode}
 
 
@@ -140,12 +137,12 @@ Now that we have a circuit and some components, lets add all of our components t
 
 
 \begin{DoxyCode}
-        // 3. Add component instances to circuit
-        // =====================================
-        circuit.AddComponent( randBoolGen1, "Bool Generator 1" );
-        circuit.AddComponent( randBoolGen2, "Bool Generator 2" );
-        circuit.AddComponent( logicAnd, "Logic AND" );
-        circuit.AddComponent( boolPrinter, "Bool Printer" );
+\textcolor{comment}{// 3. Add component instances to circuit}
+\textcolor{comment}{// =====================================}
+circuit.AddComponent( randBoolGen1, \textcolor{stringliteral}{"Bool Generator 1"} );
+circuit.AddComponent( randBoolGen2, \textcolor{stringliteral}{"Bool Generator 2"} );
+circuit.AddComponent( logicAnd, \textcolor{stringliteral}{"Logic AND"} );
+circuit.AddComponent( boolPrinter, \textcolor{stringliteral}{"Bool Printer"} );
 \end{DoxyCode}
 
 
@@ -155,32 +152,29 @@ We are now ready to begin wiring the circuit\-:
 
 
 \begin{DoxyCode}
-        // 4. Wire up the components inside the circuit
-        // ============================================
+\textcolor{comment}{// 4. Wire up the components inside the circuit}
+\textcolor{comment}{// ============================================}
 
-        circuit.ConnectOutToIn( randBoolGen1, 0, logicAnd, 0 );
-        //OR circuit.ConnectOutToIn( "Bool Generator 1", 0, "Logic AND", 0 );
-        //OR circuit.ConnectOutToIn( "Bool Generator 1", 0, "Logic AND",
-       "input1" );
+circuit.ConnectOutToIn( randBoolGen1, 0, logicAnd, 0 );
+\textcolor{comment}{//OR circuit.ConnectOutToIn( "Bool Generator 1", 0, "Logic AND", 0 );}
+\textcolor{comment}{//OR circuit.ConnectOutToIn( "Bool Generator 1", 0, "Logic AND", "input1" );}
 
-        circuit.ConnectOutToIn( randBoolGen2, 0, logicAnd, 1 );
-        //OR circuit.ConnectOutToIn( "Bool Generator 2", 0, "Logic AND", 1 );
-        //OR circuit.ConnectOutToIn( "Bool Generator 2", 0, "Logic AND",
-       "input2" );
+circuit.ConnectOutToIn( randBoolGen2, 0, logicAnd, 1 );
+\textcolor{comment}{//OR circuit.ConnectOutToIn( "Bool Generator 2", 0, "Logic AND", 1 );}
+\textcolor{comment}{//OR circuit.ConnectOutToIn( "Bool Generator 2", 0, "Logic AND", "input2" );}
 
-        circuit.ConnectOutToIn( logicAnd, 0, boolPrinter, 0 );
-        //OR circuit.ConnectOutToIn( "Logic AND", 0, "Bool Printer", 0 );
-        //OR circuit.ConnectOutToIn( "Logic AND", "output", "Bool Printer", 0
-       );
+circuit.ConnectOutToIn( logicAnd, 0, boolPrinter, 0 );
+\textcolor{comment}{//OR circuit.ConnectOutToIn( "Logic AND", 0, "Bool Printer", 0 );}
+\textcolor{comment}{//OR circuit.ConnectOutToIn( "Logic AND", "output", "Bool Printer", 0 );}
 \end{DoxyCode}
 
 
 The code above results in the following wiring configuration\-: 
 \begin{DoxyCode}
-                                       ___________
-        ["Bool Generator 1"] 0 ---> 0 |           |
-                                      |"Logic AND"| 0 ---> 0 ["Bool Printer"]
-        ["Bool Generator 2"] 0 ---> 1 |___________|
+                               \_\_\_\_\_\_\_\_\_\_\_
+[\textcolor{stringliteral}{"Bool Generator 1"}] 0 ---> 0 |           |
+                              |\textcolor{stringliteral}{"Logic AND"}| 0 ---> 0 [\textcolor{stringliteral}{"Bool Printer"}]
+[\textcolor{stringliteral}{"Bool Generator 2"}] 0 ---> 1 |\_\_\_\_\_\_\_\_\_\_\_|
 \end{DoxyCode}
 
 
@@ -190,27 +184,27 @@ Lastly, in order for our circuit to do any work it must be ticked over. This is 
 
 
 \begin{DoxyCode}
-        // 5. Tick the circuit
-        // ===================
+\textcolor{comment}{// 5. Tick the circuit}
+\textcolor{comment}{// ===================}
 
-        // Circuit tick method 1: Manual
-        for( int i = 0; i < 10; i++ )
-        {
-                circuit.Tick();
-                circuit.Reset();
-        }
+\textcolor{comment}{// Circuit tick method 1: Manual}
+\textcolor{keywordflow}{for}( \textcolor{keywordtype}{int} i = 0; i < 10; i++ )
+\{
+  circuit.Tick();
+  circuit.Reset();
+\}
 
-        // Circuit tick method 2: Automatic
-        std::cout << "Press any key to begin circuit auto-tick.";
-        getchar();
-        circuit.StartAutoTick();
+\textcolor{comment}{// Circuit tick method 2: Automatic}
+std::cout << \textcolor{stringliteral}{"Press any key to begin circuit auto-tick."};
+getchar();
+circuit.StartAutoTick();
 
-        // Increase circuit thread count for higher performance
-        getchar();
-        circuit.SetThreadCount( 4 );
+\textcolor{comment}{// Increase circuit thread count for higher performance}
+getchar();
+circuit.SetThreadCount( 4 );
 
-        // Press any key to quit
-        getchar();
+\textcolor{comment}{// Press any key to quit}
+getchar();
 \end{DoxyCode}
 
 
@@ -218,10 +212,10 @@ Lastly, the D\-S\-Patch\-::\-Finalize() method must be called on application exi
 
 
 \begin{DoxyCode}
-        // 6. Clean up
-        // ===========
-        DSPatch::Finalize();
-}
+  \textcolor{comment}{// 6. Clean up}
+  \textcolor{comment}{// ===========}
+  DSPatch::Finalize();
+\}
 \end{DoxyCode}
 
 
@@ -229,10 +223,15 @@ Lastly, the D\-S\-Patch\-::\-Finalize() method must be called on application exi
 
 \par
 \section{Release Notes}\label{index_release_notes}
-\subsection{v.\-2.\-3 (15 December 2012)}\label{index_v23}
+\subsection{v.\-2.\-31 (19 December 2012)}\label{index_v231}
 
 \begin{DoxyItemize}
-\item Circuit interface simplified.
+\item Improved synchronization in Add\-Component().
+\item Component routing upgraded to template methods.
+\end{DoxyItemize}\subsection{v.\-2.\-30 (15 December 2012)}\label{index_v230}
+
+\begin{DoxyItemize}
+\item Circuit routing simplified.
 \item Completed \char`\"{}circuit-\/less\char`\"{} component processing.
 \item Component names now optional.
 \item \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} no longer deletes external memory.

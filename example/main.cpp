@@ -60,8 +60,10 @@ int main()
 	DspGain gainLeft;
 	DspGain gainRight;
 
-	// set circuit thread count to 2 then start separate thread to tick the circuit continuously
+	// set circuit thread count to 2
 	circuit.SetThreadCount( 2 );
+
+	// start separate thread to tick the circuit continuously ("auto-tick")
 	circuit.StartAutoTick();
 
 	// add new components to the circuit (these methods return pointers to the new components)
@@ -107,11 +109,11 @@ int main()
 	circuit.ConnectOutToIn( MP3DECODER, "Sample Rate", OSCILLATOR, "Sample Rate" );	// sample rate sync
 
 	// connect component output signals to respective component input signals
-	circuit.ConnectOutToIn( MP3DECODER, 0, ADDER1, 0 );		// mp3 left channel into adder1 ch0
+	circuit.ConnectOutToIn( GAIN1, 0, ADDER1, 0 );				// mp3 left channel into adder1 ch0
 	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDER1, 1 );		// oscillator output into adder1 ch1
 	circuit.ConnectOutToIn( ADDER1, 0, AUDIODEVICE, 0 );	// adder1 output into audio device left channel
 
-	circuit.ConnectOutToIn( MP3DECODER, 1, ADDER2, 0 );		// mp3 right channel into adder2 ch0
+	circuit.ConnectOutToIn( GAIN2, 0, ADDER2, 0 );				// mp3 right channel into adder2 ch0
 	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDER2, 1 );		// oscillator output into adder2 ch1
 	circuit.ConnectOutToIn( ADDER2, 0, AUDIODEVICE, 1 );	// adder2 output into audio device right channel
 

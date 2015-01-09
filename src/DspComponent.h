@@ -36,7 +36,8 @@ class DspComponentThread;
 //=================================================================================================
 /// Abstract base class for all DSPatch components
 
-/** Classes derived from DspComponent can be added to an DspCircuit and routed to and from other
+/**
+Classes derived from DspComponent can be added to an DspCircuit and routed to and from other
 DspComponents. On construction, derived classes must configure the component's IO buses by calling
 AddInput_() and AddOutput_() respectively. Derived classes must also implement the virtual method:
 Process_(). The Process_() method is a callback from the DSPatch engine that occurs when a new set
@@ -54,7 +55,8 @@ method. The Reset() method then informs the component that the last circuit trav
 and hence can execute the next Tick() request. A component's Tick() and Reset() methods can be
 called in a loop from the main application thread, or alternatively, by calling StartAutoTick(), a
 seperate thread will spawn, automatically calling Tick() and Reset() methods continuously (This is
-most commonly used to tick over an instance of DspCircuit).*/
+most commonly used to tick over an instance of DspCircuit).
+*/
 
 class DLLEXPORT DspComponent
 {
@@ -68,25 +70,17 @@ public:
 	void SetParentCircuit( DspCircuit* parentCircuit );
 	DspCircuit* GetParentCircuit();
 
-	bool ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput );
-	bool ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput );
-	bool ConnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput );
-	bool ConnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput );
+	template< class FromOutputType, class ToInputType >
+	bool ConnectInput( DspComponent* fromComponent, FromOutputType fromOutput, ToInputType toInput );
 
-	bool ConnectInput( DspComponent& inputComponent, unsigned long fromOutput, unsigned long toInput );
-	bool ConnectInput( DspComponent& inputComponent, unsigned long fromOutput, std::string toInput );
-	bool ConnectInput( DspComponent& inputComponent, std::string fromOutput, unsigned long toInput );
-	bool ConnectInput( DspComponent& inputComponent, std::string fromOutput, std::string toInput );
+	template< class FromOutputType, class ToInputType >
+	bool ConnectInput( DspComponent& fromComponent, FromOutputType fromOutput, ToInputType toInput );
 
-	void DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput );
-	void DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput );
-	void DisconnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput );
-	void DisconnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput );
+	template< class FromOutputType, class ToInputType >
+	void DisconnectInput( DspComponent* fromComponent, FromOutputType fromOutput, ToInputType toInput );
 
-	void DisconnectInput( DspComponent& inputComponent, unsigned long fromOutput, unsigned long toInput );
-	void DisconnectInput( DspComponent& inputComponent, unsigned long fromOutput, std::string toInput );
-	void DisconnectInput( DspComponent& inputComponent, std::string fromOutput, unsigned long toInput );
-	void DisconnectInput( DspComponent& inputComponent, std::string fromOutput, std::string toInput );
+	template< class FromOutputType, class ToInputType >
+	void DisconnectInput( DspComponent& fromComponent, FromOutputType fromOutput, ToInputType toInput );
 
 	void DisconnectInput( unsigned long inputIndex );
 	void DisconnectInput( std::string inputName );
@@ -153,9 +147,8 @@ private:
 
 	DspComponentThread* _componentThread;
 
-	std::vector< bool* > _hasTickeds;									// pointers ensure that parallel threads will only read from this vector
-
-	std::vector< bool > _gotReleases;									// pointers not used here as only 1 thread writes to this vector at a time
+	std::vector< bool* > _hasTickeds; // bool pointers ensure that parallel threads will only read from this vector
+	std::vector< bool > _gotReleases; // bool pointers not used here as only 1 thread writes to this vector at a time
 	std::vector< DspMutex > _releaseMutexes;
 	std::vector< DspWaitCondition > _releaseCondts;
 
@@ -165,6 +158,62 @@ private:
 	virtual void _ProcessInputWire( DspWire* inputWire );
 	virtual void _ProcessInputWire( DspWire* inputWire, unsigned long threadNo );
 };
+
+//=================================================================================================
+
+template< class FromOutputType, class ToInputType >
+bool DspComponent::ConnectInput( DspComponent* fromComponent, FromOutputType fromOutput, ToInputType toInput )
+{
+	unsigned long fromOutputIndex;
+	unsigned long toInputIndex;
+
+	if( !fromComponent->_outputBus.FindSignal( fromOutput, fromOutputIndex ) ||
+			!_inputBus.FindSignal( toInput, toInputIndex ) )
+	{
+		return false;
+	}
+
+	PauseAutoTick();
+	_inputWires.AddWire( fromComponent, fromOutputIndex, toInputIndex );
+	ResumeAutoTick();
+
+	return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromOutputType, class ToInputType >
+bool DspComponent::ConnectInput( DspComponent& fromComponent, FromOutputType fromOutput, ToInputType toInput )
+{
+	ConnectInput( &fromComponent, fromOutput, toInput );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromOutputType, class ToInputType >
+void DspComponent::DisconnectInput( DspComponent* fromComponent, FromOutputType fromOutput, ToInputType toInput )
+{
+	unsigned long fromOutputIndex;
+	unsigned long toInputIndex;
+
+	if( !fromComponent->_outputBus.FindSignal( fromOutput, fromOutputIndex ) ||
+			!_inputBus.FindSignal( toInput, toInputIndex ) )
+	{
+		return;
+	}
+
+	PauseAutoTick();
+	_inputWires.RemoveWire( fromComponent, fromOutputIndex, toInputIndex );
+	ResumeAutoTick();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromOutputType, class ToInputType >
+void DspComponent::DisconnectInput( DspComponent& fromComponent, FromOutputType fromOutput, ToInputType toInput )
+{
+	DisconnectInput( &fromComponent, fromOutput, toInput );
+}
 
 //=================================================================================================
 

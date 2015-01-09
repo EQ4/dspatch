@@ -33,12 +33,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //=================================================================================================
 /// Dynamically typed variable
 
-/** DspRunType holds a variable that can be dynamically typed at run-time (hence the name). The
+/**
+DspRunType holds a variable that can be dynamically typed at run-time (hence the name). The
 DspRunType class makes use of an internal template class and public template methods to allow
 users to get and set the contained variable as any type they wish. A DspRunType object also has the
 ability to change type at any point during program execution. Built-in typecasting and error
 checking (via the RunTypeCast() method) prevents critical runtime errors from occurring when signal
-types are mismatched. */
+types are mismatched.
+*/
 
 class DspRunType
 {

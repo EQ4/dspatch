@@ -32,16 +32,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 #include <iostream>
 
-// The following unique ID strings are used to identify components within the circuit
-
-#define MP3DECODER "Mp3 Decoder"
-#define AUDIODEVICE "Audio Device"
-#define GAIN1 "Gain Channel 1"
-#define GAIN2 "Gain Channel 2"
-#define ADDER1 "Adder Channel 1"
-#define ADDER2 "Adder Channel 2"
-#define OSCILLATOR "Oscillator"
-
 //=================================================================================================
 // This is a simple program that streams an mp3 out of an audio device,
 // then overlays a 1KHz oscillator when a key is pressed.
@@ -51,17 +41,16 @@ int main()
 	// 1. Stream MP3
 	// =============
 
-	// create a circuit 
-	DspCircuit circuit;
-
 	// declare components to be added to the circuit
 	DspMp3Decoder mp3Decoder;
 	DspAudioDevice audioDevice;
 	DspGain gainLeft;
 	DspGain gainRight;
 
-	// set circuit thread count to 2 then start separate thread to tick the circuit continuously
+	// set circuit thread count to 2
 	DSPatch::SetGlobalThreadCount( 2 );
+
+	// start separate thread to tick the components continuously ("auto-tick")
 	mp3Decoder.StartAutoTick();
 	audioDevice.StartAutoTick();
 	gainLeft.StartAutoTick();
@@ -94,23 +83,23 @@ int main()
 	DspAdder adder1;
 	DspAdder adder2;
 
-	// add new components to the circuit
-	circuit.AddComponent( oscillator, OSCILLATOR );
-	circuit.AddComponent( adder1, ADDER1 );
-	circuit.AddComponent( adder2, ADDER2 );
+	// auto-tick new components
+	oscillator.StartAutoTick();
+	adder1.StartAutoTick();
+	adder2.StartAutoTick();
 
 	// DspMp3Decoder has an output signal named "Sample Rate" that streams the current mp3's sample rate
 	// DspOscillator's "Sample Rate" input receives a sample rate value and re-builds its wave table accordingly 
-	circuit.ConnectOutToIn( MP3DECODER, "Sample Rate", OSCILLATOR, "Sample Rate" );	// sample rate sync
+	oscillator.ConnectInput( mp3Decoder, "Sample Rate", "Sample Rate" );	// sample rate sync
 
 	// connect component output signals to respective component input signals
-	circuit.ConnectOutToIn( MP3DECODER, 0, ADDER1, 0 );		// mp3 left channel into adder1 ch0
-	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDER1, 1 );		// oscillator output into adder1 ch1
-	circuit.ConnectOutToIn( ADDER1, 0, AUDIODEVICE, 0 );	// adder1 output into audio device left channel
+	adder1.ConnectInput( gainLeft, 0, 0 );			// mp3 left channel into adder1 ch0
+	adder1.ConnectInput( oscillator, 0, 1 );		// oscillator output into adder1 ch1
+	audioDevice.ConnectInput( adder1, 0, 0 );		// adder1 output into audio device left channel
 
-	circuit.ConnectOutToIn( MP3DECODER, 1, ADDER2, 0 );		// mp3 right channel into adder2 ch0
-	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDER2, 1 );		// oscillator output into adder2 ch1
-	circuit.ConnectOutToIn( ADDER2, 0, AUDIODEVICE, 1 );	// adder2 output into audio device right channel
+	adder2.ConnectInput( gainRight, 0, 0 );			// mp3 right channel into adder2 ch0
+	adder2.ConnectInput( oscillator, 0, 1 );		// oscillator output into adder2 ch1
+	audioDevice.ConnectInput( adder2, 0, 1 );		// adder2 output into audio device right channel
 
 	// wait for key press
 	getchar();

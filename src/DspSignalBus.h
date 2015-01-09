@@ -32,12 +32,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //=================================================================================================
 /// DspSignal container
 
-/** A DspSignalBus contains DspSignals (see DspSignal). Via the Process_() method, a DspComponent
+/**
+A DspSignalBus contains DspSignals (see DspSignal). Via the Process_() method, a DspComponent
 receives signals into it's "inputs" DspSignalBus and provides signals to it's "outputs"
 DspSignalBus. Although DspSignals can be acquired from a DspSignalBus, the DspSignalBus class
 provides public getters and setters for manipulating it's internal DspSignal values directly,
 abstracting the need to retrieve and interface with the contained DspSignal objects. Likewise,
-signals can be added and removed from a DspSignalBus via public methods.*/
+signals can be added and removed from a DspSignalBus via public methods.
+*/
 
 class DLLEXPORT DspSignalBus
 {
@@ -53,7 +55,8 @@ public:
 	DspSignal* GetSignal( unsigned long signalIndex );
 	DspSignal* GetSignal( std::string signalName );
 
-	bool FindSignal( std::string signalName, unsigned long& signalIndex ) const;
+	bool FindSignal( std::string signalName, unsigned long& returnIndex ) const;
+	bool FindSignal( unsigned long signalIndex, unsigned long& returnIndex ) const;
 
 	unsigned long GetSignalCount() const;
 

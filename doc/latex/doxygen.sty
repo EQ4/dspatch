@@ -11,6 +11,7 @@
 \RequirePackage{verbatim}
 \RequirePackage{ifthen}
 \RequirePackage{xtab}
+\RequirePackage{multirow}
 \RequirePackage[table]{xcolor}
 
 % Use helvetica font instead of times roman
@@ -40,8 +41,8 @@
 \fancyhead[RO]{\fancyplain{}{\bfseries\thepage}}
 \fancyfoot[LE]{\fancyplain{}{}}
 \fancyfoot[CE]{\fancyplain{}{}}
-\fancyfoot[RE]{\fancyplain{}{\bfseries\scriptsize Generated on Sat Dec 15 2012 16\-:41\-:36 for D\-S\-Patch by Doxygen }}
-\fancyfoot[LO]{\fancyplain{}{\bfseries\scriptsize Generated on Sat Dec 15 2012 16\-:41\-:36 for D\-S\-Patch by Doxygen }}
+\fancyfoot[RE]{\fancyplain{}{\bfseries\scriptsize Generated on Mon Dec 24 2012 10\-:04\-:02 for D\-S\-Patch by Doxygen }}
+\fancyfoot[LO]{\fancyplain{}{\bfseries\scriptsize Generated on Mon Dec 24 2012 10\-:04\-:02 for D\-S\-Patch by Doxygen }}
 \fancyfoot[CO]{\fancyplain{}{}}
 \fancyfoot[RO]{\fancyplain{}{}}
 %---------- Internal commands used in this style file ----------------
@@ -96,11 +97,11 @@
 
 % Used by @code ... @endcode
 \newenvironment{DoxyCode}{%
-  \footnotesize%
-  \verbatim%
+
+
+\begin{scriptsize}\begin{alltt}%
 }{%
-  \endverbatim%
-  \normalsize%
+\end{alltt}\end{scriptsize}%
 }
 
 % Used by @example, @include, @includelineno and @dontinclude

@@ -133,15 +133,13 @@ bool DspCircuit::AddComponent( DspComponent* component, std::string componentNam
 			return false;	// if the component name is already in the array
 		}
 
-		PauseAutoTick();
-
 		// components within the circuit need to have as many buffers as there are threads in the circuit
+		component->SetParentCircuit( this );
 		component->SetBufferCount( _circuitThreads.size() );
 		component->SetComponentName( componentName );
-		component->SetParentCircuit( this );
 
+		PauseAutoTick();
 		_components.push_back( component );
-
 		ResumeAutoTick();
 
 		return true;
@@ -165,8 +163,17 @@ void DspCircuit::RemoveComponent( DspComponent* component )
 
 	if( _FindComponent( component, componentIndex ) )
 	{
+		PauseAutoTick();
 		_RemoveComponent( componentIndex );
+		ResumeAutoTick();
 	}
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void DspCircuit::RemoveComponent( DspComponent& component )
+{
+	RemoveComponent( &component );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -177,7 +184,9 @@ void DspCircuit::RemoveComponent( std::string componentName )
 
 	if( _FindComponent( componentName, componentIndex ) )
 	{
+		PauseAutoTick();
 		_RemoveComponent( componentIndex );
+		ResumeAutoTick();
 	}
 }
 
@@ -187,7 +196,9 @@ void DspCircuit::RemoveAllComponents()
 {
 	for( unsigned long i = 0; i < _components.size(); i++ )
 	{
+		PauseAutoTick();
 		_RemoveComponent( i-- ); // size drops as one is removed
+		ResumeAutoTick();
 	}
 }
 
@@ -209,7 +220,9 @@ void DspCircuit::DisconnectComponent( std::string component )
 		return;
 	}
 
+	PauseAutoTick();
 	_DisconnectComponent( componentIndex );
+	ResumeAutoTick();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -366,8 +379,6 @@ bool DspCircuit::_FindComponent( unsigned long componentIndex, unsigned long& re
 
 void DspCircuit::_DisconnectComponent( unsigned long componentIndex )
 {
-	PauseAutoTick();
-
 	// remove component from _inputComponents and _inputWires
 	_components[ componentIndex ]->DisconnectInputs();
 
@@ -391,16 +402,12 @@ void DspCircuit::_DisconnectComponent( unsigned long componentIndex )
 			_outToOutWires->RemoveWire( i );
 		}
 	}
-
-	ResumeAutoTick();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspCircuit::_RemoveComponent( unsigned long componentIndex )
 {
-	PauseAutoTick();
-
 	_DisconnectComponent( componentIndex );
 
 	// set the removed component's parent circuit to NULL
@@ -418,8 +425,6 @@ void DspCircuit::_RemoveComponent( unsigned long componentIndex )
 
 		_components.pop_back();	// remove end item
 	}
-
-	ResumeAutoTick();
 }
 
 //=================================================================================================

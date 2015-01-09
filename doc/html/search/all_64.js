@@ -12,5 +12,6 @@ var searchData=
   ['dspthread',['DspThread',['../class_dsp_thread.html',1,'']]],
   ['dspwaitcondition',['DspWaitCondition',['../class_dsp_wait_condition.html',1,'']]],
   ['dspwire',['DspWire',['../struct_dsp_wire.html',1,'']]],
-  ['dspwirebus',['DspWireBus',['../class_dsp_wire_bus.html',1,'']]]
+  ['dspwirebus',['DspWireBus',['../class_dsp_wire_bus.html',1,'']]],
+  ['dspatch_20design_20specification',['DSPatch Design Specification',['../spec_page.html',1,'']]]
 ];

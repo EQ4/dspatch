@@ -132,17 +132,30 @@ DspSignal* DspSignalBus::GetSignal( std::string signalName )
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::FindSignal( std::string signalName, unsigned long& signalIndex ) const
+bool DspSignalBus::FindSignal( std::string signalName, unsigned long& returnIndex ) const
 {
 	for( unsigned long i = 0; i < _signals.size(); i++ )
 	{
 		if( signalName != "" && _signals[i]->GetSignalName() == signalName )
 		{
-			signalIndex = i;
+			returnIndex = i;
 			return true;
 		}
 	}
 	// if you get here the variable was not found.
+	return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspSignalBus::FindSignal( unsigned long signalIndex, unsigned long& returnIndex ) const
+{
+	if( signalIndex < _signals.size() )
+	{
+		returnIndex = signalIndex;
+		return true;
+	}
+
 	return false;
 }
 

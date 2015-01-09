@@ -34,12 +34,14 @@ class DspComponent;
 //=================================================================================================
 /// Thread class for ticking and reseting a single component
 
-/** A DspComponentThread is responsible for ticking and reseting a single component continuously in
+/**
+A DspComponentThread is responsible for ticking and reseting a single component continuously in
 a separate free-running thread. On construction, a reference to the component must be provided for
 the DspThread's _Run() method to use. Once Start() has been called, the thread will begin
 repeatedly executing the _Run() method. On each thread iteration, DspComponentThread simply calls
 the reference component's Tick() and Reset() methods. The Pause() method causes DspComponentThread
-to wait until instructed to Resume() again.*/
+to wait until instructed to Resume() again.
+*/
 
 class DLLEXPORT DspComponentThread : public DspThread
 {

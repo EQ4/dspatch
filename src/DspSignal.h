@@ -36,13 +36,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //=================================================================================================
 /// Value container used to carry data between components
 
-/** DspComponents process and transfer data between each other in the form of "signals" via
+/**
+DspComponents process and transfer data between each other in the form of "signals" via
 interconnecting wires. The DspSignal class holds a single value that can be dynamically typed at
 runtime. Furthermore, a DspSignal has the ability to change it's data type at any point during
 program execution. This is designed such that a signal bus can hold any number of different typed
 variables, as well as to allow for a variable to dynamically change it's type when needed -this can
 be useful for inputs that accept a number of different data types (E.g. Varying sample size in an
-audio buffer: array of byte / int / float).*/
+audio buffer: array of byte / int / float).
+*/
 
 class DLLEXPORT DspSignal
 {
