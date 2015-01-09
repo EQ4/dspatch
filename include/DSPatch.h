@@ -372,6 +372,9 @@ void main()
 
 \section release_notes Release Notes
 
+\subsection v241 v.2.41 (07 February 2013)
+  - Fixed VS2010 DspDemo linker errors.
+
 \subsection v240 v.2.40 (04 February 2013)
   - Optimized DspRunType.
   - Added Stop() method to DspThread.
