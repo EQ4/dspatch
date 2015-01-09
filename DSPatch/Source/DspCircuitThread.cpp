@@ -27,7 +27,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 //=================================================================================================
 
-DspCircuitThread::DspCircuitThread( std::vector< DspSafePointer< DspComponent > >& components, unsigned long threadNo )
+DspCircuitThread::DspCircuitThread( std::vector< DspComponent* >& components, unsigned long threadNo )
 : _components( components ),
 	_threadNo( threadNo )
 {
@@ -71,10 +71,12 @@ void DspCircuitThread::Stop()
 void DspCircuitThread::Sync()
 {
 	_resumeMutex.Lock();
+
 	if( !_gotSync )												//if haven't already got resume
 	{
 		_syncCondt.Wait( _resumeMutex );		//wait for resume
 	}
+
 	_resumeMutex.Unlock();
 }
 
@@ -83,9 +85,16 @@ void DspCircuitThread::Sync()
 void DspCircuitThread::Resume()
 {
 	_resumeMutex.Lock();
-	_gotResume = true;
+
+	if( !_gotSync )												//if haven't already got resume
+	{
+		_syncCondt.Wait( _resumeMutex );		//wait for resume
+	}
 	_gotSync = false;											//reset the release flag
+
+	_gotResume = true;
 	_resumeCondt.WakeAll();
+
 	_resumeMutex.Unlock();
 }
 
@@ -96,8 +105,10 @@ void DspCircuitThread::_Run()
 	while( !_stop )
 	{
 		_resumeMutex.Lock();
+
 		_gotSync = true;
 		_syncCondt.WakeAll();
+
 		if( !_gotResume )												//if haven't already got resume
 		{
 			_resumeCondt.Wait( _resumeMutex );		//wait for resume

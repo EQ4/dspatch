@@ -55,12 +55,13 @@ int main()
 	DspCircuit circuit;
 
 	// declare pointers for components to be added to the circuit
-	DspSafePointer< DspMp3Decoder > mp3Decoder;
-	DspSafePointer< DspAudioDevice > audioDevice;
-	DspSafePointer< DspGain > gainLeft;
-	DspSafePointer< DspGain > gainRight;
+	DspMp3Decoder* mp3Decoder;
+	DspAudioDevice* audioDevice;
+	DspGain* gainLeft;
+	DspGain* gainRight;
 
 	// set circuit thread count to 2 then start separate thread to tick the circuit continuously
+	circuit.SetThreadCount( 5 );
 	circuit.SetThreadCount( 2 );
 	circuit.StartAutoTick();
 
@@ -91,12 +92,12 @@ int main()
 	// =====================
 
 	// declare pointer for a new oscillator component
-	DspSafePointer< DspOscillator > oscillator;
+	DspOscillator* oscillator;
 
 	// New() the oscillator pointer with the desired constructor parametres
 	float oscFreq = 1000.0f;						// 1Khz frequency
 	float oscAmpl = 0.1f;								// 10% amplitude
-	oscillator.New( oscFreq, oscAmpl );
+	oscillator = new DspOscillator( oscFreq, oscAmpl );
 
 	// A component input pin can only receive one signal at a time so an adders are required to combine the signals
 	// add new components to the circuit

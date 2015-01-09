@@ -17,7 +17,6 @@
 		2D077EE11633451C0063C031 /* DspComponentThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ECD1633451B0063C031 /* DspComponentThread.cpp */; };
 		2D077EE21633451C0063C031 /* DspComponentThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ECE1633451B0063C031 /* DspComponentThread.h */; };
 		2D077EE31633451C0063C031 /* DspRunType.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ECF1633451B0063C031 /* DspRunType.h */; };
-		2D077EE41633451C0063C031 /* DspSafePointer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED01633451B0063C031 /* DspSafePointer.h */; };
 		2D077EE51633451C0063C031 /* DspSignal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ED11633451B0063C031 /* DspSignal.cpp */; };
 		2D077EE61633451C0063C031 /* DspSignal.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED21633451B0063C031 /* DspSignal.h */; };
 		2D077EE71633451C0063C031 /* DspSignalBus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ED31633451B0063C031 /* DspSignalBus.cpp */; };
@@ -52,7 +51,6 @@
 		2D077ECD1633451B0063C031 /* DspComponentThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspComponentThread.cpp; path = ../../DSPatch/Source/DspComponentThread.cpp; sourceTree = "<group>"; };
 		2D077ECE1633451B0063C031 /* DspComponentThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspComponentThread.h; path = ../../DSPatch/Source/DspComponentThread.h; sourceTree = "<group>"; };
 		2D077ECF1633451B0063C031 /* DspRunType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspRunType.h; path = ../../DSPatch/Source/DspRunType.h; sourceTree = "<group>"; };
-		2D077ED01633451B0063C031 /* DspSafePointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspSafePointer.h; path = ../../DSPatch/Source/DspSafePointer.h; sourceTree = "<group>"; };
 		2D077ED11633451B0063C031 /* DspSignal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspSignal.cpp; path = ../../DSPatch/Source/DspSignal.cpp; sourceTree = "<group>"; };
 		2D077ED21633451B0063C031 /* DspSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspSignal.h; path = ../../DSPatch/Source/DspSignal.h; sourceTree = "<group>"; };
 		2D077ED31633451B0063C031 /* DspSignalBus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspSignalBus.cpp; path = ../../DSPatch/Source/DspSignalBus.cpp; sourceTree = "<group>"; };
@@ -115,7 +113,6 @@
 				2D077ECD1633451B0063C031 /* DspComponentThread.cpp */,
 				2D077ECE1633451B0063C031 /* DspComponentThread.h */,
 				2D077ECF1633451B0063C031 /* DspRunType.h */,
-				2D077ED01633451B0063C031 /* DspSafePointer.h */,
 				2D077ED11633451B0063C031 /* DspSignal.cpp */,
 				2D077ED21633451B0063C031 /* DspSignal.h */,
 				2D077ED31633451B0063C031 /* DspSignalBus.cpp */,
@@ -151,7 +148,6 @@
 				2D077EE01633451C0063C031 /* DspComponent.h in Headers */,
 				2D077EE21633451C0063C031 /* DspComponentThread.h in Headers */,
 				2D077EE31633451C0063C031 /* DspRunType.h in Headers */,
-				2D077EE41633451C0063C031 /* DspSafePointer.h in Headers */,
 				2D077EE61633451C0063C031 /* DspSignal.h in Headers */,
 				2D077EE81633451C0063C031 /* DspSignalBus.h in Headers */,
 				2D077EE91633451C0063C031 /* DspThread.h in Headers */,

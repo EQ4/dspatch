@@ -1,0 +1,50 @@
+\section{Dsp\-Circuit\-Thread Class Reference}
+\label{class_dsp_circuit_thread}\index{Dsp\-Circuit\-Thread@{Dsp\-Circuit\-Thread}}
+
+
+Thread class for ticking and reseting circuit components.  
+
+
+
+
+{\ttfamily \#include $<$Dsp\-Circuit\-Thread.\-h$>$}
+
+Inheritance diagram for Dsp\-Circuit\-Thread\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_dsp_circuit_thread}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Dsp\-Circuit\-Thread} (std\-::vector$<$ {\bf Dsp\-Component} $\ast$ $>$ \&components, unsigned long thread\-No)\label{class_dsp_circuit_thread_a3cb40f7961c734c111eecfa0f85f56c6}
+
+\item 
+void {\bfseries Start} (Priority priority=Time\-Critical\-Priority)\label{class_dsp_circuit_thread_a135c4798944649e3295e702086aefcb9}
+
+\item 
+void {\bfseries Stop} ()\label{class_dsp_circuit_thread_a66496af05448bc7d5736d5d832ca180a}
+
+\item 
+void {\bfseries Sync} ()\label{class_dsp_circuit_thread_ae1831e73ad288d84e4fff855a8367fee}
+
+\item 
+void {\bfseries Resume} ()\label{class_dsp_circuit_thread_a15b58d759548a77065eb90117c926c08}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Thread class for ticking and reseting circuit components. 
+
+A \doxyref{Dsp\-Circuit\-Thread}{p.}{class_dsp_circuit_thread} is responsible for ticking and reseting all components in a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}. On construction, a reference to the vector of circuit components must be provided for the thread \-\_\-\-Run() method to loop through. Each \doxyref{Dsp\-Circuit\-Thread}{p.}{class_dsp_circuit_thread} has a thread number (thread\-No), which also must be provided on construction. When creating multiple Dsp\-Circuit\-Threads, each thread must have their own unique thread number, beginning at 0 and incrementing by 1 for every thread added. This thread number corresponds with the \doxyref{Dsp\-Component}{p.}{class_dsp_component}'s thread number when calling it's Thread\-Tick() and Thread\-Reset() methods in the \doxyref{Dsp\-Circuit\-Thread}{p.}{class_dsp_circuit_thread}'s component loop. Hence, for every circuit thread created, each component's thread count within that circuit must be incremented to match.
+
+The Resume() method causes the \doxyref{Dsp\-Circuit\-Thread}{p.}{class_dsp_circuit_thread} to tick and reset all circuit components once, after which the thread will wait until instructed to resume again. As each component is done processing it hands over control to the next waiting circuit thread, therefore, from an external control loop (I.\-e. \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}'s Process\-\_\-() method) we simply loop through our array of Dsp\-Circuit\-Threads calling Resume() on each. If a circuit thread is busy processing, a call to Resume() will block momentarily until processing is complete, then begin the next iteration immediately upon unblocking the calling thread.
+
+The Sync() method, when called, will block the calling thread until the circuit thread is done processing. If the circuit thread is already awaiting the next Resume() request, this method will return immediately. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+Dsp\-Circuit\-Thread.\-h\item 
+Dsp\-Circuit\-Thread.\-cpp\end{DoxyCompactItemize}

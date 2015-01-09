@@ -24,14 +24,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 #ifdef DSP_UNIX
 
+  #define DLLEXPORT
 	#include "DspThreadUnix.h"
 
 #elif DSP_NOTHREADS
 
+  #define DLLEXPORT
 	#include "DspThreadNull.h"
 
 #else
-
-#include "DspThreadWin.h"
+  
+  #define DLLEXPORT __declspec(dllexport)
+  #pragma warning(disable:4251)
+  #pragma warning(disable:4275)
+	#include "DspThreadWin.h"
 
 #endif

@@ -1,0 +1,46 @@
+\section{Dsp\-Signal Class Reference}
+\label{class_dsp_signal}\index{Dsp\-Signal@{Dsp\-Signal}}
+
+
+Value container used to carry data between components.  
+
+
+
+
+{\ttfamily \#include $<$Dsp\-Signal.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Dsp\-Signal} (std\-::string signal\-Name=\char`\"{}\char`\"{})\label{class_dsp_signal_ae05624800b78d24e3331e108c3fb2fa8}
+
+\item 
+{\footnotesize template$<$class Value\-Type $>$ }\\bool {\bfseries Set\-Value} (const Value\-Type \&new\-Value)\label{class_dsp_signal_a6bf144dae5bb686985be63bd17c2469c}
+
+\item 
+{\footnotesize template$<$class Value\-Type $>$ }\\bool {\bfseries Get\-Value} (Value\-Type \&return\-Value)\label{class_dsp_signal_aac647fc4901bf3531bcf53a2ec63e88a}
+
+\item 
+bool {\bfseries Set\-Signal} (const {\bf Dsp\-Signal} $\ast$new\-Signal)\label{class_dsp_signal_ab91997f1ea5d7bf4ff3ed37e82b82361}
+
+\item 
+void {\bfseries Clear\-Value} ()\label{class_dsp_signal_a569443f7191ec26990698c57ca158568}
+
+\item 
+const std\-::type\-\_\-info \& {\bfseries Get\-Signal\-Type} ()\label{class_dsp_signal_a35fbbc242f7672397662a79229a2751f}
+
+\item 
+std\-::string {\bfseries Get\-Signal\-Name} () const \label{class_dsp_signal_a553fa56771bcd4bfe81c253026fbc5d8}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Value container used to carry data between components. 
+
+Dsp\-Components process and transfer data between each other in the form of \char`\"{}signals\char`\"{} via interconnecting wires. The \doxyref{Dsp\-Signal}{p.}{class_dsp_signal} class holds a single value that can be dynamically typed at runtime. Furthermore, a \doxyref{Dsp\-Signal}{p.}{class_dsp_signal} has the ability to change it's data type at any point during program execution. This is designed such that a signal bus can hold any number of different typed variables, as well as to allow for a variable to dynamically change it's type when needed -\/this can be useful for inputs that accept a number of different data types (E.\-g. Varying sample size in an audio buffer\-: array of byte / int / float). 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+Dsp\-Signal.\-h\item 
+Dsp\-Signal.\-cpp\end{DoxyCompactItemize}

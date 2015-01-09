@@ -1,0 +1,46 @@
+\section{Dsp\-Component\-Thread Class Reference}
+\label{class_dsp_component_thread}\index{Dsp\-Component\-Thread@{Dsp\-Component\-Thread}}
+
+
+Thread class for ticking and reseting a single component.  
+
+
+
+
+{\ttfamily \#include $<$Dsp\-Component\-Thread.\-h$>$}
+
+Inheritance diagram for Dsp\-Component\-Thread\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_dsp_component_thread}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Dsp\-Component\-Thread} ({\bf Dsp\-Component} \&component)\label{class_dsp_component_thread_a31a8c5a2298bac629fe540c063d7afef}
+
+\item 
+void {\bfseries Start} (Priority priority=Time\-Critical\-Priority)\label{class_dsp_component_thread_a873c4c57860f99e380a55a6c5713afba}
+
+\item 
+void {\bfseries Stop} ()\label{class_dsp_component_thread_ae199a03dd50663e5f66a0a32e5faab81}
+
+\item 
+void {\bfseries Pause} ()\label{class_dsp_component_thread_aef4bacf1c4cf9ce79e5ab7cf98d9c8c9}
+
+\item 
+void {\bfseries Resume} ()\label{class_dsp_component_thread_adaf04b5a29960b2163c58b51bf76adc5}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Thread class for ticking and reseting a single component. 
+
+A \doxyref{Dsp\-Component\-Thread}{p.}{class_dsp_component_thread} is responsible for ticking and reseting a single component continuously in a separate free-\/running thread. On construction, a reference to the component must be provided for the \doxyref{Dsp\-Thread}{p.}{class_dsp_thread}'s \-\_\-\-Run() method to use. Once Start() has been called, the thread will begin repeatedly executing the \-\_\-\-Run() method. On each thread iteration, \doxyref{Dsp\-Component\-Thread}{p.}{class_dsp_component_thread} simply calls the reference component's Tick() and Reset() methods. The Pause() method causes \doxyref{Dsp\-Component\-Thread}{p.}{class_dsp_component_thread} to wait until instructed to Resume() again. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+Dsp\-Component\-Thread.\-h\item 
+Dsp\-Component\-Thread.\-cpp\end{DoxyCompactItemize}

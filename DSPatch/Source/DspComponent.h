@@ -28,32 +28,52 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //-------------------------------------------------------------------------------------------------
 
 #include "DspSignalBus.h"
-#include "DspSafePointer.h"
 #include "DspWireBus.h"
 
 class DspComponentThread;
 
 //=================================================================================================
+/// Abstract base class for all DSPatch components
 
-class DspComponent
+/** Classes derived from DspComponent can be added to an DspCircuit and routed to and from other
+DspComponents. On construction, derived classes must configure the component's IO buses by calling
+AddInput_() and AddOutput_() respectively. Derived classes must also implement the pure virtual
+method: Process_(). The Process_() method is a callback from the DSPatch engine that occurs when a
+new set of input signals is ready for processing. The Process() method has 2 input parameters: the
+input bus and the output bus. This method's purpose is to pull its required inputs out of the input
+bus, process these inputs, and populate the output bus with the results (see DspSignalBus).
+
+In order for a component to do any work it must be ticked over. This is performed by repeatedly
+calling the Tick() and Reset() methods. The Tick() method is responsible for acquiring the next set
+of input signals from component input wires and populating the component's input bus. To insure
+that these inputs are up-to-date, the dependent component first calls all of its input components'
+Tick() methods -hence recursively called in all components going backward through the circuit (This
+is what's classified as a "pull system"). The acquired input bus is then passed to the Process_()
+method. The Reset() method then informs the component that the last circuit traversal has completed
+and hence can execute the next Tick() request. A component's Tick() and Reset() methods can be
+called in a loop from the main application thread, or alternatively, by calling StartAutoTick(), a
+seperate thread will spawn, automatically calling Tick() and Reset() methods continuosly (This is
+most commonly used to tick over an instance of DspCircuit).*/
+
+class DLLEXPORT DspComponent
 {
 public:
 	DspComponent();
 	virtual ~DspComponent();
 
-	bool ConnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, unsigned long toInput );
-	bool ConnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, std::string toInput );
-	bool ConnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, unsigned long toInput );
-	bool ConnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, std::string toInput );
+	bool ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput );
+	bool ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput );
+	bool ConnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput );
+	bool ConnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput );
 
-	void DisconnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, unsigned long toInput );
-	void DisconnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, std::string toInput );
-	void DisconnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, unsigned long toInput );
-	void DisconnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, std::string toInput );
+	void DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput );
+	void DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput );
+	void DisconnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput );
+	void DisconnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput );
 
 	void DisconnectInput( unsigned long inputIndex );
 	void DisconnectInput( std::string inputName );
-	void DisconnectInput( DspSafePointer< DspComponent > inputComponent );
+	void DisconnectInput( DspComponent* inputComponent );
 	void DisconnectInputs();
 
 	void Tick();
@@ -85,10 +105,10 @@ public:
 	template< class ValueType >
 	bool GetOutputValue( std::string outputName, ValueType& returnValue );
 
-	bool SetInputSignal( unsigned long inputIndex, const DspSafePointer< DspSignal > newSignal );
-	bool SetInputSignal( std::string inputName, const DspSafePointer< DspSignal > newSignal );
-	DspSafePointer< DspSignal > GetOutputSignal( unsigned long outputIndex );
-	DspSafePointer< DspSignal > GetOutputSignal( std::string outputName );
+	bool SetInputSignal( unsigned long inputIndex, const DspSignal* newSignal );
+	bool SetInputSignal( std::string inputName, const DspSignal* newSignal );
+	DspSignal* GetOutputSignal( unsigned long outputIndex );
+	DspSignal* GetOutputSignal( std::string outputName );
 
 	// Only works with non-threaded ticking (_threadCount = 0)
 	// =======================================================
@@ -132,17 +152,17 @@ private:
 
 	DspComponentThread* _componentThread;
 
-	std::vector< DspSafePointer< bool > > _hasTickeds;			// pointers ensure that parallel threads will only read from this vector
+	std::vector< bool* > _hasTickeds;									// pointers ensure that parallel threads will only read from this vector
 
-	std::vector< bool > _gotReleases;												// pointers not used here as only 1 thread writes to this vector at a time
+	std::vector< bool > _gotReleases;									// pointers not used here as only 1 thread writes to this vector at a time
 	std::vector< DspMutex > _releaseMutexes;
 	std::vector< DspWaitCondition > _releaseCondts;
 
 	void _WaitForRelease( unsigned long threadNo );
 	void _ReleaseThread( unsigned long threadNo );
 
-	virtual void _ProcessInputWire( DspSafePointer< DspWire > inputWire );
-	virtual void _ProcessInputWire( DspSafePointer< DspWire > inputWire, unsigned long threadNo );
+	virtual void _ProcessInputWire( DspWire* inputWire );
+	virtual void _ProcessInputWire( DspWire* inputWire, unsigned long threadNo );
 };
 
 //=================================================================================================

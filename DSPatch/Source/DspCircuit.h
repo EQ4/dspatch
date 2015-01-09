@@ -32,8 +32,28 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class DspCircuitThread;
 
 //=================================================================================================
+/// Workspace for adding and routing components
 
-class DspCircuit : public DspComponent
+/** DspComponents can be added to a DspCircuit and routed to and from other DspComponents. When a
+DspComponent is added to a DspCircuit, a unique string ID is required. This name is used to
+identify the component within the circuit's component collection. ConnectOutToIn and
+DisconnectOutToIn provide a means of routing component outputs to other component inputs, while
+ConnectInToIn / DisconnectInToIn and ConnectOutToOut / DisconnectOutToOut route the circuit's IO
+signals to and from it's internal components.
+
+For process intensive circuits, multi-threaded processing can be enabled via the SetThreadCount()
+method. DspCircuit allows the user to specify the number of threads in which he/she requires the
+circuit to process (0 threads: multi-threading disabled). A circuit's thread count can be adjusted
+at runtime, allowing the user to increase / decrease the number of threads as required during
+execution.
+
+DspCircuit is derived from DspComponent and therefore inherits all DspComponent behavior. This
+means that a DspCircuit can be added to, and routed within another DspCircuit as a component. This
+also means a circuit object needs to be Tick()ed and Reset()ed as a component (see DspComponent).
+The DspCircuit Process_() method simply runs through it's internal array of components and calls each
+component's Tick() and Reset() methods.*/
+
+class DLLEXPORT DspCircuit : public DspComponent
 {
 public:
 	DspCircuit( unsigned long threadCount = 0 );
@@ -44,13 +64,13 @@ public:
 	virtual void SetThreadCount( unsigned long threadCount );
 
 	template< class ComponentType >
-	DspSafePointer< ComponentType > AddComponent( std::string componentName );
+	ComponentType* AddComponent( std::string componentName );
 
 	template< class ComponentType >
-	bool AddComponent( DspSafePointer< ComponentType > component, std::string componentName = "" );
+	bool AddComponent( ComponentType* component, std::string componentName = "" );
 
 	template< class ComponentType >
-	DspSafePointer< ComponentType > GetComponent( std::string componentName );
+	ComponentType* GetComponent( std::string componentName );
 
 	void RemoveComponent( std::string componentName );
 	void RemoveAllComponents();
@@ -91,15 +111,15 @@ protected:
 	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs );
 
 private:
-	std::vector< DspSafePointer< DspComponent > > _components;
+	std::vector< DspComponent* > _components;
 
-	std::vector< DspSafePointer< DspCircuitThread > > _circuitThreads;
+	std::vector< DspCircuitThread* > _circuitThreads;
 	unsigned long _currentThreadIndex;
 
 	DspWireBus* _inToInWires;
 	DspWireBus* _outToOutWires;
 
-	bool _FindComponent( DspSafePointer< DspComponent > component, unsigned long& returnIndex );
+	bool _FindComponent( DspComponent* component, unsigned long& returnIndex );
 	bool _FindComponent( std::string componentName, unsigned long& returnIndex );
 
 	void _DisconnectComponent( unsigned long componentIndex );
@@ -109,18 +129,16 @@ private:
 //=================================================================================================
 
 template< class ComponentType >
-DspSafePointer< ComponentType > DspCircuit::AddComponent( std::string componentName )
+ComponentType* DspCircuit::AddComponent( std::string componentName )
 {
 	unsigned long componentIndex;
 
 	if( _FindComponent( componentName, componentIndex ) )
 	{
-		return DspSafePointer< ComponentType >();	// if the component is already in the array
+		return NULL;	// if the component is already in the array
 	}
 
-	DspSafePointer< ComponentType > newComponent;
-	newComponent.New();
-	newComponent.LockPointer();
+	ComponentType* newComponent = new ComponentType();
 
 	newComponent->SetComponentName( componentName );
 	newComponent->SetThreadCount( GetThreadCount() );
@@ -131,13 +149,13 @@ DspSafePointer< ComponentType > DspCircuit::AddComponent( std::string componentN
 
 	ResumeAutoTick();
 
-	return _components[_components.size() - 1];
+	return (ComponentType*)_components[_components.size() - 1];
 }
 
 //-------------------------------------------------------------------------------------------------
 
 template< class ComponentType >
-bool DspCircuit::AddComponent( DspSafePointer< ComponentType > component, std::string componentName )
+bool DspCircuit::AddComponent( ComponentType* component, std::string componentName )
 {
 	if( componentName == "" && component->GetComponentName() == "" )
 	{
@@ -158,8 +176,6 @@ bool DspCircuit::AddComponent( DspSafePointer< ComponentType > component, std::s
 	component->SetComponentName( componentName );
 	component->SetThreadCount( GetThreadCount() );
 
-	component.LockPointer();	// lock the pointer so that it can't be re-newed
-
 	PauseAutoTick();
 
 	_components.push_back( component );
@@ -172,17 +188,17 @@ bool DspCircuit::AddComponent( DspSafePointer< ComponentType > component, std::s
 //-------------------------------------------------------------------------------------------------
 
 template< class ComponentType >
-DspSafePointer< ComponentType > DspCircuit::GetComponent( std::string componentName )
+ComponentType* DspCircuit::GetComponent( std::string componentName )
 {
 	unsigned long componentIndex;
 
 	if( _FindComponent( componentName, componentIndex ) )
 	{
-		return _components[componentIndex];
+		return (ComponentType*)_components[componentIndex];
 	}
 	else
 	{
-		return DspSafePointer< ComponentType >();
+		return NULL;
 	}
 }
 

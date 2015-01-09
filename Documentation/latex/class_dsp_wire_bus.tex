@@ -1,0 +1,46 @@
+\section{Dsp\-Wire\-Bus Class Reference}
+\label{class_dsp_wire_bus}\index{Dsp\-Wire\-Bus@{Dsp\-Wire\-Bus}}
+
+
+\doxyref{Dsp\-Wire}{p.}{struct_dsp_wire} container.  
+
+
+
+
+{\ttfamily \#include $<$Dsp\-Wire\-Bus.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Dsp\-Wire\-Bus} (bool is\-Linked\-Component\-Receiving\-Signals=false)\label{class_dsp_wire_bus_adaed2cf35619361c5dd1068cc0cff7a2}
+
+\item 
+bool {\bfseries Add\-Wire} ({\bf Dsp\-Component} $\ast$linked\-Component, unsigned long from\-Signal\-Index, unsigned long to\-Signal\-Index)\label{class_dsp_wire_bus_a368663a8baf20335a96f80934b993e5a}
+
+\item 
+bool {\bfseries Remove\-Wire} (unsigned long wire\-Index)\label{class_dsp_wire_bus_ac105859fbf1dce929cb9392c80e9b3bf}
+
+\item 
+bool {\bfseries Remove\-Wire} ({\bf Dsp\-Component} $\ast$linked\-Component, unsigned long from\-Signal\-Index, unsigned long to\-Signal\-Index)\label{class_dsp_wire_bus_a159a0ab1cae5311d4ba7bfeabf3019bc}
+
+\item 
+void {\bfseries Remove\-All\-Wires} ()\label{class_dsp_wire_bus_a3445d86310bdd575407521088f3b61e3}
+
+\item 
+{\bf Dsp\-Wire} $\ast$ {\bfseries Get\-Wire} (unsigned long wire\-Index)\label{class_dsp_wire_bus_a3a79aef48ee0e1fd1cda64d0f629b12e}
+
+\item 
+unsigned long {\bfseries Get\-Wire\-Count} ()\label{class_dsp_wire_bus_ab7267283578eb52fd7834c05185e95bb}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\doxyref{Dsp\-Wire}{p.}{struct_dsp_wire} container. 
+
+A \doxyref{Dsp\-Wire\-Bus}{p.}{class_dsp_wire_bus} contains Dsp\-Wires (see \doxyref{Dsp\-Wire}{p.}{struct_dsp_wire}). Each component contains an input wire bus. Via the Tick() method, a \doxyref{Dsp\-Component}{p.}{class_dsp_component} uses it's input wire bus to retrieve it's input signals from incoming linked components, as mapped out in each \doxyref{Dsp\-Wire}{p.}{struct_dsp_wire}. The \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} class has an additional 2 wire buses use to connect the circuit's I\-O signals to and from it's internal components. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+Dsp\-Wire\-Bus.\-h\item 
+Dsp\-Wire\-Bus.\-cpp\end{DoxyCompactItemize}

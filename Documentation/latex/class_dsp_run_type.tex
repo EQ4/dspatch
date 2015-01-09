@@ -1,0 +1,61 @@
+\section{Dsp\-Run\-Type Class Reference}
+\label{class_dsp_run_type}\index{Dsp\-Run\-Type@{Dsp\-Run\-Type}}
+
+
+Dynamically typed variable.  
+
+
+
+
+{\ttfamily \#include $<$Dsp\-Run\-Type.\-h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries \-\_\-\-Dsp\-Rt\-Value}
+\item 
+class {\bfseries \-\_\-\-Dsp\-Rt\-Value\-Holder}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Value\-Type $>$ }\\{\bfseries Dsp\-Run\-Type} (const Value\-Type \&value)\label{class_dsp_run_type_a355a9722a34b10669913f05a6327b5cb}
+
+\item 
+{\bfseries Dsp\-Run\-Type} (const {\bf Dsp\-Run\-Type} \&other)\label{class_dsp_run_type_a3567bef7cd3badee9f112957e22b827f}
+
+\item 
+{\bf Dsp\-Run\-Type} \& {\bfseries Swap} ({\bf Dsp\-Run\-Type} \&rhs)\label{class_dsp_run_type_a2496beffd6771464c0df307caa87326f}
+
+\item 
+{\footnotesize template$<$typename Value\-Type $>$ }\\{\bf Dsp\-Run\-Type} \& {\bfseries operator=} (const Value\-Type \&rhs)\label{class_dsp_run_type_acabe683e141a76a41f066202fbd49f62}
+
+\item 
+{\bf Dsp\-Run\-Type} \& {\bfseries operator=} ({\bf Dsp\-Run\-Type} rhs)\label{class_dsp_run_type_a7d18152323672166853a1eba5c78e33f}
+
+\item 
+bool {\bfseries Is\-Empty} () const \label{class_dsp_run_type_a2e825aebb0a5575887b0c2b4e608699f}
+
+\item 
+const std\-::type\-\_\-info \& {\bfseries Get\-Type} () const \label{class_dsp_run_type_ab75fa3b4dd1f699263a2cb493a41f7eb}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Value\-Type $>$ }\\static Value\-Type $\ast$ {\bfseries Run\-Type\-Cast} ({\bf Dsp\-Run\-Type} $\ast$operand)\label{class_dsp_run_type_a1fcf1cb0046d44cb2fb9d03ee864a10a}
+
+\item 
+{\footnotesize template$<$typename Value\-Type $>$ }\\static const Value\-Type $\ast$ {\bfseries Run\-Type\-Cast} (const {\bf Dsp\-Run\-Type} $\ast$operand)\label{class_dsp_run_type_a39e8ab677cc9ca5c7dc160f40e9d5cba}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Dynamically typed variable. 
+
+\doxyref{Dsp\-Run\-Type}{p.}{class_dsp_run_type} holds a variable that can be dynamically typed at run-\/time (hence the name). The \doxyref{Dsp\-Run\-Type}{p.}{class_dsp_run_type} class makes use of an internal template class and public template methods to allow users to get and set the contained variable as any type they wish. A \doxyref{Dsp\-Run\-Type}{p.}{class_dsp_run_type} object also has the ability to change type at any point during program execution. Built-\/in typecasting and error checking (via the Run\-Type\-Cast() method) prevents critical runtime errors from occurring when signal types are mismatched. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+Dsp\-Run\-Type.\-h\end{DoxyCompactItemize}

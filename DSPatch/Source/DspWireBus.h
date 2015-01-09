@@ -29,34 +29,39 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 #include <vector>
 
-#include "DspSafePointer.h"
 #include "DspWire.h"
+#include "DspThread.h"
 
 class DspComponent;
 
 //=================================================================================================
+/// DspWire container
 
-class DspWireBus
+/** A DspWireBus contains DspWires (see DspWire). Each component contains an input wire bus. Via
+the Tick() method, a DspComponent uses it's input wire bus to retrieve it's input signals from
+incoming linked components, as mapped out in each DspWire. The DspCircuit class has an additional 2
+wire buses use to connect the circuit's IO signals to and from it's internal components.*/
+
+class DLLEXPORT DspWireBus
 {
 public:
 	DspWireBus( bool isLinkedComponentReceivingSignals = false );
 	virtual ~DspWireBus();
 
-	bool AddWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
+	bool AddWire( DspComponent* linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
 
 	bool RemoveWire( unsigned long wireIndex );
-
-	bool RemoveWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
+	bool RemoveWire( DspComponent* linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
 
 	void RemoveAllWires();
 
-	DspSafePointer< DspWire > GetWire( unsigned long wireIndex );
+	DspWire* GetWire( unsigned long wireIndex );
 
 	unsigned long GetWireCount();
 
 private:
 	bool _isLinkedComponentReceivingSignals;
-	std::vector< DspSafePointer< DspWire > > _wires;
+	std::vector< DspWire* > _wires;
 };
 
 //=================================================================================================

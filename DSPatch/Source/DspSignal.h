@@ -30,12 +30,21 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #include <string>
 #include <vector>
 
-#include "DspSafePointer.h"
 #include "DspRunType.h"
+#include "DspThread.h"
 
 //=================================================================================================
+/// Value container used to carry data between components
 
-class DspSignal
+/** DspComponents process and transfer data between each other in the form of "signals" via
+interconnecting wires. The DspSignal class holds a single value that can be dynamically typed at
+runtime. Furthermore, a DspSignal has the ability to change it's data type at any point during
+program execution. This is designed such that a signal bus can hold any number of different typed
+variables, as well as to allow for a variable to dynamically change it's type when needed -this can
+be useful for inputs that accept a number of different data types (E.g. Varying sample size in an
+audio buffer: array of byte / int / float).*/
+
+class DLLEXPORT DspSignal
 {
 public:
 	DspSignal( std::string signalName = "" );
@@ -48,13 +57,13 @@ public:
 	template< class ValueType >
 	bool GetValue( ValueType& returnValue );
 
-	bool SetSignal( const DspSafePointer< DspSignal > newSignal );
+	bool SetSignal( const DspSignal* newSignal );
 
 	void ClearValue();
 
 	const std::type_info& GetSignalType();
 
-	std::string GetSignalName();
+	std::string GetSignalName() const;
 
 private:
 	DspRunType _signalValue;

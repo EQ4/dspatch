@@ -1,0 +1,56 @@
+\section{Dsp\-Thread Class Reference}
+\label{class_dsp_thread}\index{Dsp\-Thread@{Dsp\-Thread}}
+
+
+Cross-\/platform, object-\/oriented thread.  
+
+
+
+
+{\ttfamily \#include $<$Dsp\-Thread\-Null.\-h$>$}
+
+Inheritance diagram for Dsp\-Thread\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_dsp_thread}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries Priority} \{ \\*
+{\bfseries Idle\-Priority}, 
+{\bfseries Lowest\-Priority}, 
+{\bfseries Low\-Priority}, 
+{\bfseries Normal\-Priority}, 
+\\*
+{\bfseries High\-Priority}, 
+{\bfseries Highest\-Priority}, 
+{\bfseries Time\-Critical\-Priority}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void {\bfseries Start} (Priority priority)\label{class_dsp_thread_a1564f1c4a1660162372d20e906e8027d}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void {\bfseries Set\-Priority} (Priority priority)\label{class_dsp_thread_a3b363ea14a64c2bb309969f6476cbf32}
+
+\item 
+static void {\bfseries Ms\-Sleep} (unsigned long milliseconds)\label{class_dsp_thread_a0d65750608b4cdb5eea055a227a1ae1b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Cross-\/platform, object-\/oriented thread. 
+
+An class that is required to run actions in a parallel thread can be derived from \doxyref{Dsp\-Thread}{p.}{class_dsp_thread} in order to inherit multi-\/threading abilities. The Start() method initiates a parallel thread and executes the private virtual \-\_\-\-Run() method in that thread. The derived class must override this \-\_\-\-Run() method with one that executes the required parallel actions. Other threads may use the static Ms\-Sleep() and Set\-Priority() methods without having to derive from, or create an instance of \doxyref{Dsp\-Thread}{p.}{class_dsp_thread}. Priority for the created thread, or calling threads (via Set\-Priority()), may be selected from the public enumeration\-: Priority. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+Dsp\-Thread\-Null.\-h\end{DoxyCompactItemize}

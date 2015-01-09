@@ -36,9 +36,9 @@ DspSignal::~DspSignal() {};
 
 //=================================================================================================
 
-bool DspSignal::SetSignal( const DspSafePointer< DspSignal > newSignal )
+bool DspSignal::SetSignal( const DspSignal* newSignal )
 {
-	if( newSignal.IsPointerValid() )
+	if( newSignal != NULL )
 	{
 		if( newSignal->_valueAvailable == false )
 		{
@@ -73,7 +73,7 @@ const std::type_info& DspSignal::GetSignalType()
 
 //-------------------------------------------------------------------------------------------------
 
-std::string DspSignal::GetSignalName()
+std::string DspSignal::GetSignalName() const
 {
 	return _signalName;
 }

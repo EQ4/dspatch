@@ -61,7 +61,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="DspDemoComponents.lib"
 				AdditionalLibraryDirectories="Debug"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="LIBCMT"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -134,7 +134,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="DspDemoComponents.lib"
 				AdditionalLibraryDirectories="Release"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="LIBCMT"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"

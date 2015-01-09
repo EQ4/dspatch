@@ -28,23 +28,30 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //-------------------------------------------------------------------------------------------------
 
 #include "DspSignal.h"
-#include "DspSafePointer.h"
 
 //=================================================================================================
+/// DspSignal container
 
-class DspSignalBus
+/** A DspSignalBus contains DspSignals (see DspSignal). Via the Process_() method, a DspComponent
+receives signals into it's "inputs" DspSignalBus and provides signals to it's "outputs"
+DspSignalBus. Although DspSignals can be acquired from a DspSignalBus, the DspSignalBus class
+provides public getters and setters for manipulating it's internal DspSignal values directly,
+abstracting the need to retrieve and interface with the contained DspSignal objects. Likewise,
+signals can be added and removed from a DspSignalBus via public methods.*/
+
+class DLLEXPORT DspSignalBus
 {
 public:
 	virtual ~DspSignalBus();
 
 	bool AddSignal( std::string signalName = "" );
-	bool AddSignal( const DspSafePointer< DspSignal > signal );
+	bool AddSignal( const DspSignal* signal );
 
-	bool SetSignal( unsigned long signalIndex, const DspSafePointer< DspSignal > newSignal );
-	bool SetSignal( std::string signalName, const DspSafePointer< DspSignal > newSignal );
+	bool SetSignal( unsigned long signalIndex, const DspSignal* newSignal );
+	bool SetSignal( std::string signalName, const DspSignal* newSignal );
 
-	DspSafePointer< DspSignal > GetSignal( unsigned long signalIndex );
-	DspSafePointer< DspSignal > GetSignal( std::string signalName );
+	DspSignal* GetSignal( unsigned long signalIndex );
+	DspSignal* GetSignal( std::string signalName );
 
 	bool FindSignal( std::string signalName, unsigned long& signalIndex ) const;
 
@@ -68,7 +75,7 @@ public:
 	void ClearValue( std::string signalName );
 
 private:
-	std::vector< DspSafePointer< DspSignal > > _signals;
+	std::vector< DspSignal* > _signals;
 };
 
 //=================================================================================================
@@ -76,8 +83,8 @@ private:
 template< class ValueType >
 bool DspSignalBus::SetValue( unsigned long signalIndex, const ValueType& newValue )
 {
-	DspSafePointer< DspSignal > signal = GetSignal( signalIndex );
-	if( signal.IsPointerValid() )
+	DspSignal* signal = GetSignal( signalIndex );
+	if( signal != NULL )
 	{
 		return signal->SetValue( newValue );
 	}
@@ -92,8 +99,8 @@ bool DspSignalBus::SetValue( unsigned long signalIndex, const ValueType& newValu
 template< class ValueType >
 bool DspSignalBus::SetValue( std::string signalName, const ValueType& newValue )
 {
-	DspSafePointer< DspSignal > signal = GetSignal( signalName );
-	if( signal.IsPointerValid() )
+	DspSignal* signal = GetSignal( signalName );
+	if( signal != NULL )
 	{
 		return signal->SetValue( newValue );
 	}
@@ -108,14 +115,14 @@ bool DspSignalBus::SetValue( std::string signalName, const ValueType& newValue )
 template< class ValueType >
 bool DspSignalBus::GetValue( unsigned long signalIndex, ValueType& returnValue ) const
 {
-	DspSafePointer< DspSignal > signal;
+	DspSignal* signal;
 
 	if( signalIndex < _signals.size() )
 	{
 		signal = _signals[signalIndex];
 	}
 
-	if( signal.IsPointerValid() )
+	if( signal != NULL )
 	{
 		return signal->GetValue( returnValue );
 	}
@@ -130,7 +137,7 @@ bool DspSignalBus::GetValue( unsigned long signalIndex, ValueType& returnValue )
 template< class ValueType >
 bool DspSignalBus::GetValue( std::string signalName, ValueType& returnValue ) const
 {
-	DspSafePointer< DspSignal > signal;
+	DspSignal* signal;
 	unsigned long signalIndex;
 
 	if( FindSignal( signalName, signalIndex ) )
@@ -138,7 +145,7 @@ bool DspSignalBus::GetValue( std::string signalName, ValueType& returnValue ) co
 		signal = _signals[signalIndex];
 	}
 
-	if( signal.IsPointerValid() )
+	if( signal != NULL )
 	{
 		return signal->GetValue( returnValue );
 	}

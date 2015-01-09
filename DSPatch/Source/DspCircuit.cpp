@@ -82,14 +82,19 @@ void DspCircuit::SetThreadCount( unsigned long threadCount )
 			_components[i]->DspComponent::SetThreadCount( threadCount );
 		}
 
+		// delete excess threads (if new thread count is less than current)
+		for( long i = GetThreadCount() - 1; i >= (long)threadCount; i-- )
+		{
+			delete _circuitThreads[i];
+		}
+
 		// resize local thread array
 		_circuitThreads.resize( threadCount );
 
 		// create excess threads (if new thread count is more than current)
 		for( unsigned long i = GetThreadCount(); i < threadCount; i++ )
 		{
-			_circuitThreads[i].New( _components, i );
-			_circuitThreads[i].LockPointer();
+			_circuitThreads[i] = new DspCircuitThread( _components, i );
 		}
 
 		// set the system's new thread count
@@ -169,8 +174,8 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 {
 	if( _circuitThreads.size() == 0 || GetThreadCount() == 0 )
 	{
-		DspSafePointer< DspWire > wire;
-		DspSafePointer< DspSignal > signal;
+		DspWire* wire;
+		DspSignal* signal;
 
 		// reset all internal components
 		for( unsigned long i = 0; i < _components.size(); i++ )
@@ -202,7 +207,6 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 	}
 	else
 	{
-		_circuitThreads[_currentThreadIndex]->Sync(); // sync with thread x
 		_circuitThreads[_currentThreadIndex]->Resume(); // resume thread x
 
 		if( ++_currentThreadIndex >= GetThreadCount() )	// shift to thread x+1
@@ -214,7 +218,7 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 
 //=================================================================================================
 
-bool DspCircuit::_FindComponent( DspSafePointer< DspComponent > component, unsigned long& returnIndex )
+bool DspCircuit::_FindComponent( DspComponent* component, unsigned long& returnIndex )
 {
 	for( unsigned long i = 0; i < _components.size(); i++ )
 	{
@@ -254,7 +258,7 @@ void DspCircuit::_DisconnectComponent( unsigned long componentIndex )
 	_components[ componentIndex ]->DisconnectInputs();
 
 	// remove component from _inToInWires
-	DspSafePointer< DspWire > wire;
+	DspWire* wire;
 	for( unsigned long i = 0; i < _inToInWires->GetWireCount(); i++ )
 	{
 		wire = _inToInWires->GetWire( i );
@@ -284,6 +288,8 @@ void DspCircuit::_RemoveComponent( unsigned long componentIndex )
 	PauseAutoTick();
 
 	_DisconnectComponent( componentIndex );
+
+	delete _components[componentIndex];
 
 	for( unsigned long i = componentIndex; i < ( _components.size() - 1 ); i++ )
 	{

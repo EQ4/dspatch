@@ -41,9 +41,7 @@ bool DspSignalBus::AddSignal( std::string signalName )
 		}
 	}
 
-	DspSafePointer< DspSignal > newSignal;
-	newSignal.New( signalName );
-	newSignal.LockPointer();
+	DspSignal* newSignal = new DspSignal( signalName );
 
 	_signals.push_back( newSignal );
 
@@ -52,15 +50,14 @@ bool DspSignalBus::AddSignal( std::string signalName )
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::AddSignal( const DspSafePointer< DspSignal > signal )
+bool DspSignalBus::AddSignal( const DspSignal* signal )
 {
-	if( signal.IsPointerValid() )
+	if( signal != NULL )
 	{
-		DspSafePointer< DspSignal > newSignal;
+		DspSignal* newSignal;
 		std::string signalName = signal->GetSignalName();
 
-		newSignal.New( signalName );
-		newSignal.LockPointer();
+		newSignal = new DspSignal( signalName );
 
 		newSignal->SetSignal( signal );
 		_signals.push_back( newSignal );
@@ -74,11 +71,11 @@ bool DspSignalBus::AddSignal( const DspSafePointer< DspSignal > signal )
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::SetSignal( unsigned long signalIndex, const DspSafePointer< DspSignal > newSignal )
+bool DspSignalBus::SetSignal( unsigned long signalIndex, const DspSignal* newSignal )
 {
-	DspSafePointer< DspSignal > signal = GetSignal( signalIndex );
+	DspSignal* signal = GetSignal( signalIndex );
 
-	if( signal.IsPointerValid() && newSignal.IsPointerValid() )
+	if( signal != NULL && newSignal != NULL )
 	{
 		return signal->SetSignal( newSignal );
 	}
@@ -90,11 +87,11 @@ bool DspSignalBus::SetSignal( unsigned long signalIndex, const DspSafePointer< D
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::SetSignal( std::string signalName, const DspSafePointer< DspSignal > newSignal )
+bool DspSignalBus::SetSignal( std::string signalName, const DspSignal* newSignal )
 {
-	DspSafePointer< DspSignal > signal = GetSignal( signalName );
+	DspSignal* signal = GetSignal( signalName );
 
-	if( signal.IsPointerValid() && newSignal.IsPointerValid() )
+	if( signal != NULL && newSignal != NULL )
 	{
 		return signal->SetSignal( newSignal );
 	}
@@ -106,7 +103,7 @@ bool DspSignalBus::SetSignal( std::string signalName, const DspSafePointer< DspS
 
 //-------------------------------------------------------------------------------------------------
 
-DspSafePointer< DspSignal > DspSignalBus::GetSignal( unsigned long signalIndex )
+DspSignal* DspSignalBus::GetSignal( unsigned long signalIndex )
 {
 	if( signalIndex < _signals.size() )
 	{
@@ -114,13 +111,13 @@ DspSafePointer< DspSignal > DspSignalBus::GetSignal( unsigned long signalIndex )
 	}
 	else
 	{
-		return DspSafePointer< DspSignal >();
+		return NULL;
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 
-DspSafePointer< DspSignal > DspSignalBus::GetSignal( std::string signalName )
+DspSignal* DspSignalBus::GetSignal( std::string signalName )
 {
 	unsigned long signalIndex;
 	if( FindSignal( signalName, signalIndex ) )
@@ -129,7 +126,7 @@ DspSafePointer< DspSignal > DspSignalBus::GetSignal( std::string signalName )
 	}
 	else
 	{
-		return DspSafePointer< DspSignal >();
+		return NULL;
 	}
 }
 
@@ -160,6 +157,11 @@ unsigned long DspSignalBus::GetSignalCount() const
 
 void DspSignalBus::RemoveAllSignals()
 {
+	for( unsigned long i = 0; i < _signals.size(); i++ )
+	{
+		delete _signals[i];
+	}
+
 	_signals.clear();
 }
 
@@ -167,9 +169,9 @@ void DspSignalBus::RemoveAllSignals()
 
 void DspSignalBus::ClearValue( unsigned long signalIndex )
 {
-	DspSafePointer< DspSignal > signal = GetSignal( signalIndex );
+	DspSignal* signal = GetSignal( signalIndex );
 
-	if( signal.IsPointerValid() )
+	if( signal != NULL )
 	{
 		return signal->ClearValue();
 	}
@@ -179,9 +181,9 @@ void DspSignalBus::ClearValue( unsigned long signalIndex )
 
 void DspSignalBus::ClearValue( std::string signalName )
 {
-	DspSafePointer< DspSignal > signal = GetSignal( signalName );
+	DspSignal* signal = GetSignal( signalName );
 
-	if( signal.IsPointerValid() )
+	if( signal != NULL )
 	{
 		return signal->ClearValue();
 	}

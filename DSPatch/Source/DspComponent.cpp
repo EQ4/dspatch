@@ -47,7 +47,7 @@ DspComponent::~DspComponent()
 
 //=================================================================================================
 
-bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, unsigned long toInput )
+bool DspComponent::ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput )
 {
 	if( toInput < this->GetInputCount() && fromOutput < inputComponent->GetOutputCount() )
 	{
@@ -64,7 +64,7 @@ bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, 
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, std::string toInput )
+bool DspComponent::ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput )
 {
 	unsigned long toInputIndex;
 
@@ -78,7 +78,7 @@ bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, 
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, unsigned long toInput )
+bool DspComponent::ConnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput )
 {
 	unsigned long fromOutputIndex;
 
@@ -92,7 +92,7 @@ bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, 
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, std::string toInput )
+bool DspComponent::ConnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput )
 {
 	unsigned long fromOutputIndex;
 	unsigned long toInputIndex;
@@ -108,7 +108,7 @@ bool DspComponent::ConnectInput( DspSafePointer< DspComponent > inputComponent, 
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, unsigned long toInput )
+void DspComponent::DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput )
 {
 	PauseAutoTick();
 	_inputWires.RemoveWire( inputComponent, fromOutput, toInput );
@@ -117,7 +117,7 @@ void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponen
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponent, unsigned long fromOutput, std::string toInput )
+void DspComponent::DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput )
 {
 	unsigned long toInputIndex;
 
@@ -129,7 +129,7 @@ void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponen
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, unsigned long toInput )
+void DspComponent::DisconnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput )
 {
 	unsigned long fromOutputIndex;
 
@@ -141,7 +141,7 @@ void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponen
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, std::string toInput )
+void DspComponent::DisconnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput )
 {
 	unsigned long fromOutputIndex;
 	unsigned long toInputIndex;
@@ -160,7 +160,7 @@ void DspComponent::DisconnectInput( unsigned long inputIndex )
 	PauseAutoTick();
 
 	// remove inputComponent from _inputWires
-	DspSafePointer< DspWire > wire;
+	DspWire* wire;
 	for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 	{
 		wire = _inputWires.GetWire( i );
@@ -188,12 +188,12 @@ void DspComponent::DisconnectInput( std::string inputName )
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponent )
+void DspComponent::DisconnectInput( DspComponent* inputComponent )
 {
 	PauseAutoTick();
 
 	// remove inputComponent from _inputWires
-	DspSafePointer< DspWire > wire;
+	DspWire* wire;
 	for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 	{
 		wire = _inputWires.GetWire( i );
@@ -226,7 +226,7 @@ void DspComponent::Tick()
 		_hasTicked = true;
 
 		// 2. get outputs required from input components
-		DspSafePointer< DspWire > wire;
+		DspWire* wire;
 		for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 		{
 			wire = _inputWires.GetWire( i );
@@ -321,7 +321,21 @@ void DspComponent::SetThreadCount( unsigned long threadCount )
 {
 	// _threadCount is the current thread count / _threadCount is new thread count
 
+	// delete excess _hasTickeds (if new thread count is less than current)
+	for( long i = GetThreadCount() - 1; i >= (long)threadCount; i-- )
+	{
+		delete _hasTickeds[i];
+	}
+
+	// resize local thread array
 	_hasTickeds.resize( threadCount );
+
+	// create excess _hasTickeds (if new thread count is more than current)
+	for( unsigned long i = GetThreadCount(); i < threadCount; i++ )
+	{
+		_hasTickeds[i] = new bool();
+	}
+
 	_inputBuses.resize( threadCount );
 	_outputBuses.resize( threadCount );
 
@@ -331,19 +345,19 @@ void DspComponent::SetThreadCount( unsigned long threadCount )
 
 	for( unsigned long i = _threadCount; i < threadCount; i++ )
 	{
-		_hasTickeds[i] = false;
+		*_hasTickeds[i] = false;
 		_gotReleases[i] = false;
 
 		for( unsigned long j = 0; j < _inputBus.GetSignalCount(); j++ )
 		{
-			DspSafePointer< DspSignal > variable;
+			DspSignal* variable;
 			variable = _inputBus.GetSignal( j );
 			_inputBuses[i].AddSignal( variable );
 		}
 
 		for( unsigned long j = 0; j < _outputBus.GetSignalCount(); j++ )
 		{
-			DspSafePointer< DspSignal > variable;
+			DspSignal* variable;
 			variable = _outputBus.GetSignal( j );
 			_outputBuses[i].AddSignal( variable );
 		}
@@ -369,13 +383,13 @@ unsigned long DspComponent::GetThreadCount()
 void DspComponent::ThreadTick( unsigned long threadNo )
 {
 	// continue only if this component has not already been ticked
-	if( _hasTickeds[threadNo] == false )
+	if( *_hasTickeds[threadNo] == false )
 	{
 		// 1. set _hasTicked flag
-		_hasTickeds[threadNo] = true;
+		*_hasTickeds[threadNo] = true;
 
 		// 2. get outputs required from input components
-		DspSafePointer< DspWire > wire;
+		DspWire* wire;
 		for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 		{
 			wire = _inputWires.GetWire( i );
@@ -411,33 +425,33 @@ void DspComponent::ThreadReset( unsigned long threadNo )
 	}
 
 	// reset _hasTicked flag
-	_hasTickeds[threadNo] = false;
+	*_hasTickeds[threadNo] = false;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::SetInputSignal( unsigned long inputIndex, const DspSafePointer< DspSignal > newSignal )
+bool DspComponent::SetInputSignal( unsigned long inputIndex, const DspSignal* newSignal )
 {
 	return _inputBus.SetSignal( inputIndex, newSignal );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::SetInputSignal( std::string inputName, const DspSafePointer< DspSignal > newSignal )
+bool DspComponent::SetInputSignal( std::string inputName, const DspSignal* newSignal )
 {
 	return _inputBus.SetSignal( inputName, newSignal );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-DspSafePointer< DspSignal > DspComponent::GetOutputSignal( unsigned long outputIndex )
+DspSignal* DspComponent::GetOutputSignal( unsigned long outputIndex )
 {
 	return _outputBus.GetSignal( outputIndex );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-DspSafePointer< DspSignal > DspComponent::GetOutputSignal( std::string outputName )
+DspSignal* DspComponent::GetOutputSignal( std::string outputName )
 {
 	return _outputBus.GetSignal( outputName );
 }
@@ -589,9 +603,9 @@ void DspComponent::_ReleaseThread( unsigned long threadNo )
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::_ProcessInputWire( DspSafePointer< DspWire > inputWire )
+void DspComponent::_ProcessInputWire( DspWire* inputWire )
 {
-	DspSafePointer< DspSignal > signal;
+	DspSignal* signal;
 	signal = inputWire->linkedComponent->_outputBus.GetSignal( inputWire->fromSignalIndex );
 
 	if( !_inputBus.SetSignal( inputWire->toSignalIndex, signal ) )
@@ -602,9 +616,9 @@ void DspComponent::_ProcessInputWire( DspSafePointer< DspWire > inputWire )
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::_ProcessInputWire( DspSafePointer< DspWire > inputWire, unsigned long threadNo )
+void DspComponent::_ProcessInputWire( DspWire* inputWire, unsigned long threadNo )
 {
-	DspSafePointer< DspSignal > signal;
+	DspSignal* signal;
 	signal = inputWire->linkedComponent->_outputBuses[threadNo].GetSignal( inputWire->fromSignalIndex );
 
 	if( !_inputBuses[threadNo].SetSignal( inputWire->toSignalIndex, signal ) )

@@ -35,12 +35,12 @@ DspWireBus::DspWireBus( bool isLinkedComponentReceivingSignals )
 
 DspWireBus::~DspWireBus()
 {
-	_wires.clear();
+	RemoveAllWires();
 }
 
 //=================================================================================================
 
-bool DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
+bool DspWireBus::AddWire( DspComponent* linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
 {
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
@@ -69,9 +69,7 @@ bool DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsign
 		}
 	}
 
-	DspSafePointer< DspWire > newWire;
-	newWire.New();
-	newWire.LockPointer();
+	DspWire* newWire = new DspWire();
 
 	newWire->linkedComponent = linkedComponent;
 	newWire->fromSignalIndex = fromSignalIndex;
@@ -83,7 +81,7 @@ bool DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsign
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspWireBus::RemoveWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
+bool DspWireBus::RemoveWire( DspComponent* linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
 {
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
@@ -108,6 +106,8 @@ bool DspWireBus::RemoveWire( unsigned long wireIndex )
 		return false;
 	}
 
+	delete _wires[wireIndex];
+
 	for( unsigned long j = wireIndex; j < ( _wires.size() - 1 ); j++ )
 	{
 		_wires[j] = _wires[j + 1];	// shift all other elements up
@@ -121,16 +121,19 @@ bool DspWireBus::RemoveWire( unsigned long wireIndex )
 
 void DspWireBus::RemoveAllWires()
 {
-	_wires.clear();
+	for( unsigned long i = 0; i < _wires.size(); i++ )
+	{
+		RemoveWire( i );
+	}
 }
 
 //-------------------------------------------------------------------------------------------------
 
-DspSafePointer< DspWire > DspWireBus::GetWire( unsigned long wireIndex )
+DspWire* DspWireBus::GetWire( unsigned long wireIndex )
 {
 	if( wireIndex > _wires.size() )
 	{
-		return DspSafePointer< DspWire >();
+		return NULL;
 	}
 	else
 	{
