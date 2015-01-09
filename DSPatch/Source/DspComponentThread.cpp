@@ -55,7 +55,7 @@ void DspComponentThread::Stop()
 	{
 		_pauseCondt.WakeAll();
 		_resumeCondt.WakeAll();
-		Sleep( 1 );
+		MsSleep( 1 );
 	}
 }
 

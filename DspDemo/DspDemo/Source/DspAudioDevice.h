@@ -43,7 +43,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef DSPAUDIODEVICE_H
 #define DSPAUDIODEVICE_H
 
-#include "DspCircuit.h"
+#include "DSPatch.h"
 
 typedef void PaStream;
 typedef unsigned long PaStreamCallbackFlags;

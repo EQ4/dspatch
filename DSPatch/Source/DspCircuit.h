@@ -41,7 +41,8 @@ public:
 	template< class ComponentType >
 	DspSafePointer< ComponentType > AddComponent( std::string componentName );
 
-	bool AddComponent( DspSafePointer< DspComponent >& component, std::string componentName = "" );
+	template< class ComponentType >
+	bool AddComponent( DspSafePointer< ComponentType >& component, std::string componentName = "" );
 
 	template< class ComponentType >
 	bool GetComponent( std::string componentName, DspSafePointer< ComponentType >& returnComponent );
@@ -99,11 +100,11 @@ protected:
 private:
 	std::vector< DspSafePointer< DspComponent > > _components;
 
-	DspWireBus _inToInWires;
-	DspWireBus _outToOutWires;
+	DspWireBus* _inToInWires;
+	DspWireBus* _outToOutWires;
 
-	bool _FindComponent( DspSafePointer< DspComponent > component, unsigned long& index );
-	bool _FindComponent( std::string componentName, unsigned long& index );
+	bool _FindComponent( DspSafePointer< DspComponent > component, unsigned long& returnIndex );
+	bool _FindComponent( std::string componentName, unsigned long& returnIndex );
 	void _DisconnectComponent( unsigned long componentIndex );
 	void _RemoveComponent( unsigned long componentIndex );
 
@@ -129,7 +130,7 @@ DspSafePointer< ComponentType > DspCircuit::AddComponent( std::string componentN
 	newComponent.LockPointer();
 
 	newComponent->SetComponentName( componentName );
-	newComponent->SetThreadCount( _threadCount );
+	newComponent->SetThreadCount( GetThreadCount() );
 
 	PauseAutoTick();
 
@@ -138,6 +139,41 @@ DspSafePointer< ComponentType > DspCircuit::AddComponent( std::string componentN
 	ResumeAutoTick();
 
 	return _components[_components.size() - 1];
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class ComponentType >
+bool DspCircuit::AddComponent( DspSafePointer< ComponentType >& component, std::string componentName )
+{
+	if( componentName == "" && component->GetComponentName() == "" )
+	{
+		return false;	// a component can't be added to the circuit without a name
+	}
+
+	unsigned long componentIndex;
+
+	if( _FindComponent( component, componentIndex ) )
+	{
+		return false;	// if the component is already in the array
+	}
+	if( _FindComponent( component->GetComponentName(), componentIndex ) )
+	{
+		return false;	// if the component name is already in the array
+	}
+
+	component->SetComponentName( componentName );
+	component->SetThreadCount( GetThreadCount() );
+
+	component.LockPointer();	// lock the pointer so that it can't be re-newed
+
+	PauseAutoTick();
+
+	_components.push_back( component );
+
+	ResumeAutoTick();
+
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -36,7 +36,7 @@ public:
 	template< typename ValueType >
 	DspRunType( const ValueType& value )
 	{
-		_content = new _DspHolder< ValueType >( value );
+		_content = new _DspRtValue< ValueType >( value );
 	}
 
 	DspRunType( const DspRunType& other )
@@ -99,7 +99,7 @@ public:
 	{
 		if( operand != NULL && operand->GetType() == typeid( ValueType ) )
 		{
-			return &static_cast< DspRunType::_DspHolder< ValueType >* >( operand->_content )->held;
+			return &static_cast< DspRunType::_DspRtValue< ValueType >* >( operand->_content )->held;
 		}
 		else
 		{
@@ -114,21 +114,21 @@ public:
 	}
 
 private:
-	class _DspPlaceHolder
+	class _DspRtValueHolder
 	{
 	public:
-		virtual ~_DspPlaceHolder() {}
+		virtual ~_DspRtValueHolder() {}
 
 	public:
 		virtual const std::type_info& GetType() const = 0;
-		virtual _DspPlaceHolder* Clone() const = 0;
+		virtual _DspRtValueHolder* Clone() const = 0;
 	};
 
 	template< typename ValueType >
-	class _DspHolder : public _DspPlaceHolder
+	class _DspRtValue : public _DspRtValueHolder
 	{
 	public:
-		_DspHolder( const ValueType& value )
+		_DspRtValue( const ValueType& value )
 		: held( value ) {}
 
 	public:
@@ -137,20 +137,20 @@ private:
 			return typeid( ValueType );
 		}
 
-		virtual _DspPlaceHolder* Clone() const
+		virtual _DspRtValueHolder* Clone() const
 		{
-			return new _DspHolder( held );
+			return new _DspRtValue( held );
 		}
 
 	public:
 		ValueType held;
 
 	private:
-		_DspHolder& operator=( const _DspHolder& );	// disable copy-assignment
+		_DspRtValue& operator=( const _DspRtValue& );	// disable copy-assignment
 	};
 
 private:
-	_DspPlaceHolder* _content;
+	_DspRtValueHolder* _content;
 };
 
 //=================================================================================================

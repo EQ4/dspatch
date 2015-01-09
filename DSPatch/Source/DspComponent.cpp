@@ -275,8 +275,6 @@ void DspComponent::ResumeAutoTick()
 
 void DspComponent::SetThreadCount( unsigned long threadCount )
 {
-	PauseAutoTick();
-
 	// _threadCount is the current thread count / _threadCount is new thread count
 
 	_hasTickeds.resize( threadCount );
@@ -313,8 +311,13 @@ void DspComponent::SetThreadCount( unsigned long threadCount )
 	}
 
 	_threadCount = threadCount;
-	
-	ResumeAutoTick();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+unsigned long DspComponent::GetThreadCount()
+{
+	return _threadCount;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -370,9 +373,23 @@ bool DspComponent::SetInputSignal( unsigned long inputIndex, const DspSafePointe
 
 //-------------------------------------------------------------------------------------------------
 
+bool DspComponent::SetInputSignal( std::string inputName, const DspSafePointer< DspSignal >& newSignal )
+{
+	return _inputBus.SetSignal( inputName, newSignal );
+}
+
+//-------------------------------------------------------------------------------------------------
+
 bool DspComponent::GetOutputSignal( unsigned long outputIndex, DspSafePointer< DspSignal >& returnSignal )
 {
 	return _outputBus.GetSignal( outputIndex, returnSignal );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::GetOutputSignal( std::string outputName, DspSafePointer< DspSignal >& returnSignal )
+{
+	return _outputBus.GetSignal( outputName, returnSignal );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -410,16 +427,16 @@ std::string DspComponent::GetComponentName()
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::FindInput( std::string signalName, unsigned long& inputIndex ) const
+bool DspComponent::FindInput( std::string signalName, unsigned long& returnIndex ) const
 {
-	return _inputBus.FindSignal( signalName, inputIndex );
+	return _inputBus.FindSignal( signalName, returnIndex );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::FindOutput( std::string signalName, unsigned long& outputIndex ) const
+bool DspComponent::FindOutput( std::string signalName, unsigned long& returnIndex ) const
 {
-	return _outputBus.FindSignal( signalName, outputIndex );
+	return _outputBus.FindSignal( signalName, returnIndex );
 }
 
 //=================================================================================================
@@ -467,6 +484,20 @@ void DspComponent::ClearOutputs_()
 }
 
 //-------------------------------------------------------------------------------------------------
+
+bool DspComponent::SetOutputSignal_( unsigned long outputIndex, const DspSafePointer< DspSignal >& newSignal )
+{
+	return _outputBus.SetSignal( outputIndex, newSignal );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::GetInputSignal_( unsigned long inputIndex, DspSafePointer< DspSignal >& returnSignal )
+{
+	return _inputBus.GetSignal( inputIndex, returnSignal );
+}
+
+//=================================================================================================
 
 void DspComponent::_WaitForRelease( unsigned long threadNo )
 {

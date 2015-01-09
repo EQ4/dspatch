@@ -23,6 +23,11 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 
 //=================================================================================================
 
+DspWireBus::DspWireBus( bool isLinkedComponentReceivingSignals )
+: _isLinkedComponentReceivingSignals( isLinkedComponentReceivingSignals ) {}
+
+//-------------------------------------------------------------------------------------------------
+
 DspWireBus::~DspWireBus()
 {
 	_wires.clear();
@@ -44,7 +49,15 @@ void DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent,	unsign
 
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
-		if( _wires[i]->toSignalIndex == toSignalIndex )	// if there's a wire to this input already
+		if( _isLinkedComponentReceivingSignals &&
+			_wires[i]->linkedComponent == linkedComponent &&
+			_wires[i]->toSignalIndex == toSignalIndex )	// if there's a wire to the receiving component's input already
+		{
+			RemoveWire( i );	// remove the wire (only one wire can connect to an input at a time)
+			break;
+		}
+		else if( !_isLinkedComponentReceivingSignals &&
+			_wires[i]->toSignalIndex == toSignalIndex )
 		{
 			RemoveWire( i );	// remove the wire (only one wire can connect to an input at a time)
 			break;

@@ -22,7 +22,7 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 
 //-------------------------------------------------------------------------------------------------
 
-#include "DspThreadWin.h"
+#include "DspThread.h"
 
 class DspComponent;
 

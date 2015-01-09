@@ -58,6 +58,7 @@ public:
 	virtual void ResumeAutoTick();
 
 	virtual void SetThreadCount( unsigned long threadCount );
+	unsigned long GetThreadCount();
 
 	void ThreadTick( unsigned long threadNo );
 	void ThreadReset( unsigned long threadNo );
@@ -69,10 +70,18 @@ public:
 	bool SetInputValue( unsigned long inputIndex, const ValueType& newValue );
 
 	template< class ValueType >
+	bool SetInputValue( std::string inputName, const ValueType& newValue );
+
+	template< class ValueType >
 	bool GetOutputValue( unsigned long outputIndex, ValueType& returnValue );
 
+	template< class ValueType >
+	bool GetOutputValue( std::string outputName, ValueType& returnValue );
+
 	bool SetInputSignal( unsigned long inputIndex, const DspSafePointer< DspSignal >& newSignal );
+	bool SetInputSignal( std::string inputName, const DspSafePointer< DspSignal >& newSignal );
 	bool GetOutputSignal( unsigned long outputIndex, DspSafePointer< DspSignal >& returnSignal );
+	bool GetOutputSignal( std::string outputName, DspSafePointer< DspSignal >& returnSignal );
 
 	// currently only works with non-threaded ticking (_threadCount = 0)
 	// -----------------------------------------------------------------
@@ -83,18 +92,10 @@ public:
 	bool SetComponentName( std::string componentName );
 	std::string GetComponentName();
 
-	bool FindInput( std::string signalName, unsigned long& inputIndex ) const;
-	bool FindOutput( std::string signalName, unsigned long& outputIndex ) const;
+	bool FindInput( std::string signalName, unsigned long& returnIndex ) const;
+	bool FindOutput( std::string signalName, unsigned long& returnIndex ) const;
 
 protected:
-	unsigned long _threadCount;
-
-	DspSignalBus _inputBus;
-	DspSignalBus _outputBus;
-
-	std::vector< DspSignalBus > _inputBuses;
-	std::vector< DspSignalBus > _outputBuses;
-
 	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs ) = 0;
 
 	bool AddInput_( std::string inputName = "" );
@@ -103,17 +104,26 @@ protected:
 	void ClearInputs_();
 	void ClearOutputs_();
 
+	bool SetOutputSignal_( unsigned long outputIndex, const DspSafePointer< DspSignal >& newSignal );
+	bool GetInputSignal_( unsigned long inputIndex, DspSafePointer< DspSignal >& returnSignal );
+
 private:
+	unsigned long _threadCount;
+
+	DspSignalBus _inputBus;
+	DspSignalBus _outputBus;
+
+	std::vector< DspSignalBus > _inputBuses;
+	std::vector< DspSignalBus > _outputBuses;
+
 	std::string _componentName;
 	bool _isAutoTickRunning;
 	bool _isAutoTickPaused;
 
 	DspWireBus _inputWires;
 
-	// Tick members
 	bool _hasTicked;
 
-	// ThreadTick members
 	DspComponentThread* _componentThread;
 
 	std::vector< DspSafePointer< bool > > _hasTickeds;			// pointers ensure that parallel threads will only read from this vector
@@ -140,9 +150,25 @@ bool DspComponent::SetInputValue( unsigned long inputIndex, const ValueType& new
 //-------------------------------------------------------------------------------------------------
 
 template< class ValueType >
+bool DspComponent::SetInputValue( std::string inputName, const ValueType& newValue )
+{
+	return _inputBus.SetValue( inputName, newValue );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class ValueType >
 bool DspComponent::GetOutputValue( unsigned long outputIndex, ValueType& returnValue )
 {
 	return _outputBus.GetValue( outputIndex, returnValue );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class ValueType >
+bool DspComponent::GetOutputValue( std::string outputName, ValueType& returnValue )
+{
+	return _outputBus.GetValue( outputName, returnValue );
 }
 
 //=================================================================================================

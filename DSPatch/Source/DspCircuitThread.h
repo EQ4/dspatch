@@ -24,7 +24,7 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <vector>
 
-#include "DspThreadWin.h"
+#include "DspThread.h"
 #include "DspSafePointer.h"
 
 class DspComponent;

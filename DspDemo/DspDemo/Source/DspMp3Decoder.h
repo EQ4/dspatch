@@ -20,7 +20,7 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef DSPMP3DECODER_H
 #define DSPMP3DECODER_H
 
-#include "DspCircuit.h"
+#include "DSPatch.h"
 
 #ifndef __ssize_t_defined
 typedef unsigned long ssize_t;

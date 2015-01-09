@@ -34,6 +34,7 @@ struct DspWire;
 class DspWireBus
 {
 public:
+	DspWireBus( bool isLinkedComponentReceivingSignals = false );
 	virtual ~DspWireBus();
 
 	void AddWire( DspSafePointer< DspComponent > linkedComponent,	unsigned long fromSignalIndex, unsigned long toSignalIndex );
@@ -49,6 +50,7 @@ public:
 	unsigned long GetWireCount();
 
 private:
+	bool _isLinkedComponentReceivingSignals;
 	std::vector< DspSafePointer< DspWire > > _wires;
 };
 

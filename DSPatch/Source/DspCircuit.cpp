@@ -26,6 +26,8 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 DspCircuit::DspCircuit( unsigned long threadCount )
 : _currentThreadIndex( 0 )
 {
+	_inToInWires = new DspWireBus( true );
+	_outToOutWires = new DspWireBus( false );
 	SetThreadCount( threadCount );
 }
 
@@ -36,6 +38,8 @@ DspCircuit::~DspCircuit()
 	StopAutoTick();
 	RemoveAllComponents();
 	SetThreadCount( 0 );
+	delete _inToInWires;
+	delete _outToOutWires;
 }
 
 //=================================================================================================
@@ -53,7 +57,7 @@ void DspCircuit::PauseAutoTick()
 	}
 
 	// sync all threads
-	for( unsigned long i = 0; i < _threadCount; i++ )
+	for( unsigned long i = 0; i < GetThreadCount(); i++ )
 	{
 		_circuitThreads[i]->Sync();
 	}
@@ -63,7 +67,7 @@ void DspCircuit::PauseAutoTick()
 
 void DspCircuit::SetThreadCount( unsigned long threadCount )
 {
-	if( threadCount != _threadCount )
+	if( threadCount != GetThreadCount() )
 	{
 		PauseAutoTick();
 
@@ -77,7 +81,7 @@ void DspCircuit::SetThreadCount( unsigned long threadCount )
 		_circuitThreads.resize( threadCount );
 
 		// create excess threads (if new thread count is more than current)
-		for( unsigned long i = _threadCount; i < threadCount; i++ )
+		for( unsigned long i = GetThreadCount(); i < threadCount; i++ )
 		{
 			_circuitThreads[i].New( _components, i );
 			_circuitThreads[i].LockPointer();
@@ -88,40 +92,6 @@ void DspCircuit::SetThreadCount( unsigned long threadCount )
 
 		ResumeAutoTick();
 	}
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspCircuit::AddComponent( DspSafePointer< DspComponent >& component, std::string componentName )
-{
-	if( componentName == "" && component->GetComponentName() == "" )
-	{
-		return false;	// a component can't be added to the circuit without a name
-	}
-
-	unsigned long componentIndex;
-
-	if( _FindComponent( component, componentIndex ) )
-	{
-		return false;	// if the component is already in the array
-	}
-	if( _FindComponent( component->GetComponentName(), componentIndex ) )
-	{
-		return false;	// if the component name is already in the array
-	}
-
-	component->SetComponentName( componentName );
-	component->SetThreadCount( _threadCount );
-
-	component.LockPointer();	// lock the pointer so that it can't be re-newed
-
-	PauseAutoTick();
-
-	_components.push_back( component );
-
-	ResumeAutoTick();
-
-	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -240,16 +210,16 @@ bool DspCircuit::ConnectInToIn( unsigned long fromInput, std::string toComponent
 {
 	unsigned long toComponentIndex;
 
-	if( fromInput > GetInputCount() ||															// verify circuit input
+	if( fromInput >= GetInputCount() ||															// verify circuit input
 			!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
-			toInput > _components[toComponentIndex]->GetInputCount() )	// verify component input
+			toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
 	{
 		return false;
 	}
 
 	PauseAutoTick();
 
-	_inToInWires.AddWire( _components[toComponentIndex], fromInput, toInput );
+	_inToInWires->AddWire( _components[toComponentIndex], fromInput, toInput );
 
 	ResumeAutoTick();
 
@@ -263,7 +233,7 @@ bool DspCircuit::ConnectInToIn( unsigned long fromInput, std::string toComponent
 	unsigned long toComponentIndex;
 	unsigned long toInputIndex;
 
-	if( fromInput > GetInputCount() ||																				// verify circuit input
+	if( fromInput >= GetInputCount() ||																				// verify circuit input
 			!_FindComponent( toComponent, toComponentIndex ) ||										// verify component exists
 			!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )	// verify component exists
 	{
@@ -272,7 +242,7 @@ bool DspCircuit::ConnectInToIn( unsigned long fromInput, std::string toComponent
 
 	PauseAutoTick();
 
-	_inToInWires.AddWire( _components[toComponentIndex], fromInput, toInputIndex );
+	_inToInWires->AddWire( _components[toComponentIndex], fromInput, toInputIndex );
 
 	ResumeAutoTick();
 
@@ -288,14 +258,14 @@ bool DspCircuit::ConnectInToIn( std::string fromInput, std::string toComponent, 
 
 	if( !FindInput( fromInput, fromInputIndex ) ||									// verify circuit input
 			!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
-			toInput > _components[toComponentIndex]->GetInputCount() )	// verify component input
+			toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
 	{
 		return false;
 	}
 
 	PauseAutoTick();
 
-	_inToInWires.AddWire( _components[toComponentIndex], fromInputIndex, toInput );
+	_inToInWires->AddWire( _components[toComponentIndex], fromInputIndex, toInput );
 
 	ResumeAutoTick();
 
@@ -319,7 +289,7 @@ bool DspCircuit::ConnectInToIn( std::string fromInput, std::string toComponent, 
 
 	PauseAutoTick();
 
-	_inToInWires.AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
+	_inToInWires->AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
 
 	ResumeAutoTick();
 
@@ -333,15 +303,15 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, unsigned long fromO
 	unsigned long fromComponentIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||							// verify component exists
-			fromOutput > _components[fromComponentIndex]->GetOutputCount() ||		// verify component output
-			toOutput > GetOutputCount() )																				// verify circuit output
+			fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||		// verify component output
+			toOutput >= GetOutputCount() )																				// verify circuit output
 	{
 		return false;
 	}
 
 	PauseAutoTick();
 
-	_outToOutWires.AddWire( _components[fromComponentIndex], fromOutput, toOutput );
+	_outToOutWires->AddWire( _components[fromComponentIndex], fromOutput, toOutput );
 
 	ResumeAutoTick();
 
@@ -356,7 +326,7 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, unsigned long fromO
 	unsigned long toOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||							// verify component exists
-		fromOutput > _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
+		fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
 		!FindOutput( toOutput, toOutputIndex ) )															// verify circuit output
 	{
 		return false;
@@ -364,7 +334,7 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, unsigned long fromO
 
 	PauseAutoTick();
 
-	_outToOutWires.AddWire( _components[fromComponentIndex], fromOutput, toOutputIndex );
+	_outToOutWires->AddWire( _components[fromComponentIndex], fromOutput, toOutputIndex );
 
 	ResumeAutoTick();
 
@@ -379,15 +349,15 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, std::string fromOut
 	unsigned long fromOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||												// verify component exists
-		_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
-		toOutput > GetOutputCount() )																										// verify circuit output
+		!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
+		toOutput >= GetOutputCount() )																										// verify circuit output
 	{
 		return false;
 	}
 
 	PauseAutoTick();
 
-	_outToOutWires.AddWire( _components[fromComponentIndex], fromOutputIndex, toOutput );
+	_outToOutWires->AddWire( _components[fromComponentIndex], fromOutputIndex, toOutput );
 
 	ResumeAutoTick();
 
@@ -403,7 +373,7 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, std::string fromOut
 	unsigned long toOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||													// verify component exists
-			_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
+			!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
 			!FindOutput( toOutput, toOutputIndex ) )																				// verify circuit output
 	{
 		return false;
@@ -411,7 +381,7 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, std::string fromOut
 
 	PauseAutoTick();
 
-	_outToOutWires.AddWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
+	_outToOutWires->AddWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
 
 	ResumeAutoTick();
 
@@ -504,16 +474,16 @@ void DspCircuit::DisconnectInToIn( unsigned long fromInput, std::string toCompon
 {
 	unsigned long toComponentIndex;
 
-	if( fromInput > GetInputCount() ||														// verify circuit input
+	if( fromInput >= GetInputCount() ||														// verify circuit input
 		!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
-		toInput > _components[toComponentIndex]->GetInputCount() )	// verify component input
+		toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
 	{
 		return;
 	}
 
 	PauseAutoTick();
 
-	_inToInWires.RemoveWire( _components[toComponentIndex], fromInput, toInput );
+	_inToInWires->RemoveWire( _components[toComponentIndex], fromInput, toInput );
 
 	ResumeAutoTick();
 }
@@ -525,7 +495,7 @@ void DspCircuit::DisconnectInToIn( unsigned long fromInput, std::string toCompon
 	unsigned long toComponentIndex;
 	unsigned long toInputIndex;
 
-	if( fromInput > GetInputCount() ||																			// verify circuit input
+	if( fromInput >= GetInputCount() ||																			// verify circuit input
 		!_FindComponent( toComponent, toComponentIndex ) ||										// verify component exists
 		!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )	// verify component exists
 	{
@@ -534,7 +504,7 @@ void DspCircuit::DisconnectInToIn( unsigned long fromInput, std::string toCompon
 
 	PauseAutoTick();
 
-	_inToInWires.RemoveWire( _components[toComponentIndex], fromInput, toInputIndex );
+	_inToInWires->RemoveWire( _components[toComponentIndex], fromInput, toInputIndex );
 
 	ResumeAutoTick();
 }
@@ -548,14 +518,14 @@ void DspCircuit::DisconnectInToIn( std::string fromInput, std::string toComponen
 
 	if( !FindInput( fromInput, fromInputIndex ) ||								// verify circuit input
 		!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
-		toInput > _components[toComponentIndex]->GetInputCount() )	// verify component input
+		toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
 	{
 		return;
 	}
 
 	PauseAutoTick();
 
-	_inToInWires.RemoveWire( _components[toComponentIndex], fromInputIndex, toInput );
+	_inToInWires->RemoveWire( _components[toComponentIndex], fromInputIndex, toInput );
 
 	ResumeAutoTick();
 }
@@ -577,7 +547,7 @@ void DspCircuit::DisconnectInToIn( std::string fromInput, std::string toComponen
 
 	PauseAutoTick();
 
-	_inToInWires.RemoveWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
+	_inToInWires->RemoveWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
 
 	ResumeAutoTick();
 }
@@ -589,15 +559,15 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, unsigned long fr
 	unsigned long fromComponentIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||						// verify component exists
-		fromOutput > _components[fromComponentIndex]->GetOutputCount() ||		// verify component output
-		toOutput > GetOutputCount() )																				// verify circuit output
+		fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||		// verify component output
+		toOutput >= GetOutputCount() )																				// verify circuit output
 	{
 		return;
 	}
 
 	PauseAutoTick();
 
-	_outToOutWires.RemoveWire( _components[fromComponentIndex], fromOutput, toOutput );
+	_outToOutWires->RemoveWire( _components[fromComponentIndex], fromOutput, toOutput );
 
 	ResumeAutoTick();
 }
@@ -610,7 +580,7 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, unsigned long fr
 	unsigned long toOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||							// verify component exists
-		fromOutput > _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
+		fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
 		!FindOutput( toOutput, toOutputIndex ) )															// verify circuit output
 	{
 		return;
@@ -618,7 +588,7 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, unsigned long fr
 
 	PauseAutoTick();
 
-	_outToOutWires.RemoveWire( _components[fromComponentIndex], fromOutput, toOutputIndex );
+	_outToOutWires->RemoveWire( _components[fromComponentIndex], fromOutput, toOutputIndex );
 
 	ResumeAutoTick();
 }
@@ -631,15 +601,15 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, std::string from
 	unsigned long fromOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||												// verify component exists
-		_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
-		toOutput > GetOutputCount() )																										// verify circuit output
+		!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
+		toOutput >= GetOutputCount() )																										// verify circuit output
 	{
 		return;
 	}
 
 	PauseAutoTick();
 
-	_outToOutWires.RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutput );
+	_outToOutWires->RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutput );
 
 	ResumeAutoTick();
 }
@@ -653,7 +623,7 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, std::string from
 	unsigned long toOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||												// verify component exists
-		_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
+		!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
 		!FindOutput( toOutput, toOutputIndex ) )																				// verify circuit output
 	{
 		return;
@@ -661,7 +631,7 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, std::string from
 
 	PauseAutoTick();
 
-	_outToOutWires.RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
+	_outToOutWires->RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
 
 	ResumeAutoTick();
 }
@@ -712,16 +682,16 @@ void DspCircuit::ClearOutputs()
 
 void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 {
-	if( _threadCount == 0 )
+	if( GetThreadCount() == 0 )
 	{
 		DspSafePointer< DspWire > wire;
 		DspSafePointer< DspSignal > signal;
 
 		// set all internal component inputs from connected circuit inputs
-		for( unsigned long i = 0; i < _inToInWires.GetWireCount(); i++ )
+		for( unsigned long i = 0; i < _inToInWires->GetWireCount(); i++ )
 		{
-			_inToInWires.GetWire( i, wire );
-			_inputBus.GetSignal( wire->fromSignalIndex, signal );
+			_inToInWires->GetWire( i, wire );
+			GetInputSignal_( wire->fromSignalIndex, signal );
 			wire->linkedComponent->SetInputSignal( wire->toSignalIndex, signal );
 		}
 
@@ -737,35 +707,34 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 		}
 
 		// set all circuit outputs from connected internal component outputs
-		for( unsigned long i = 0; i < _outToOutWires.GetWireCount(); i++ )
+		for( unsigned long i = 0; i < _outToOutWires->GetWireCount(); i++ )
 		{
-			_outToOutWires.GetWire( i, wire );
+			_outToOutWires->GetWire( i, wire );
 			wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex, signal );
-			_outputBus.SetSignal( wire->toSignalIndex, signal );
+			SetOutputSignal_( wire->toSignalIndex, signal );
 		}
 	}
 	else
 	{
+		_circuitThreads[_currentThreadIndex]->Sync();
 		_circuitThreads[_currentThreadIndex++]->Resume();
 
-		if( _currentThreadIndex >= _threadCount )
+		if( _currentThreadIndex >= GetThreadCount() )
 		{
 			_currentThreadIndex = 0;
 		}
-
-		_circuitThreads[_currentThreadIndex]->Sync();
 	}
 }
 
 //=================================================================================================
 
-bool DspCircuit::_FindComponent( DspSafePointer< DspComponent > component, unsigned long& index )
+bool DspCircuit::_FindComponent( DspSafePointer< DspComponent > component, unsigned long& returnIndex )
 {
 	for( unsigned long i = 0; i < _components.size(); i++ )
 	{
 		if( _components[i] == component )
 		{
-			index = i;
+			returnIndex = i;
 			return true;
 		}
 	}
@@ -775,13 +744,13 @@ bool DspCircuit::_FindComponent( DspSafePointer< DspComponent > component, unsig
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspCircuit::_FindComponent( std::string componentName, unsigned long& index )
+bool DspCircuit::_FindComponent( std::string componentName, unsigned long& returnIndex )
 {
 	for( unsigned long i = 0; i < _components.size(); i++ )
 	{
 		if( _components[i]->GetComponentName() != "" && _components[i]->GetComponentName() == componentName )
 		{
-			index = i;
+			returnIndex = i;
 			return true;
 		}
 	}
@@ -800,22 +769,22 @@ void DspCircuit::_DisconnectComponent( unsigned long componentIndex )
 
 	// remove component from _inToInWires
 	DspSafePointer< DspWire > wire;
-	for( unsigned long i = 0; i < _inToInWires.GetWireCount(); i++ )
+	for( unsigned long i = 0; i < _inToInWires->GetWireCount(); i++ )
 	{
-		_inToInWires.GetWire( i, wire );
+		_inToInWires->GetWire( i, wire );
 		if( wire->linkedComponent == _components[ componentIndex ] )
 		{
-			_inToInWires.RemoveWire( i );
+			_inToInWires->RemoveWire( i );
 		}
 	}
 
 	// remove component from _outToOutWires
-	for( unsigned long i = 0; i < _outToOutWires.GetWireCount(); i++ )
+	for( unsigned long i = 0; i < _outToOutWires->GetWireCount(); i++ )
 	{
-		_outToOutWires.GetWire( i, wire );
+		_outToOutWires->GetWire( i, wire );
 		if( wire->linkedComponent == _components[ componentIndex ] )
 		{
-			_outToOutWires.RemoveWire( i );
+			_outToOutWires->RemoveWire( i );
 		}
 	}
 

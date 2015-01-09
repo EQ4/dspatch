@@ -169,10 +169,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Source\DspThreadWin.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Source\DspWireBus.cpp"
 				>
 			</File>
@@ -215,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source\DspThread.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source\DspThreadWin.h"
 				>
 			</File>
@@ -228,10 +228,14 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
+			Name="Include Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\Include\DSPatch.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

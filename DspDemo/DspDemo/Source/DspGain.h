@@ -20,7 +20,7 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef DSPGAIN_H
 #define DSPGAIN_H
 
-#include "DspCircuit.h"
+#include "DSPatch.h"
 
 //=================================================================================================
 

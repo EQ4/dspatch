@@ -30,16 +30,27 @@ class DspThread
 {
 private:
 
-	static DWORD WINAPI _ThreadFunc( LPVOID pv );
+	static DWORD WINAPI _ThreadFunc( LPVOID pv )
+	{
+		( reinterpret_cast<DspThread*>( pv ) )->_Run();
+		return 0;
+	}
 
 	virtual void _Run() = 0;
 
 	HANDLE _threadHandle;
 
 public:
-	DspThread();
-	DspThread( const DspThread& );
-	virtual ~DspThread();
+	DspThread()
+	: _threadHandle( NULL ) {}
+
+	DspThread( const DspThread& )
+	: _threadHandle( NULL ) {}
+
+	virtual ~DspThread()
+	{
+		CloseHandle( _threadHandle );
+	}
 
 	enum Priority
 	{
@@ -54,11 +65,23 @@ public:
 		TimeCriticalPriority = 15,
 	};
 
-	virtual void Start( Priority priority = NormalPriority );
+	virtual void Start( Priority priority = NormalPriority )
+	{
+		DWORD threadId;
+		_threadHandle = CreateThread( NULL, 0, _ThreadFunc, this, CREATE_SUSPENDED, &threadId );
+		SetThreadPriority( _threadHandle, priority );
+		ResumeThread( _threadHandle );
+	}
 
-	static void SetPriority( Priority priority );
+	static void SetPriority( Priority priority )
+	{
+		SetThreadPriority( GetCurrentThread(), priority );
+	}
 
-	static void MsSleep( unsigned long milliseconds );
+	static void MsSleep( unsigned long milliseconds )
+	{
+		Sleep( milliseconds );
+	}
 };
 
 //=================================================================================================
@@ -71,13 +94,30 @@ private:
 
 public:
 
-	DspMutex();
-	DspMutex( const DspMutex& );
-	virtual ~DspMutex();
+	DspMutex()
+	{
+		InitializeCriticalSection( &_cs );
+	}
 
-	void Lock();
+	DspMutex( const DspMutex& )
+	{
+		InitializeCriticalSection( &_cs );
+	}
 
-	void Unlock();
+	virtual ~DspMutex()
+	{
+		DeleteCriticalSection( &_cs );
+	}
+
+	void Lock()
+	{
+		EnterCriticalSection( &_cs );
+	}
+
+	void Unlock()
+	{
+		LeaveCriticalSection( &_cs );
+	}
 };
 
 //=================================================================================================
@@ -90,13 +130,36 @@ private:
 
 public:
 
-	DspWaitCondition();
-	DspWaitCondition( const DspWaitCondition& );
-	virtual ~DspWaitCondition();
+	DspWaitCondition()
+	{
+		_hEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
+	}
 
-	void Wait( DspMutex& mutex );
+	DspWaitCondition( const DspWaitCondition& )
+	{
+		_hEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
+	}
 
-	void WakeAll();
+	virtual ~DspWaitCondition()
+	{
+		CloseHandle( _hEvent );
+	}
+
+	void Wait( DspMutex& mutex )
+	{
+		ResetEvent( _hEvent );
+
+		mutex.Unlock();
+
+		WaitForSingleObject( _hEvent, INFINITE );
+
+		mutex.Lock();
+	}
+
+	void WakeAll()
+	{
+		SetEvent( _hEvent );
+	}
 };
 
 //=================================================================================================

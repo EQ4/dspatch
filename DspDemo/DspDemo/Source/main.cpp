@@ -17,10 +17,12 @@ You should have received a copy of the GNU General Public License
 along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#include "DspCircuit.h"
+#include "DSPatch.h"
 #include "DspMp3Decoder.h"
 #include "DspGain.h"
 #include "DspAudioDevice.h"
+#include "DspOscillator.h"
+#include "DspAdder.h"
 
 #include <iostream>
 
@@ -28,12 +30,19 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 #define AUDIODEVICE "Audio Device"
 #define GAINCH1 "Gain Channel 1"
 #define GAINCH2 "Gain Channel 2"
+#define ADDERCH1 "Adder Channel 1"
+#define ADDERCH2 "Adder Channel 2"
+#define OSCILLATOR "Oscillator"
 
 /*-----------------------------------------------------------------------------------------------------*/
-/** This is a simple program that streams an mp3 out of an audio device. */
+// This is a simple program that streams an mp3 out of an audio device,
+// then overlays a 1KHz oscillator when a key is pressed.
 
-int main()
+void main()
 {
+	// 1. Stream MP3
+	// =============
+
 	DspCircuit circuit;
 
 	DspSafePointer< DspMp3Decoder > mp3Decoder;
@@ -48,6 +57,8 @@ int main()
 	gainCh1 = circuit.AddComponent< DspGain >( GAINCH1 );
 	gainCh2 = circuit.AddComponent< DspGain >( GAINCH2 );
 
+	circuit.ConnectOutToIn( MP3DECODER, "Sample Rate", AUDIODEVICE, "Sample Rate" );	// sample rate sync
+
 	circuit.ConnectOutToIn( MP3DECODER, 0, GAINCH1, 0 );
 	circuit.ConnectOutToIn( MP3DECODER, 1, GAINCH2, 0 );
 	circuit.ConnectOutToIn( GAINCH1, 0, AUDIODEVICE, 0 );
@@ -59,9 +70,33 @@ int main()
 	mp3Decoder->LoadFile( "../05 Tchaikovski-Swan Lake-Scene.mp3" );
 	mp3Decoder->Play();
 
-	getchar();													//wait for key press
+	getchar();	//wait for key press
 
-	return 0;
+	// 2. Overlay oscillator
+	// =====================
+
+	// A component input pin can only receive one signal at a time so an adders are required to combine the signals
+
+	DspSafePointer< DspOscillator > oscillator;
+	float oscFreq = 1000.0f;
+	float oscAmpl = 0.1f;
+	oscillator.New( oscFreq, oscAmpl );
+
+	circuit.AddComponent( oscillator, OSCILLATOR );
+	circuit.AddComponent< DspAdder >( ADDERCH1 );
+	circuit.AddComponent< DspAdder >( ADDERCH2 );
+
+	circuit.ConnectOutToIn( MP3DECODER, "Sample Rate", OSCILLATOR, "Sample Rate" );	// sample rate sync
+
+	circuit.ConnectOutToIn( MP3DECODER, 0, ADDERCH1, 0 );
+	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDERCH1, 1 );
+	circuit.ConnectOutToIn( ADDERCH1, 0, AUDIODEVICE, 0 );
+
+	circuit.ConnectOutToIn( MP3DECODER, 1, ADDERCH2, 0 );
+	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDERCH2, 1 );
+	circuit.ConnectOutToIn( ADDERCH2, 0, AUDIODEVICE, 1 );
+
+	getchar();	//wait for key press
 }
 
 /*-----------------------------------------------------------------------------------------------------*/

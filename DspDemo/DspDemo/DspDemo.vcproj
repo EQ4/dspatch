@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../DSPatch/Source"
+				AdditionalIncludeDirectories="../../DSPatch/Include"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -115,7 +115,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../DSPatch/Source"
+				AdditionalIncludeDirectories="../../DSPatch/Include"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -177,10 +177,12 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="Component Files"
 			>
+			<File
+				RelativePath=".\Source\DspAdder.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Source\DspAudioDevice.h"
 				>
@@ -191,6 +193,14 @@
 			</File>
 			<File
 				RelativePath=".\Source\DspMp3Decoder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Source\DspOscillator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source\DspOscillator.h"
 				>
 			</File>
 		</Filter>
