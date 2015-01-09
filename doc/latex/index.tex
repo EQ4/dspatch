@@ -1,0 +1,249 @@
+\section{Introduction}\label{index_intro_sec}
+D\-S\-Patch, pronounced \char`\"{}dispatch\char`\"{}, is a powerful C++ flow-\/based programming library that allows you to create and route (or \char`\"{}patch\char`\"{}) high performance signal processing circuits. D\-S\-Patch is not limited to any particular type of circuit or signal, its generic object-\/oriented A\-P\-I allows you to create almost any process chain imaginable, from simple logic circuits to full-\/blown electronics simulation. D\-S\-Patch's simple framework makes development quick and easy, allowing you to hit the ground running on every project.
+
+The two most important classes to consider are \doxyref{Dsp\-Component}{p.}{class_dsp_component} and \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}. In order to route data to and from Dsp\-Components they can either be added to an \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}, where they can be wired together (recommended), or they can be wired directly via public \doxyref{Dsp\-Component}{p.}{class_dsp_component} methods. The D\-S\-Patch engine takes care of all data transfer between interconnected components, when data is ready for a component to process, a callback\-: \char`\"{}\-Process\-\_\-()\char`\"{} is executed in that component. For a component to form part of the D\-S\-Patch framework, designers simply have to derive their component from the \doxyref{Dsp\-Component}{p.}{class_dsp_component} base class, configure the component I\-O in the component constructor, and implement the virtual Process\-\_\-() callback method.
+
+For more detail on how D\-S\-Patch works, check out the {\tt {\bfseries D\-S\-Patch Design Specification}}.
+
+\par
+\section{Features}\label{index_features_sec}
+
+\begin{DoxyItemize}
+\item Automatic branch synchronization.
+\item Dynamic thread count adjustment.
+\item Easy-\/to-\/use object-\/oriented A\-P\-I.
+\item Feedback loops.
+\item High performance parallel processing.
+\item Integrated circuits.
+\item Non-\/threaded platform support.
+\item Run-\/time circuit wiring.
+\item Run-\/time adaptive signal types.
+\end{DoxyItemize}
+
+\par
+\section{Getting Started}\label{index_install_sec}
+\subsection{Step 1\-: Download D\-S\-Patch}\label{index_step1}
+The D\-S\-Patch library can be downloaded from the {\tt {\bfseries Source\-Forge project page}}. Download the project archive and extract the contents anywhere you like.\subsection{Step 2\-: Read the Tutorials}\label{index_step2}
+The \char`\"{}\-Tutorials\char`\"{} section (below) covers 2 vital aspects to developing with D\-S\-Patch\-:
+\begin{DoxyEnumerate}
+\item Creating a \doxyref{Dsp\-Component}{p.}{class_dsp_component} -\/ This tutorial is a start to finish demonstration of how to create a D\-S\-Patch component.
+\item Building a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} -\/ In this tutorial you will learn how to use the D\-S\-Patch framework to interconnect and process \doxyref{Dsp\-Component}{p.}{class_dsp_component} networks using the \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} interface.
+\end{DoxyEnumerate}\subsection{Step 3\-: Check out the Dsp\-Demo project}\label{index_step3}
+In the \char`\"{}example\char`\"{} folder (in the D\-S\-Patch root directory) you will find a simple D\-S\-Patch example project\-: \char`\"{}\-Dsp\-Demo\char`\"{}. This project has been written to assist developers in understanding the D\-S\-Patch A\-P\-I as well as to demonstrate how it could be used to build a real-\/time audio process chain. The quickest way to get this project compiled and running is to simply open the \char`\"{}dspdemo.\-sln\char`\"{} (Windows) or \char`\"{}dspdemo.\-xcodeproj\char`\"{} (Mac O\-S X) file (found in the \char`\"{}/example/windows\char`\"{}, and \char`\"{}/example/mac\-\_\-os\-\_\-x\char`\"{} directories respectively) depending on the platform used -\/\-This solution contains both the D\-S\-Patch library and Dsp\-Demo project side-\/by-\/side as would be typical in developing a D\-S\-Patch application.\subsection{Step 4\-: Make your own Dsp\-Components}\label{index_step4}
+A fast way to create your own \doxyref{Dsp\-Component}{p.}{class_dsp_component} could be to copy an existing component to another destination, rename it, and edit the contents to satisfy your component's required behavior. In the \char`\"{}example\char`\"{} folder (from Step 3) you will find 2 source files\-: \char`\"{}\-Dsp\-Adder.\-h\char`\"{} and \char`\"{}\-Dsp\-Adder.\-cpp\char`\"{}. These files make up a very simple \doxyref{Dsp\-Component}{p.}{class_dsp_component} that receives 2 floating-\/point buffers into it's 2 inputs, adds each buffer element of the 1st buffer to the corresponding element of the 2nd buffer, then passes the resultant buffer to the output. Alternatively, you could just copy / reference the source code from the \char`\"{}\-Creating a Dsp\-Component\char`\"{} tutorial (found under the \char`\"{}tutorial\char`\"{} folder in the root directory).\subsection{Step 5\-: Roll your own D\-S\-Patch projects}\label{index_step5}
+As D\-S\-Patch is not reliant on any non-\/standard 3rd party sources, getting a D\-S\-Patch project to compile and run is relatively painless. All you need to do from your project is \#include \char`\"{}\-D\-S\-Patch.\-h\char`\"{} from the \char`\"{}include\char`\"{} folder (in the D\-S\-Patch root directory), and link to the D\-S\-Patch library (either by including all D\-S\-Patch source or by linking to a compiled library file). To speed things up you may want to copy, rename, and edit the Dsp\-Demo project from step 3 to get up and running faster.\subsection{Step 6\-: Refer to the documentation}\label{index_step6}
+Between the Dsp\-Demo project, the Dsp\-Adder component template, and the documentation found here, you should have enough resources to get started with D\-S\-Patch straight away. If you have any questions or wish to report a bug, feel free to email me at {\tt marcus@adaptaudio.\-com}.
+
+\par
+\section{Tutorials}\label{index_tutorial_sec}
+\subsection{1. Creating a Dsp\-Component}\label{index_create_component}
+In order to create a new \doxyref{Dsp\-Component}{p.}{class_dsp_component}, we must derive our component class from the \doxyref{Dsp\-Component}{p.}{class_dsp_component} base class, configure component I\-O, and implement the inherited pure virtual \char`\"{}\-Process\-\_\-()\char`\"{} method.
+
+Lets take a look at how we would go about creating a boolean logic \char`\"{}\-A\-N\-D\char`\"{} component. This component will accept 2 boolean input values and output the result of\-: input 1 \&\& input 2.
+
+We begin by deriving our new \char`\"{}\-Dsp\-And\char`\"{} component from \doxyref{Dsp\-Component}{p.}{class_dsp_component}\-:
+
+
+\begin{DoxyCode}
+class DspAnd : public DspComponent
+{
+\end{DoxyCode}
+
+
+The next step is to configure our component's input and output buses. This is achieved by calling the base protected methods Add\-Input\-\_\-() and Add\-Output\-\_\-() respectively from our component's constructor. Each method must be called once per input / output required. In our component's case, we require 2 inputs and 1 output, therefore our constructor code will look like this\-:
+
+
+\begin{DoxyCode}
+public:
+        DspAnd()
+        {
+                // add 2 inputs
+                AddInput_( "input1" );
+                AddInput_( "input2" );
+
+                // add 1 output
+                AddOutput_( "output" );
+        }
+\end{DoxyCode}
+
+
+The string values passed into the Add\-Input\-\_\-() and Add\-Output\-\_\-() method calls are signal names / I\-Ds. As component I\-O can be referenced by either string I\-D or index, I\-O signal names are optional. If we do not require a signal to have a string I\-D associated with it, we can simply leave the parenthesis empty.
+
+Lastly, our component must implement the \doxyref{Dsp\-Component}{p.}{class_dsp_component} pure virtual Process\-\_\-() method. This is where our component does it's work. The Process\-\_\-() method provides us with 2 parameters\-: the input bus and the output bus. It is our duty as the component designer to pull the inputs we require out of the input bus, process them accordingly, and populate the output bus with the results. Our component's process method will look something like this\-:
+
+
+\begin{DoxyCode}
+protected:
+        virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
+        {
+                // create local stack variables to hold input values
+                bool state1 = false;
+                bool state2 = false;
+
+                // get values from inputs bus ( GetValue() returns true if
+       successful )
+                if( inputs.GetValue( "input1", state1 ) &&  // equivalent:
+       inputs.GetValue( 0, state1 );
+                    inputs.GetValue( "input2", state2 ) )   // equivalent:
+       inputs.GetValue( 1, state2 );
+                {
+                        // set output as the result of state1 AND state2
+                        outputs.SetValue( "output", state1 && state2 ); //
+       equivalent: outputs.SetValue( 0, state1 && state2 );
+                }
+        }
+};
+\end{DoxyCode}
+
+
+And that's it! Our component is now ready to form part of the D\-S\-Patch framework. Next we'll look at how we can add our component to a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} and route it to and from other Dsp\-Components.
+
+\par
+\subsection{2. Building a Dsp\-Circuit}\label{index_use_component}
+In order for us to get any real use out of our Dsp\-Components, we need them to interact with each other. This is where the \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} class comes in. A \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} is a workspace for adding and routing Dsp\-Components. In this section we will have a look at how to create a simple D\-S\-Patch application using \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}.
+
+First we must include the D\-S\-Patch header and any other headers that contain Dsp\-Components we wish to use in our application\-:
+
+
+\begin{DoxyCode}
+#include "DSPatch.h"
+#include "components.h"
+\end{DoxyCode}
+
+
+Next, we must instantiate our \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} object and all \doxyref{Dsp\-Component}{p.}{class_dsp_component} objects needed for our circuit. Lets say we had 2 other components included with \char`\"{}\-Dsp\-And\char`\"{} (from the first tutorial)\-: \char`\"{}\-Dsp\-Rand\-Bool\char`\"{} (generates a random boolean value then outputs the result) and \char`\"{}\-Dsp\-Print\-Bool\char`\"{} (receives a boolean value and outputs it to the console)\-:
+
+
+\begin{DoxyCode}
+void main()
+{
+        // 1. Create a DspCircuit where we can route our components
+        // ========================================================
+        DspCircuit circuit;
+
+        // 2. Create instances of the components needed for our circuit
+        // ============================================================
+        DspRandBool* randBoolGen1 = new DspRandBool();
+        DspRandBool* randBoolGen2 = new DspRandBool();
+        DspAnd* logicAnd = new DspAnd();
+        DspPrintBool* boolPrinter = new DspPrintBool();
+\end{DoxyCode}
+
+
+Now that we have a circuit and some components, lets add all of our components to the circuit\-:
+
+
+\begin{DoxyCode}
+        // 3. Add component instances to circuit
+        // =====================================
+
+        circuit.AddComponent( randBoolGen1, "Bool Generator 1" );
+        circuit.AddComponent( randBoolGen2, "Bool Generator 2" );
+        circuit.AddComponent( logicAnd, "Logic AND" );
+        circuit.AddComponent( boolPrinter, "Bool Printer" );
+\end{DoxyCode}
+
+
+The string values passed into the Add\-Component() method calls are component names / I\-Ds. Unlike signal names, component names are compulsory when added to a circuit. Although we still have the option of referencing a component via it's pointer in a circuit, forcing component string I\-Ds causes circuit objects to be entirely self-\/contained. This gives us the ability to pass circuits around by reference, allowing the receiver access to all circuit components via their string I\-D references.
+
+We are now ready to begin wiring the circuit\-:
+
+
+\begin{DoxyCode}
+        // 4. Wire up the components inside the circuit
+        // ============================================
+
+        circuit.ConnectOutToIn( randBoolGen1, 0, logicAnd, 0 );
+        //OR circuit.ConnectOutToIn( "Bool Generator 1", 0, "Logic AND", 0 );
+        //OR circuit.ConnectOutToIn( "Bool Generator 1", 0, "Logic AND",
+       "input1" );
+
+        circuit.ConnectOutToIn( randBoolGen2, 0, logicAnd, 1 );
+        //OR circuit.ConnectOutToIn( "Bool Generator 2", 0, "Logic AND", 1 );
+        //OR circuit.ConnectOutToIn( "Bool Generator 2", 0, "Logic AND",
+       "input2" );
+
+        circuit.ConnectOutToIn( logicAnd, 0, boolPrinter, 0 );
+        //OR circuit.ConnectOutToIn( "Logic AND", 0, "Bool Printer", 0 );
+        //OR circuit.ConnectOutToIn( "Logic AND", "output", "Bool Printer", 0
+       );
+\end{DoxyCode}
+
+
+The code above results in the following wiring configuration\-: 
+\begin{DoxyCode}
+                                       ___________
+        ["Bool Generator 1"] 0 ---> 0 |           |
+                                      |"Logic AND"| 0 ---> 0 ["Bool Printer"]
+        ["Bool Generator 2"] 0 ---> 1 |___________|
+\end{DoxyCode}
+
+
+Lastly, in order for our circuit to do any work it must be ticked over. This is performed by repeatedly calling the circuit's Tick() and Reset() methods. These methods can be called manually in a loop from the main application thread, or alternatively, by calling Start\-Auto\-Tick(), a seperate thread will spawn, automatically calling Tick() and Reset() continuously. A circuit's thread count can be adjusted at runtime, allowing us to increase / decrease the number of threads use by the circuit as required during execution\-:
+
+
+\begin{DoxyCode}
+        // 5. Tick the circuit
+        // ===================
+
+        // Circuit tick method 1: Manual
+        for( int i = 0; i < 10; i++ )
+        {
+                circuit.Tick();
+                circuit.Reset();
+        }
+
+        // Circuit tick method 2: Automatic
+        std::cout << "Press any key to begin circuit auto-tick.";
+        getchar();
+        circuit.StartAutoTick();
+
+        // Increase circuit thread count for higher performance
+        getchar();
+        circuit.SetThreadCount( 4 );
+
+        // Press any key to quit
+        getchar();
+
+        // DspCircuit's destructor takes care of component garbage collection
+}
+\end{DoxyCode}
+
+
+(All the source code from these tutorials can be found under the \char`\"{}tutorial\char`\"{} folder in the D\-S\-Patch root directory).
+
+\par
+\section{Release Notes}\label{index_release_notes}
+\subsection{v.\-2.\-2 (08 December 2012)}\label{index_v22}
+
+\begin{DoxyItemize}
+\item Added coding tutorials
+\item Cleaned up project directory structure.
+\item Comments and documentation updates.
+\item Components can no longer exist in multiple circuits.
+\item Resolved component / circuit thread count clash.
+\end{DoxyItemize}\subsection{v.\-2.\-1 (06 November 2012)}\label{index_v21}
+
+\begin{DoxyItemize}
+\item Removed Dsp\-Safe\-Pointer class.
+\item Greatly improved overall performance.
+\item Added commenting for doxygen.
+\end{DoxyItemize}\subsection{v.\-2.\-0 (02 November 2012)}\label{index_v20}
+
+\begin{DoxyItemize}
+\item Re-\/licensed D\-S\-Patch to L\-G\-P\-L.
+\item Added support for non-\/threaded platforms.
+\item Circuit routing upgraded to more flexible template methods.
+\end{DoxyItemize}\subsection{v.\-1.\-2 (20 October 2012)}\label{index_v12}
+
+\begin{DoxyItemize}
+\item Ported to Unix-\/based O\-S's.
+\item Completed circuit-\/in-\/circuit logic.
+\end{DoxyItemize}\subsection{v.\-1.\-1 (17 October 2012)}\label{index_v11}
+
+\begin{DoxyItemize}
+\item Varies bug fixes.
+\item Added 2 more components to the Dsp\-Demo project.
+\item Optimized threaded circuit processing.
+\item Add\-Component() updated to accept pre-\/constructed Dsp\-Components. 
+\end{DoxyItemize}
