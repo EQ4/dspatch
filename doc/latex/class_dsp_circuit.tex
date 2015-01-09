@@ -21,46 +21,52 @@ Inheritance diagram for Dsp\-Circuit\-:\begin{figure}[H]
 {\bfseries Dsp\-Circuit} (unsigned long thread\-Count=0)\label{class_dsp_circuit_ae3324ac1332319b058291d28a7dd05f5}
 
 \item 
-void {\bfseries Pause\-Auto\-Tick} ()\label{class_dsp_circuit_a7c368bdaceac7506060173cb87114918}
+virtual void {\bfseries Pause\-Auto\-Tick} ()\label{class_dsp_circuit_a7c368bdaceac7506060173cb87114918}
 
 \item 
-virtual void {\bfseries Set\-Thread\-Count} (unsigned long thread\-Count)\label{class_dsp_circuit_afbcba23bfbf45d37e8f665a9702f76ba}
+void {\bfseries Set\-Thread\-Count} (unsigned long thread\-Count)\label{class_dsp_circuit_afbcba23bfbf45d37e8f665a9702f76ba}
 
 \item 
-{\footnotesize template$<$class Component\-Type $>$ }\\Component\-Type $\ast$ {\bfseries Add\-Component} (std\-::string component\-Name)\label{class_dsp_circuit_af41e5d98c0f82ed277bf8eebe21a3e79}
+unsigned long {\bfseries Get\-Thread\-Count} ()\label{class_dsp_circuit_a9138b70ff4d3b8259190b7c5b070dd90}
 
 \item 
 bool {\bfseries Add\-Component} ({\bf Dsp\-Component} $\ast$component, std\-::string component\-Name=\char`\"{}\char`\"{})\label{class_dsp_circuit_aff0ae9d54041e4afac1a7b2ebe93077c}
 
 \item 
+bool {\bfseries Add\-Component} ({\bf Dsp\-Component} \&component, std\-::string component\-Name=\char`\"{}\char`\"{})\label{class_dsp_circuit_aae8c00f798fbbfb0b1b0042a2b5ed5fc}
+
+\item 
+void {\bfseries Remove\-Component} ({\bf Dsp\-Component} $\ast$component)\label{class_dsp_circuit_a5cec91d3d4ad4a2abfac69d9509ad34e}
+
+\item 
+void {\bfseries Remove\-Component} (std\-::string component\-Name)\label{class_dsp_circuit_ade1d22c1f0d91c8829bc836495ea0b82}
+
+\item 
+void {\bfseries Remove\-All\-Components} ()\label{class_dsp_circuit_a4bd070d41b0c0a393c3bb9add35403f3}
+
+\item 
 {\footnotesize template$<$class Component\-Type $>$ }\\Component\-Type $\ast$ {\bfseries Get\-Component} (std\-::string component\-Name)\label{class_dsp_circuit_ac81a2e3fef6b4156a93d1a0f3ae1a6ac}
 
 \item 
-void {\bfseries Remove\-Component} ({\bf Dsp\-Component} $\ast$component, bool delete\-Component=false)\label{class_dsp_circuit_a5fff065095fa405bb4fdc3ff6616774c}
+unsigned long {\bfseries Get\-Component\-Count} ()\label{class_dsp_circuit_acaaf8d739cdaa2f327e33997b1700b38}
 
 \item 
-void {\bfseries Remove\-Component} (std\-::string component\-Name, bool delete\-Component=false)\label{class_dsp_circuit_a1a74167dbf422b1bb4bd60a70958771a}
+{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Connect\-Out\-To\-In} (From\-Component\-Type \&from\-Component, From\-Output\-Type from\-Output, To\-Component\-Type \&to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_afee5d54b818b5f9b24f531e772d3b540}
 
 \item 
-void {\bfseries Remove\-All\-Components} (bool delete\-Components=false)\label{class_dsp_circuit_a488be45d0216a507385fddd6665aec87}
+{\footnotesize template$<$class From\-Input\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Connect\-In\-To\-In} (From\-Input\-Type from\-Input, To\-Component\-Type \&to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_a59142be83f187d33eb240b5e709c33bd}
 
 \item 
-{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Connect\-Out\-To\-In} (From\-Component\-Type from\-Component, From\-Output\-Type from\-Output, To\-Component\-Type to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_a798282dc213126a57f27fe2a5c9235d7}
+{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Output\-Type $>$ }\\bool {\bfseries Connect\-Out\-To\-Out} (From\-Component\-Type \&from\-Component, From\-Output\-Type from\-Output, To\-Output\-Type to\-Output)\label{class_dsp_circuit_ab330baeaf9280fb7cdee128672c9e89e}
 
 \item 
-{\footnotesize template$<$class From\-Input\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Connect\-In\-To\-In} (From\-Input\-Type from\-Input, To\-Component\-Type to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_a10e0892a623c5cb1c5f10dc7eeffdac2}
+{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\void {\bfseries Disconnect\-Out\-To\-In} (From\-Component\-Type \&from\-Component, From\-Output\-Type from\-Output, To\-Component\-Type \&to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_a46d8b694addb3258b0b262300df9b907}
 
 \item 
-{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Output\-Type $>$ }\\bool {\bfseries Connect\-Out\-To\-Out} (From\-Component\-Type from\-Component, From\-Output\-Type from\-Output, To\-Output\-Type to\-Output)\label{class_dsp_circuit_a45de9a9d1784c4f0620c1cac84ab8fc0}
+{\footnotesize template$<$class From\-Input\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Disconnect\-In\-To\-In} (From\-Input\-Type from\-Input, To\-Component\-Type \&to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_af7dab2ae24c93305696ccc7f25d5fdb8}
 
 \item 
-{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\void {\bfseries Disconnect\-Out\-To\-In} (From\-Component\-Type from\-Component, From\-Output\-Type from\-Output, To\-Component\-Type to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_a68220c4c7c990fd78a89723d386a5e57}
-
-\item 
-{\footnotesize template$<$class From\-Input\-Type , class To\-Component\-Type , class To\-Input\-Type $>$ }\\bool {\bfseries Disconnect\-In\-To\-In} (From\-Input\-Type from\-Input, To\-Component\-Type to\-Component, To\-Input\-Type to\-Input)\label{class_dsp_circuit_a5deded945a1fea6afaf2d7176e45b065}
-
-\item 
-{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Output\-Type $>$ }\\bool {\bfseries Disconnect\-Out\-To\-Out} (From\-Component\-Type from\-Component, From\-Output\-Type from\-Output, To\-Output\-Type to\-Output)\label{class_dsp_circuit_aea599acfb93e7673fd0e5a87a85d1f08}
+{\footnotesize template$<$class From\-Component\-Type , class From\-Output\-Type , class To\-Output\-Type $>$ }\\bool {\bfseries Disconnect\-Out\-To\-Out} (From\-Component\-Type \&from\-Component, From\-Output\-Type from\-Output, To\-Output\-Type to\-Output)\label{class_dsp_circuit_ab64d2a48df87f3feb9ba111990beae1b}
 
 \item 
 void {\bfseries Disconnect\-Component} (std\-::string component)\label{class_dsp_circuit_a9dd36872d206134929aad119ddedab7c}
@@ -89,7 +95,9 @@ virtual void {\bfseries Process\-\_\-} ({\bf Dsp\-Signal\-Bus} \&inputs, {\bf Ds
 \subsection{Detailed Description}
 Workspace for adding and routing components. 
 
-Dsp\-Components can be added to a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} and routed to and from other Dsp\-Components. When a \doxyref{Dsp\-Component}{p.}{class_dsp_component} is added to a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}, a unique string I\-D is required. This name is used to identify the component within the circuit's component collection. Connect\-Out\-To\-In and Disconnect\-Out\-To\-In provide a means of routing component outputs to other component inputs, while Connect\-In\-To\-In / Disconnect\-In\-To\-In and Connect\-Out\-To\-Out / Disconnect\-Out\-To\-Out route the circuit's I\-O signals to and from it's internal components.
+Dsp\-Components can be added to a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} and routed to and from other Dsp\-Components. When a \doxyref{Dsp\-Component}{p.}{class_dsp_component} is added to a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}, a unique string I\-D is optional. This name can be used to identify the component within the circuit's component collection. Connect\-Out\-To\-In and Disconnect\-Out\-To\-In provide a means of routing component outputs to other component inputs, while Connect\-In\-To\-In / Disconnect\-In\-To\-In and Connect\-Out\-To\-Out / Disconnect\-Out\-To\-Out route the circuit's I\-O signals to and from it's internal components.
+
+$\ast$\-N.B. Each component input can only accept one wire at a time. When another wire is connected to an input that already has a connected wire, that wire is replaced with the new one. One output, on the other hand, can be distributed to multiple inputs.
 
 For process intensive circuits, multi-\/threaded processing can be enabled via the Set\-Thread\-Count() method. \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} allows the user to specify the number of threads in which he/she requires the circuit to process (0 threads\-: multi-\/threading disabled). A circuit's thread count can be adjusted at runtime, allowing the user to increase / decrease the number of threads as required during execution.
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DD2AA7A167CDE0B00D51644 /* DSPatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DD2AA79167CDE0B00D51644 /* DSPatch.cpp */; };
 		2DDA6D0816735878007E3BFB /* DspCircuit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA6CF416735878007E3BFB /* DspCircuit.cpp */; };
 		2DDA6D0916735878007E3BFB /* DspCircuit.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DDA6CF516735878007E3BFB /* DspCircuit.h */; };
 		2DDA6D0A16735878007E3BFB /* DspCircuitThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA6CF616735878007E3BFB /* DspCircuitThread.cpp */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2DD2AA79167CDE0B00D51644 /* DSPatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DSPatch.cpp; path = ../../src/DSPatch.cpp; sourceTree = "<group>"; };
 		2DDA6CE716735816007E3BFB /* libdspatch.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libdspatch.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DDA6CF416735878007E3BFB /* DspCircuit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspCircuit.cpp; path = ../../src/DspCircuit.cpp; sourceTree = "<group>"; };
 		2DDA6CF516735878007E3BFB /* DspCircuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspCircuit.h; path = ../../src/DspCircuit.h; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		2DDA6CF316735860007E3BFB /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
+				2DD2AA79167CDE0B00D51644 /* DSPatch.cpp */,
 				2DDA6CF416735878007E3BFB /* DspCircuit.cpp */,
 				2DDA6CF516735878007E3BFB /* DspCircuit.h */,
 				2DDA6CF616735878007E3BFB /* DspCircuitThread.cpp */,
@@ -200,6 +203,7 @@
 				2DDA6D1116735878007E3BFB /* DspSignal.cpp in Sources */,
 				2DDA6D1316735878007E3BFB /* DspSignalBus.cpp in Sources */,
 				2DDA6D1A16735878007E3BFB /* DspWireBus.cpp in Sources */,
+				2DD2AA7A167CDE0B00D51644 /* DSPatch.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

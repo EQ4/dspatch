@@ -8,9 +8,13 @@
 // DspAnd has 2 inputs and 1 output.
 // This component performs a logic AND on 2 boolean input values and outputs the result.
 
+// 1. Derive component class from DspComponent
+// ===========================================
 class DspAnd : public DspComponent
 {
 public:
+	// 2. Configure component IO buses
+	// ===============================
 	DspAnd()
 	{
 		// add 2 inputs
@@ -22,18 +26,20 @@ public:
 	}
 
 protected:
+	// 3. Implement virtual Process_() method
+	// ======================================
 	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 	{
 		// create local stack variables to hold input values
-		bool state1 = false;
-		bool state2 = false;
+		bool bool1 = false;
+		bool bool2 = false;
 
 		// get values from inputs bus ( GetValue() returns true if successful )
-		if( inputs.GetValue( "input1", state1 ) &&	// equivalent: inputs.GetValue( 0, state1 );
-				inputs.GetValue( "input2", state2 ) )		// equivalent: inputs.GetValue( 1, state2 );
+		if( inputs.GetValue( 0, bool1 ) && //OR inputs.GetValue( "input1", bool1 );
+				inputs.GetValue( 1, bool2 ) )  //OR inputs.GetValue( "input2", bool2 );
 		{
-			// set output as the result of state1 AND state2
-			outputs.SetValue( "output", state1 && state2 );	// equivalent: outputs.SetValue( 0, state1 && state2 );
+			// set output as the result of bool1 AND bool2
+			outputs.SetValue( 0, bool1 && bool2 );	//OR outputs.SetValue( "output", bool1 && bool2 );
 		}
 	}
 };

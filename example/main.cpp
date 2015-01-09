@@ -54,21 +54,21 @@ int main()
 	// create a circuit 
 	DspCircuit circuit;
 
-	// declare pointers for components to be added to the circuit
-	DspMp3Decoder* mp3Decoder;
-	DspAudioDevice* audioDevice;
-	DspGain* gainLeft;
-	DspGain* gainRight;
+	// declare components to be added to the circuit
+	DspMp3Decoder mp3Decoder;
+	DspAudioDevice audioDevice;
+	DspGain gainLeft;
+	DspGain gainRight;
 
 	// set circuit thread count to 2 then start separate thread to tick the circuit continuously
 	circuit.SetThreadCount( 2 );
 	circuit.StartAutoTick();
 
 	// add new components to the circuit (these methods return pointers to the new components)
-	mp3Decoder = circuit.AddComponent< DspMp3Decoder >( MP3DECODER );
-	audioDevice = circuit.AddComponent< DspAudioDevice >( AUDIODEVICE );
-	gainLeft = circuit.AddComponent< DspGain >( GAIN1 );
-	gainRight = circuit.AddComponent< DspGain >( GAIN2 );
+	circuit.AddComponent( mp3Decoder, MP3DECODER );
+	circuit.AddComponent( audioDevice, AUDIODEVICE );
+	circuit.AddComponent( gainLeft, GAIN1 );
+	circuit.AddComponent( gainRight, GAIN2 );
 
 	// connect component output signals to respective component input signals
 	circuit.ConnectOutToIn( MP3DECODER, 0, GAIN1, 0 );	// mp3 left channel into gain1
@@ -77,32 +77,30 @@ int main()
 	circuit.ConnectOutToIn( GAIN2, 0, AUDIODEVICE, 1 );	// gain2 into audio device right channel
 
 	// set the gain of components gainLeft and gainRight (mp3 left and right channels)
-	gainLeft->SetGain( 0.75 );
-	gainRight->SetGain( 0.75 );
+	gainLeft.SetGain( 0.75 );
+	gainRight.SetGain( 0.75 );
 
 	// load an mp3 into the mp3 decoder and start playing the track
-	mp3Decoder->LoadFile( "../../Tchaikovski-Swan-Lake-Scene.mp3" );
-	mp3Decoder->Play();
+	mp3Decoder.LoadFile( "../../Tchaikovski-Swan-Lake-Scene.mp3" );
+	mp3Decoder.Play();
 
-	//wait for key press
+	// wait for key press
 	getchar();
 
 	// 2. Overlay oscillator
 	// =====================
 
-	// declare pointer for a new oscillator component
-	DspOscillator* oscillator;
-
-	// New() the oscillator pointer with the desired constructor parametres
-	float oscFreq = 1000.0f;						// 1Khz frequency
-	float oscAmpl = 0.1f;								// 10% amplitude
-	oscillator = new DspOscillator( oscFreq, oscAmpl );
-
 	// A component input pin can only receive one signal at a time so an adders are required to combine the signals
+
+	// declare components to be added to the circuit
+	DspOscillator oscillator( 1000.0f, 0.1f );
+	DspAdder adder1;
+	DspAdder adder2;
+
 	// add new components to the circuit
-	circuit.AddComponent( oscillator, OSCILLATOR );	// add pre-constructed oscillator component
-	circuit.AddComponent< DspAdder >( ADDER1 );
-	circuit.AddComponent< DspAdder >( ADDER2 );
+	circuit.AddComponent( oscillator, OSCILLATOR );
+	circuit.AddComponent( adder1, ADDER1 );
+	circuit.AddComponent( adder2, ADDER2 );
 
 	// DspMp3Decoder has an output signal named "Sample Rate" that streams the current mp3's sample rate
 	// DspOscillator's "Sample Rate" input receives a sample rate value and re-builds its wave table accordingly 
@@ -117,8 +115,11 @@ int main()
 	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDER2, 1 );		// oscillator output into adder2 ch1
 	circuit.ConnectOutToIn( ADDER2, 0, AUDIODEVICE, 1 );	// adder2 output into audio device right channel
 
-	//wait for key press
+	// wait for key press
 	getchar();
+
+	// clean up DSPatch
+	DSPatch::Finalize();
 
 	return 0;
 }

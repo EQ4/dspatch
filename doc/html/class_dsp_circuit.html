@@ -30,7 +30,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.2</span>
+   &#160;<span id="projectnumber">v.2.3</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -121,41 +121,44 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3324ac1332319b058291d28a7dd05f5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3324ac1332319b058291d28a7dd05f5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DspCircuit</b> (unsigned long threadCount=0)</td></tr>
 <tr class="memitem:a7c368bdaceac7506060173cb87114918"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c368bdaceac7506060173cb87114918"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PauseAutoTick</b> ()</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PauseAutoTick</b> ()</td></tr>
 <tr class="memitem:afbcba23bfbf45d37e8f665a9702f76ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbcba23bfbf45d37e8f665a9702f76ba"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetThreadCount</b> (unsigned long threadCount)</td></tr>
-<tr class="memitem:af41e5d98c0f82ed277bf8eebe21a3e79"><td class="memTemplParams" colspan="2"><a class="anchor" id="af41e5d98c0f82ed277bf8eebe21a3e79"></a>
-template&lt;class ComponentType &gt; </td></tr>
-<tr class="memitem:af41e5d98c0f82ed277bf8eebe21a3e79"><td class="memTemplItemLeft" align="right" valign="top">ComponentType *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>AddComponent</b> (std::string componentName)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetThreadCount</b> (unsigned long threadCount)</td></tr>
+<tr class="memitem:a9138b70ff4d3b8259190b7c5b070dd90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9138b70ff4d3b8259190b7c5b070dd90"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetThreadCount</b> ()</td></tr>
 <tr class="memitem:aff0ae9d54041e4afac1a7b2ebe93077c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff0ae9d54041e4afac1a7b2ebe93077c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddComponent</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *component, std::string componentName=&quot;&quot;)</td></tr>
+<tr class="memitem:aae8c00f798fbbfb0b1b0042a2b5ed5fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae8c00f798fbbfb0b1b0042a2b5ed5fc"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddComponent</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;component, std::string componentName=&quot;&quot;)</td></tr>
+<tr class="memitem:a5cec91d3d4ad4a2abfac69d9509ad34e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5cec91d3d4ad4a2abfac69d9509ad34e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveComponent</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *component)</td></tr>
+<tr class="memitem:ade1d22c1f0d91c8829bc836495ea0b82"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade1d22c1f0d91c8829bc836495ea0b82"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveComponent</b> (std::string componentName)</td></tr>
+<tr class="memitem:a4bd070d41b0c0a393c3bb9add35403f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4bd070d41b0c0a393c3bb9add35403f3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveAllComponents</b> ()</td></tr>
 <tr class="memitem:ac81a2e3fef6b4156a93d1a0f3ae1a6ac"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac81a2e3fef6b4156a93d1a0f3ae1a6ac"></a>
 template&lt;class ComponentType &gt; </td></tr>
 <tr class="memitem:ac81a2e3fef6b4156a93d1a0f3ae1a6ac"><td class="memTemplItemLeft" align="right" valign="top">ComponentType *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GetComponent</b> (std::string componentName)</td></tr>
-<tr class="memitem:a5fff065095fa405bb4fdc3ff6616774c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5fff065095fa405bb4fdc3ff6616774c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveComponent</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *component, bool deleteComponent=false)</td></tr>
-<tr class="memitem:a1a74167dbf422b1bb4bd60a70958771a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a74167dbf422b1bb4bd60a70958771a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveComponent</b> (std::string componentName, bool deleteComponent=false)</td></tr>
-<tr class="memitem:a488be45d0216a507385fddd6665aec87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a488be45d0216a507385fddd6665aec87"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveAllComponents</b> (bool deleteComponents=false)</td></tr>
-<tr class="memitem:a798282dc213126a57f27fe2a5c9235d7"><td class="memTemplParams" colspan="2"><a class="anchor" id="a798282dc213126a57f27fe2a5c9235d7"></a>
+<tr class="memitem:acaaf8d739cdaa2f327e33997b1700b38"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acaaf8d739cdaa2f327e33997b1700b38"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetComponentCount</b> ()</td></tr>
+<tr class="memitem:afee5d54b818b5f9b24f531e772d3b540"><td class="memTemplParams" colspan="2"><a class="anchor" id="afee5d54b818b5f9b24f531e772d3b540"></a>
 template&lt;class FromComponentType , class FromOutputType , class ToComponentType , class ToInputType &gt; </td></tr>
-<tr class="memitem:a798282dc213126a57f27fe2a5c9235d7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ConnectOutToIn</b> (FromComponentType fromComponent, FromOutputType fromOutput, ToComponentType toComponent, ToInputType toInput)</td></tr>
-<tr class="memitem:a10e0892a623c5cb1c5f10dc7eeffdac2"><td class="memTemplParams" colspan="2"><a class="anchor" id="a10e0892a623c5cb1c5f10dc7eeffdac2"></a>
+<tr class="memitem:afee5d54b818b5f9b24f531e772d3b540"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ConnectOutToIn</b> (FromComponentType &amp;fromComponent, FromOutputType fromOutput, ToComponentType &amp;toComponent, ToInputType toInput)</td></tr>
+<tr class="memitem:a59142be83f187d33eb240b5e709c33bd"><td class="memTemplParams" colspan="2"><a class="anchor" id="a59142be83f187d33eb240b5e709c33bd"></a>
 template&lt;class FromInputType , class ToComponentType , class ToInputType &gt; </td></tr>
-<tr class="memitem:a10e0892a623c5cb1c5f10dc7eeffdac2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ConnectInToIn</b> (FromInputType fromInput, ToComponentType toComponent, ToInputType toInput)</td></tr>
-<tr class="memitem:a45de9a9d1784c4f0620c1cac84ab8fc0"><td class="memTemplParams" colspan="2"><a class="anchor" id="a45de9a9d1784c4f0620c1cac84ab8fc0"></a>
+<tr class="memitem:a59142be83f187d33eb240b5e709c33bd"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ConnectInToIn</b> (FromInputType fromInput, ToComponentType &amp;toComponent, ToInputType toInput)</td></tr>
+<tr class="memitem:ab330baeaf9280fb7cdee128672c9e89e"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab330baeaf9280fb7cdee128672c9e89e"></a>
 template&lt;class FromComponentType , class FromOutputType , class ToOutputType &gt; </td></tr>
-<tr class="memitem:a45de9a9d1784c4f0620c1cac84ab8fc0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ConnectOutToOut</b> (FromComponentType fromComponent, FromOutputType fromOutput, ToOutputType toOutput)</td></tr>
-<tr class="memitem:a68220c4c7c990fd78a89723d386a5e57"><td class="memTemplParams" colspan="2"><a class="anchor" id="a68220c4c7c990fd78a89723d386a5e57"></a>
+<tr class="memitem:ab330baeaf9280fb7cdee128672c9e89e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ConnectOutToOut</b> (FromComponentType &amp;fromComponent, FromOutputType fromOutput, ToOutputType toOutput)</td></tr>
+<tr class="memitem:a46d8b694addb3258b0b262300df9b907"><td class="memTemplParams" colspan="2"><a class="anchor" id="a46d8b694addb3258b0b262300df9b907"></a>
 template&lt;class FromComponentType , class FromOutputType , class ToComponentType , class ToInputType &gt; </td></tr>
-<tr class="memitem:a68220c4c7c990fd78a89723d386a5e57"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>DisconnectOutToIn</b> (FromComponentType fromComponent, FromOutputType fromOutput, ToComponentType toComponent, ToInputType toInput)</td></tr>
-<tr class="memitem:a5deded945a1fea6afaf2d7176e45b065"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5deded945a1fea6afaf2d7176e45b065"></a>
+<tr class="memitem:a46d8b694addb3258b0b262300df9b907"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>DisconnectOutToIn</b> (FromComponentType &amp;fromComponent, FromOutputType fromOutput, ToComponentType &amp;toComponent, ToInputType toInput)</td></tr>
+<tr class="memitem:af7dab2ae24c93305696ccc7f25d5fdb8"><td class="memTemplParams" colspan="2"><a class="anchor" id="af7dab2ae24c93305696ccc7f25d5fdb8"></a>
 template&lt;class FromInputType , class ToComponentType , class ToInputType &gt; </td></tr>
-<tr class="memitem:a5deded945a1fea6afaf2d7176e45b065"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>DisconnectInToIn</b> (FromInputType fromInput, ToComponentType toComponent, ToInputType toInput)</td></tr>
-<tr class="memitem:aea599acfb93e7673fd0e5a87a85d1f08"><td class="memTemplParams" colspan="2"><a class="anchor" id="aea599acfb93e7673fd0e5a87a85d1f08"></a>
+<tr class="memitem:af7dab2ae24c93305696ccc7f25d5fdb8"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>DisconnectInToIn</b> (FromInputType fromInput, ToComponentType &amp;toComponent, ToInputType toInput)</td></tr>
+<tr class="memitem:ab64d2a48df87f3feb9ba111990beae1b"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab64d2a48df87f3feb9ba111990beae1b"></a>
 template&lt;class FromComponentType , class FromOutputType , class ToOutputType &gt; </td></tr>
-<tr class="memitem:aea599acfb93e7673fd0e5a87a85d1f08"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>DisconnectOutToOut</b> (FromComponentType fromComponent, FromOutputType fromOutput, ToOutputType toOutput)</td></tr>
+<tr class="memitem:ab64d2a48df87f3feb9ba111990beae1b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>DisconnectOutToOut</b> (FromComponentType &amp;fromComponent, FromOutputType fromOutput, ToOutputType toOutput)</td></tr>
 <tr class="memitem:a9dd36872d206134929aad119ddedab7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9dd36872d206134929aad119ddedab7c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectComponent</b> (std::string component)</td></tr>
 <tr class="memitem:aa5cf4b0fec7df687aa97ae36c99caddc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5cf4b0fec7df687aa97ae36c99caddc"></a>
@@ -173,7 +176,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Process_</b> 
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Workspace for adding and routing components. </p>
-<p>DspComponents can be added to a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> and routed to and from other DspComponents. When a <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a> is added to a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>, a unique string ID is required. This name is used to identify the component within the circuit's component collection. ConnectOutToIn and DisconnectOutToIn provide a means of routing component outputs to other component inputs, while ConnectInToIn / DisconnectInToIn and ConnectOutToOut / DisconnectOutToOut route the circuit's IO signals to and from it's internal components.</p>
+<p>DspComponents can be added to a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> and routed to and from other DspComponents. When a <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a> is added to a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>, a unique string ID is optional. This name can be used to identify the component within the circuit's component collection. ConnectOutToIn and DisconnectOutToIn provide a means of routing component outputs to other component inputs, while ConnectInToIn / DisconnectInToIn and ConnectOutToOut / DisconnectOutToOut route the circuit's IO signals to and from it's internal components.</p>
+<p>*N.B. Each component input can only accept one wire at a time. When another wire is connected to an input that already has a connected wire, that wire is replaced with the new one. One output, on the other hand, can be distributed to multiple inputs.</p>
 <p>For process intensive circuits, multi-threaded processing can be enabled via the SetThreadCount() method. <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> allows the user to specify the number of threads in which he/she requires the circuit to process (0 threads: multi-threading disabled). A circuit's thread count can be adjusted at runtime, allowing the user to increase / decrease the number of threads as required during execution.</p>
 <p><a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> is derived from <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a> and therefore inherits all <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a> behavior. This means that a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> can be added to, and routed within another <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> as a component. This also means a circuit object needs to be Tick()ed and Reset()ed as a component (see <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>). The <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> Process_() method simply runs through it's internal array of components and calls each component's Tick() and Reset() methods. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
@@ -184,7 +188,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Process_</b> 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 9 2012 00:39:01 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 15 2012 16:41:36 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.0
 </small></address>

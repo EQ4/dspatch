@@ -44,35 +44,35 @@ class DspRunType
 {
 public:
 	DspRunType()
-	: _content( NULL ) {}
+	: _valueHolder( NULL ) {}
 
 	template< typename ValueType >
 	DspRunType( const ValueType& value )
 	{
-		_content = new _DspRtValue< ValueType >( value );
+		_valueHolder = new _DspRtValue< ValueType >( value );
 	}
 
 	DspRunType( const DspRunType& other )
 	{
-		if( other._content != NULL )
+		if( other._valueHolder != NULL )
 		{
-			_content = other._content->Clone();
+			_valueHolder = other._valueHolder->Copy();
 		}
 		else
 		{
-			_content = NULL;
+			_valueHolder = NULL;
 		}
 	}
 
 	virtual ~DspRunType()
 	{
-		delete _content;
+		delete _valueHolder;
 	}
 
 public:
 	DspRunType& Swap( DspRunType& rhs )
 	{
-		std::swap( _content, rhs._content );
+		std::swap( _valueHolder, rhs._valueHolder );
 		return *this;
 	}
 
@@ -81,7 +81,7 @@ public:
 	{
 		if( typeid( rhs ) == GetType() )
 		{
-			( (_DspRtValue<ValueType>*)_content )->held = rhs;
+			( (_DspRtValue<ValueType>*)_valueHolder )->value = rhs;
 		}
 		else
 		{
@@ -99,14 +99,14 @@ public:
 public:
 	bool IsEmpty() const
 	{
-		return !_content;
+		return !_valueHolder;
 	}
 
 	const std::type_info& GetType() const
 	{
-		if( _content != NULL )
+		if( _valueHolder != NULL )
 		{
-			return _content->GetType();
+			return _valueHolder->GetType();
 		}
 		else
 		{
@@ -119,7 +119,7 @@ public:
 	{
 		if( operand != NULL && operand->GetType() == typeid( ValueType ) )
 		{
-			return &static_cast< DspRunType::_DspRtValue< ValueType >* >( operand->_content )->held;
+			return &static_cast< DspRunType::_DspRtValue< ValueType >* >( operand->_valueHolder )->value;
 		}
 		else
 		{
@@ -141,7 +141,7 @@ private:
 
 	public:
 		virtual const std::type_info& GetType() const = 0;
-		virtual _DspRtValueHolder* Clone() const = 0;
+		virtual _DspRtValueHolder* Copy() const = 0;
 	};
 
 	template< typename ValueType >
@@ -149,7 +149,7 @@ private:
 	{
 	public:
 		_DspRtValue( const ValueType& value )
-		: held( value ) {}
+		: value( value ) {}
 
 	public:
 		virtual const std::type_info& GetType() const
@@ -157,20 +157,20 @@ private:
 			return typeid( ValueType );
 		}
 
-		virtual _DspRtValueHolder* Clone() const
+		virtual _DspRtValueHolder* Copy() const
 		{
-			return new _DspRtValue( held );
+			return new _DspRtValue( value );
 		}
 
 	public:
-		ValueType held;
+		ValueType value;
 
 	private:
 		_DspRtValue& operator=( const _DspRtValue& );	// disable copy-assignment
 	};
 
 private:
-	_DspRtValueHolder* _content;
+	_DspRtValueHolder* _valueHolder;
 };
 
 //=================================================================================================

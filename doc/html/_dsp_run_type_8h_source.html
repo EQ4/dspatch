@@ -30,7 +30,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.2</span>
+   &#160;<span id="projectnumber">v.2.3</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -133,35 +133,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00044"></a>00044 {
 <a name="l00045"></a>00045 <span class="keyword">public</span>:
 <a name="l00046"></a>00046         <a class="code" href="class_dsp_run_type.html" title="Dynamically typed variable.">DspRunType</a>()
-<a name="l00047"></a>00047         : _content( NULL ) {}
+<a name="l00047"></a>00047         : _valueHolder( NULL ) {}
 <a name="l00048"></a>00048 
 <a name="l00049"></a>00049         <span class="keyword">template</span>&lt; <span class="keyword">typename</span> ValueType &gt;
 <a name="l00050"></a>00050         <a class="code" href="class_dsp_run_type.html" title="Dynamically typed variable.">DspRunType</a>( <span class="keyword">const</span> ValueType&amp; value )
 <a name="l00051"></a>00051         {
-<a name="l00052"></a>00052                 _content = <span class="keyword">new</span> _DspRtValue&lt; ValueType &gt;( value );
+<a name="l00052"></a>00052                 _valueHolder = <span class="keyword">new</span> _DspRtValue&lt; ValueType &gt;( value );
 <a name="l00053"></a>00053         }
 <a name="l00054"></a>00054 
 <a name="l00055"></a>00055         <a class="code" href="class_dsp_run_type.html" title="Dynamically typed variable.">DspRunType</a>( <span class="keyword">const</span> <a class="code" href="class_dsp_run_type.html" title="Dynamically typed variable.">DspRunType</a>&amp; other )
 <a name="l00056"></a>00056         {
-<a name="l00057"></a>00057                 <span class="keywordflow">if</span>( other._content != NULL )
+<a name="l00057"></a>00057                 <span class="keywordflow">if</span>( other._valueHolder != NULL )
 <a name="l00058"></a>00058                 {
-<a name="l00059"></a>00059                         _content = other._content-&gt;Clone();
+<a name="l00059"></a>00059                         _valueHolder = other._valueHolder-&gt;Copy();
 <a name="l00060"></a>00060                 }
 <a name="l00061"></a>00061                 <span class="keywordflow">else</span>
 <a name="l00062"></a>00062                 {
-<a name="l00063"></a>00063                         _content = NULL;
+<a name="l00063"></a>00063                         _valueHolder = NULL;
 <a name="l00064"></a>00064                 }
 <a name="l00065"></a>00065         }
 <a name="l00066"></a>00066 
 <a name="l00067"></a>00067         <span class="keyword">virtual</span> ~<a class="code" href="class_dsp_run_type.html" title="Dynamically typed variable.">DspRunType</a>()
 <a name="l00068"></a>00068         {
-<a name="l00069"></a>00069                 <span class="keyword">delete</span> _content;
+<a name="l00069"></a>00069                 <span class="keyword">delete</span> _valueHolder;
 <a name="l00070"></a>00070         }
 <a name="l00071"></a>00071 
 <a name="l00072"></a>00072 <span class="keyword">public</span>:
 <a name="l00073"></a>00073         <a class="code" href="class_dsp_run_type.html" title="Dynamically typed variable.">DspRunType</a>&amp; Swap( <a class="code" href="class_dsp_run_type.html" title="Dynamically typed variable.">DspRunType</a>&amp; rhs )
 <a name="l00074"></a>00074         {
-<a name="l00075"></a>00075                 std::swap( _content, rhs._content );
+<a name="l00075"></a>00075                 std::swap( _valueHolder, rhs._valueHolder );
 <a name="l00076"></a>00076                 <span class="keywordflow">return</span> *<span class="keyword">this</span>;
 <a name="l00077"></a>00077         }
 <a name="l00078"></a>00078 
@@ -170,7 +170,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00081"></a>00081         {
 <a name="l00082"></a>00082                 <span class="keywordflow">if</span>( <span class="keyword">typeid</span>( rhs ) == GetType() )
 <a name="l00083"></a>00083                 {
-<a name="l00084"></a>00084                         ( (_DspRtValue&lt;ValueType&gt;*)_content )-&gt;held = rhs;
+<a name="l00084"></a>00084                         ( (_DspRtValue&lt;ValueType&gt;*)_valueHolder )-&gt;value = rhs;
 <a name="l00085"></a>00085                 }
 <a name="l00086"></a>00086                 <span class="keywordflow">else</span>
 <a name="l00087"></a>00087                 {
@@ -188,14 +188,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00099"></a>00099 <span class="keyword">public</span>:
 <a name="l00100"></a>00100         <span class="keywordtype">bool</span> IsEmpty()<span class="keyword"> const</span>
 <a name="l00101"></a>00101 <span class="keyword">        </span>{
-<a name="l00102"></a>00102                 <span class="keywordflow">return</span> !_content;
+<a name="l00102"></a>00102                 <span class="keywordflow">return</span> !_valueHolder;
 <a name="l00103"></a>00103         }
 <a name="l00104"></a>00104 
 <a name="l00105"></a>00105         <span class="keyword">const</span> std::type_info&amp; GetType()<span class="keyword"> const</span>
 <a name="l00106"></a>00106 <span class="keyword">        </span>{
-<a name="l00107"></a>00107                 <span class="keywordflow">if</span>( _content != NULL )
+<a name="l00107"></a>00107                 <span class="keywordflow">if</span>( _valueHolder != NULL )
 <a name="l00108"></a>00108                 {
-<a name="l00109"></a>00109                         <span class="keywordflow">return</span> _content-&gt;GetType();
+<a name="l00109"></a>00109                         <span class="keywordflow">return</span> _valueHolder-&gt;GetType();
 <a name="l00110"></a>00110                 }
 <a name="l00111"></a>00111                 <span class="keywordflow">else</span>
 <a name="l00112"></a>00112                 {
@@ -208,7 +208,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00119"></a>00119         {
 <a name="l00120"></a>00120                 <span class="keywordflow">if</span>( operand != NULL &amp;&amp; operand-&gt;GetType() == <span class="keyword">typeid</span>( ValueType ) )
 <a name="l00121"></a>00121                 {
-<a name="l00122"></a>00122                         <span class="keywordflow">return</span> &amp;<span class="keyword">static_cast&lt;</span> DspRunType::_DspRtValue&lt; ValueType &gt;* <span class="keyword">&gt;</span>( operand-&gt;_content )-&gt;held;
+<a name="l00122"></a>00122                         <span class="keywordflow">return</span> &amp;<span class="keyword">static_cast&lt;</span> DspRunType::_DspRtValue&lt; ValueType &gt;* <span class="keyword">&gt;</span>( operand-&gt;_valueHolder )-&gt;value;
 <a name="l00123"></a>00123                 }
 <a name="l00124"></a>00124                 <span class="keywordflow">else</span>
 <a name="l00125"></a>00125                 {
@@ -230,7 +230,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00141"></a>00141 
 <a name="l00142"></a>00142         <span class="keyword">public</span>:
 <a name="l00143"></a>00143                 <span class="keyword">virtual</span> <span class="keyword">const</span> std::type_info&amp; GetType() <span class="keyword">const</span> = 0;
-<a name="l00144"></a>00144                 <span class="keyword">virtual</span> _DspRtValueHolder* Clone() <span class="keyword">const</span> = 0;
+<a name="l00144"></a>00144                 <span class="keyword">virtual</span> _DspRtValueHolder* Copy() <span class="keyword">const</span> = 0;
 <a name="l00145"></a>00145         };
 <a name="l00146"></a>00146 
 <a name="l00147"></a>00147         <span class="keyword">template</span>&lt; <span class="keyword">typename</span> ValueType &gt;
@@ -238,7 +238,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00149"></a>00149         {
 <a name="l00150"></a>00150         <span class="keyword">public</span>:
 <a name="l00151"></a>00151                 _DspRtValue( <span class="keyword">const</span> ValueType&amp; value )
-<a name="l00152"></a>00152                 : held( value ) {}
+<a name="l00152"></a>00152                 : value( value ) {}
 <a name="l00153"></a>00153 
 <a name="l00154"></a>00154         <span class="keyword">public</span>:
 <a name="l00155"></a>00155                 <span class="keyword">virtual</span> <span class="keyword">const</span> std::type_info&amp; GetType()<span class="keyword"> const</span>
@@ -246,20 +246,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00157"></a>00157                         <span class="keywordflow">return</span> <span class="keyword">typeid</span>( ValueType );
 <a name="l00158"></a>00158                 }
 <a name="l00159"></a>00159 
-<a name="l00160"></a>00160                 <span class="keyword">virtual</span> _DspRtValueHolder* Clone()<span class="keyword"> const</span>
+<a name="l00160"></a>00160                 <span class="keyword">virtual</span> _DspRtValueHolder* Copy()<span class="keyword"> const</span>
 <a name="l00161"></a>00161 <span class="keyword">                </span>{
-<a name="l00162"></a>00162                         <span class="keywordflow">return</span> <span class="keyword">new</span> _DspRtValue( held );
+<a name="l00162"></a>00162                         <span class="keywordflow">return</span> <span class="keyword">new</span> _DspRtValue( value );
 <a name="l00163"></a>00163                 }
 <a name="l00164"></a>00164 
 <a name="l00165"></a>00165         <span class="keyword">public</span>:
-<a name="l00166"></a>00166                 ValueType held;
+<a name="l00166"></a>00166                 ValueType value;
 <a name="l00167"></a>00167 
 <a name="l00168"></a>00168         <span class="keyword">private</span>:
 <a name="l00169"></a>00169                 _DspRtValue&amp; operator=( <span class="keyword">const</span> _DspRtValue&amp; );   <span class="comment">// disable copy-assignment</span>
 <a name="l00170"></a>00170         };
 <a name="l00171"></a>00171 
 <a name="l00172"></a>00172 <span class="keyword">private</span>:
-<a name="l00173"></a>00173         _DspRtValueHolder* _content;
+<a name="l00173"></a>00173         _DspRtValueHolder* _valueHolder;
 <a name="l00174"></a>00174 };
 <a name="l00175"></a>00175 
 <a name="l00176"></a>00176 <span class="comment">//=================================================================================================</span>
@@ -269,7 +269,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 9 2012 00:39:01 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 15 2012 16:41:36 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.0
 </small></address>

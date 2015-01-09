@@ -11,14 +11,13 @@ void main()
 
 	// 2. Create instances of the components needed for our circuit
 	// ============================================================
-	DspRandBool* randBoolGen1 = new DspRandBool();
-	DspRandBool* randBoolGen2 = new DspRandBool();
-	DspAnd* logicAnd = new DspAnd();
-	DspPrintBool* boolPrinter = new DspPrintBool();
+	DspRandBool randBoolGen1;
+	DspRandBool randBoolGen2;
+	DspAnd logicAnd;
+	DspPrintBool boolPrinter;
 
 	// 3. Add component instances to circuit
 	// =====================================
-
 	circuit.AddComponent( randBoolGen1, "Bool Generator 1" );
 	circuit.AddComponent( randBoolGen2, "Bool Generator 2" );
 	circuit.AddComponent( logicAnd, "Logic AND" );
@@ -61,7 +60,9 @@ void main()
 	// Press any key to quit
 	getchar();
 
-	// DspCircuit's destructor takes care of component garbage collection
+	// 6. Clean up
+	// ===========
+	DSPatch::Finalize();
 }
 
 //=================================================================================================

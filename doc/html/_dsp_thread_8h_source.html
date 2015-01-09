@@ -30,7 +30,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.2</span>
+   &#160;<span id="projectnumber">v.2.3</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -121,27 +121,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00024"></a>00024 
 <a name="l00025"></a>00025 <span class="preprocessor">#ifdef DSP_UNIX</span>
 <a name="l00026"></a>00026 <span class="preprocessor"></span>
-<a name="l00027"></a>00027 <span class="preprocessor">  #define DLLEXPORT</span>
+<a name="l00027"></a>00027 <span class="preprocessor">        #define DLLEXPORT</span>
 <a name="l00028"></a>00028 <span class="preprocessor"></span><span class="preprocessor">        #include &quot;DspThreadUnix.h&quot;</span>
 <a name="l00029"></a>00029 
 <a name="l00030"></a>00030 <span class="preprocessor">#elif DSP_NOTHREADS</span>
 <a name="l00031"></a>00031 <span class="preprocessor"></span>
-<a name="l00032"></a>00032 <span class="preprocessor">  #define DLLEXPORT</span>
+<a name="l00032"></a>00032 <span class="preprocessor">        #define DLLEXPORT</span>
 <a name="l00033"></a>00033 <span class="preprocessor"></span><span class="preprocessor">        #include &quot;DspThreadNull.h&quot;</span>
 <a name="l00034"></a>00034 
 <a name="l00035"></a>00035 <span class="preprocessor">#else</span>
-<a name="l00036"></a>00036 <span class="preprocessor"></span>  
-<a name="l00037"></a>00037 <span class="preprocessor">  #define DLLEXPORT __declspec(dllexport)</span>
-<a name="l00038"></a>00038 <span class="preprocessor"></span><span class="preprocessor">  #pragma warning(disable:4251)</span>
-<a name="l00039"></a>00039 <span class="preprocessor"></span><span class="preprocessor">  #pragma warning(disable:4275)</span>
-<a name="l00040"></a>00040 <span class="preprocessor"></span><span class="preprocessor">        #include &quot;DspThreadWin.h&quot;</span>
-<a name="l00041"></a>00041 
-<a name="l00042"></a>00042 <span class="preprocessor">#endif</span>
+<a name="l00036"></a>00036 <span class="preprocessor"></span>
+<a name="l00037"></a>00037 <span class="preprocessor">        #define DLLEXPORT __declspec(dllexport)</span>
+<a name="l00038"></a>00038 <span class="preprocessor"></span><span class="preprocessor">        #include &quot;DspThreadWin.h&quot;</span>
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040 <span class="preprocessor">        #pragma warning(disable:4251) // disable class needs to have dll-interface warning</span>
+<a name="l00041"></a>00041 <span class="preprocessor"></span><span class="preprocessor">        #pragma warning(disable:4275) // disable non dll-interface class used as base warning</span>
+<a name="l00042"></a>00042 <span class="preprocessor"></span>
+<a name="l00043"></a>00043 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 9 2012 00:39:01 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 15 2012 16:41:36 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.0
 </small></address>

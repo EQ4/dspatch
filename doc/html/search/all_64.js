@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['dspatch',['DSPatch',['../class_d_s_patch.html',1,'']]],
   ['dspcircuit',['DspCircuit',['../class_dsp_circuit.html',1,'']]],
   ['dspcircuitthread',['DspCircuitThread',['../class_dsp_circuit_thread.html',1,'']]],
   ['dspcomponent',['DspComponent',['../class_dsp_component.html',1,'']]],

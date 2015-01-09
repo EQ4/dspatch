@@ -30,7 +30,7 @@
   
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.2</span>
+   &#160;<span id="projectnumber">v.2.3</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -100,7 +100,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Abstract base class for all DSPatch components.  
+<p>Abstract base class for all <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> components.  
  <a href="class_dsp_component.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_dsp_component_8h_source.html">DspComponent.h</a>&gt;</code></p>
@@ -118,6 +118,14 @@ Inheritance diagram for DspComponent:</div>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:aa55f2a207ca6994034e3ffe85b6a23a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa55f2a207ca6994034e3ffe85b6a23a3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetComponentName</b> (std::string componentName)</td></tr>
+<tr class="memitem:ab4a9276a39adf1aa09737af618225198"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4a9276a39adf1aa09737af618225198"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>GetComponentName</b> ()</td></tr>
+<tr class="memitem:a65d802df3fd4dafa960d29fb0325153a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65d802df3fd4dafa960d29fb0325153a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetParentCircuit</b> (<a class="el" href="class_dsp_circuit.html">DspCircuit</a> *parentCircuit)</td></tr>
+<tr class="memitem:a001f3cdb3b8e9c3ec9f609c681ed4a6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a001f3cdb3b8e9c3ec9f609c681ed4a6c"></a>
+<a class="el" href="class_dsp_circuit.html">DspCircuit</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetParentCircuit</b> ()</td></tr>
 <tr class="memitem:abf0509fa67bc2c4864f2a32cd116ca33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf0509fa67bc2c4864f2a32cd116ca33"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent, unsigned long fromOutput, unsigned long toInput)</td></tr>
 <tr class="memitem:a1ec17cb9a313684edc296040cf5249e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ec17cb9a313684edc296040cf5249e8"></a>
@@ -126,6 +134,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a 
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent, std::string fromOutput, unsigned long toInput)</td></tr>
 <tr class="memitem:aed39e15f7c71d0da6153e928f40cb62d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed39e15f7c71d0da6153e928f40cb62d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent, std::string fromOutput, std::string toInput)</td></tr>
+<tr class="memitem:af59aa529298a2d39e87fb82ab0d3c6e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af59aa529298a2d39e87fb82ab0d3c6e9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, unsigned long fromOutput, unsigned long toInput)</td></tr>
+<tr class="memitem:aefd323ff61567f51e407c04a37d986d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aefd323ff61567f51e407c04a37d986d7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, unsigned long fromOutput, std::string toInput)</td></tr>
+<tr class="memitem:abedd938e2138e1b95a1b78a24237f220"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abedd938e2138e1b95a1b78a24237f220"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, std::string fromOutput, unsigned long toInput)</td></tr>
+<tr class="memitem:a7ebdc419dc5cd71f10c52773d25c075c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ebdc419dc5cd71f10c52773d25c075c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ConnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, std::string fromOutput, std::string toInput)</td></tr>
 <tr class="memitem:a43d992808c64dd04892b06e40503b203"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43d992808c64dd04892b06e40503b203"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent, unsigned long fromOutput, unsigned long toInput)</td></tr>
 <tr class="memitem:aa20f2aa1fb46fa451d1b9530b8b6ad40"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa20f2aa1fb46fa451d1b9530b8b6ad40"></a>
@@ -134,6 +150,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent, std::string fromOutput, unsigned long toInput)</td></tr>
 <tr class="memitem:ac3830e4de1507f860a1cc70a0fecbe33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3830e4de1507f860a1cc70a0fecbe33"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent, std::string fromOutput, std::string toInput)</td></tr>
+<tr class="memitem:a2c90e7e0022d1cbac60f5f51203b2a1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c90e7e0022d1cbac60f5f51203b2a1c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, unsigned long fromOutput, unsigned long toInput)</td></tr>
+<tr class="memitem:aaccb8ceeb64186a36661d9c635df672a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaccb8ceeb64186a36661d9c635df672a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, unsigned long fromOutput, std::string toInput)</td></tr>
+<tr class="memitem:ab9b750e30433bac7575c4a8bc1af5ed4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9b750e30433bac7575c4a8bc1af5ed4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, std::string fromOutput, unsigned long toInput)</td></tr>
+<tr class="memitem:a7e4ab98da1a1138f480399fc99744eb9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e4ab98da1a1138f480399fc99744eb9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> &amp;inputComponent, std::string fromOutput, std::string toInput)</td></tr>
 <tr class="memitem:a9fa9f43913650641233ac88d17bd620f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fa9f43913650641233ac88d17bd620f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (unsigned long inputIndex)</td></tr>
 <tr class="memitem:a6d2314977eaa5536fcb1f4374c077534"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d2314977eaa5536fcb1f4374c077534"></a>
@@ -142,6 +166,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent)</td></tr>
 <tr class="memitem:aa1468c9d4a6ab92a9992361ad0a5ae4e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1468c9d4a6ab92a9992361ad0a5ae4e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInputs</b> ()</td></tr>
+<tr class="memitem:aff696890146a19d11c275f8ec5db00ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff696890146a19d11c275f8ec5db00ea"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputCount</b> ()</td></tr>
+<tr class="memitem:a3883e91532aff3e3904f9efdca22a6c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3883e91532aff3e3904f9efdca22a6c4"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputCount</b> ()</td></tr>
+<tr class="memitem:ab89793a6179926d4c509700ad27f5350"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab89793a6179926d4c509700ad27f5350"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindInput</b> (std::string signalName, unsigned long &amp;returnIndex) const </td></tr>
+<tr class="memitem:afbc8b99a62de4d548d3212ddc35f5ac8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbc8b99a62de4d548d3212ddc35f5ac8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindInput</b> (unsigned long signalIndex, unsigned long &amp;returnIndex) const </td></tr>
+<tr class="memitem:a8d0e5b339ac09c4754b05f0c570c7331"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d0e5b339ac09c4754b05f0c570c7331"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindOutput</b> (std::string signalName, unsigned long &amp;returnIndex) const </td></tr>
+<tr class="memitem:a40f3f6d88573484c96192dd9fb85f045"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40f3f6d88573484c96192dd9fb85f045"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindOutput</b> (unsigned long signalIndex, unsigned long &amp;returnIndex) const </td></tr>
 <tr class="memitem:ac8e3f702b1284fb7b4fca5ade56e3d3f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8e3f702b1284fb7b4fca5ade56e3d3f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Tick</b> ()</td></tr>
 <tr class="memitem:a47884a3c98524b39c62249a47bf2f3a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47884a3c98524b39c62249a47bf2f3a9"></a>
@@ -154,58 +190,26 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>StopAutoTick<
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PauseAutoTick</b> ()</td></tr>
 <tr class="memitem:ad06e7e1a8c446d5c71e021e1c6b437f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad06e7e1a8c446d5c71e021e1c6b437f9"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResumeAutoTick</b> ()</td></tr>
-<tr class="memitem:ad4327f345871a4b632dcd42ea128c730"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4327f345871a4b632dcd42ea128c730"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetThreadCount</b> (unsigned long threadCount)</td></tr>
-<tr class="memitem:a01b98818f142cae29c7c2d0cd6eaf0f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01b98818f142cae29c7c2d0cd6eaf0f3"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetThreadCount</b> ()</td></tr>
+<tr class="memitem:ab47078f040f78f47f9a5a9b39841c174"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab47078f040f78f47f9a5a9b39841c174"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBufferCount</b> (unsigned long bufferCount)</td></tr>
+<tr class="memitem:a7572a9631851fc19eefa874b1b3f24ba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7572a9631851fc19eefa874b1b3f24ba"></a>
+unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetBufferCount</b> ()</td></tr>
 <tr class="memitem:abf80a2c68144f51810fbdbdf194f4067"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf80a2c68144f51810fbdbdf194f4067"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ThreadTick</b> (unsigned long threadNo)</td></tr>
 <tr class="memitem:ab7de48de9cd4b750cc7d6b4faa33897f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab7de48de9cd4b750cc7d6b4faa33897f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ThreadReset</b> (unsigned long threadNo)</td></tr>
-<tr class="memitem:a2c647c74a7eb4025403f2b6f8ef7836a"><td class="memTemplParams" colspan="2"><a class="anchor" id="a2c647c74a7eb4025403f2b6f8ef7836a"></a>
-template&lt;class ValueType &gt; </td></tr>
-<tr class="memitem:a2c647c74a7eb4025403f2b6f8ef7836a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SetInputValue</b> (unsigned long inputIndex, const ValueType &amp;newValue)</td></tr>
-<tr class="memitem:a3042b5c2dc2672947869b8b96ae0efce"><td class="memTemplParams" colspan="2"><a class="anchor" id="a3042b5c2dc2672947869b8b96ae0efce"></a>
-template&lt;class ValueType &gt; </td></tr>
-<tr class="memitem:a3042b5c2dc2672947869b8b96ae0efce"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SetInputValue</b> (std::string inputName, const ValueType &amp;newValue)</td></tr>
-<tr class="memitem:a29a40ff583848103dfd5f1c3850d3a74"><td class="memTemplParams" colspan="2"><a class="anchor" id="a29a40ff583848103dfd5f1c3850d3a74"></a>
-template&lt;class ValueType &gt; </td></tr>
-<tr class="memitem:a29a40ff583848103dfd5f1c3850d3a74"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GetOutputValue</b> (unsigned long outputIndex, ValueType &amp;returnValue)</td></tr>
-<tr class="memitem:ad7532ea2a04b3103337fa23fe2325588"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad7532ea2a04b3103337fa23fe2325588"></a>
-template&lt;class ValueType &gt; </td></tr>
-<tr class="memitem:ad7532ea2a04b3103337fa23fe2325588"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GetOutputValue</b> (std::string outputName, ValueType &amp;returnValue)</td></tr>
 <tr class="memitem:a12f7999bfb2185db4285f7ec0d68bb90"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12f7999bfb2185db4285f7ec0d68bb90"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetInputSignal</b> (unsigned long inputIndex, const <a class="el" href="class_dsp_signal.html">DspSignal</a> *newSignal)</td></tr>
-<tr class="memitem:a9597e82d2854a364e6f8e4eca77bc392"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9597e82d2854a364e6f8e4eca77bc392"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetInputSignal</b> (std::string inputName, const <a class="el" href="class_dsp_signal.html">DspSignal</a> *newSignal)</td></tr>
+<tr class="memitem:af3b17d9a9d9bf80dd81260ae38643208"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3b17d9a9d9bf80dd81260ae38643208"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetInputSignal</b> (unsigned long inputIndex, unsigned long threadIndex, const <a class="el" href="class_dsp_signal.html">DspSignal</a> *newSignal)</td></tr>
 <tr class="memitem:a09d5156797f1e36c3c1a5dd6dbd34e07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09d5156797f1e36c3c1a5dd6dbd34e07"></a>
 <a class="el" href="class_dsp_signal.html">DspSignal</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputSignal</b> (unsigned long outputIndex)</td></tr>
-<tr class="memitem:a5adc703ac04e5cb3a47531bfc9457c11"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5adc703ac04e5cb3a47531bfc9457c11"></a>
-<a class="el" href="class_dsp_signal.html">DspSignal</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputSignal</b> (std::string outputName)</td></tr>
-<tr class="memitem:aff696890146a19d11c275f8ec5db00ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff696890146a19d11c275f8ec5db00ea"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputCount</b> ()</td></tr>
-<tr class="memitem:a3883e91532aff3e3904f9efdca22a6c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3883e91532aff3e3904f9efdca22a6c4"></a>
-unsigned long&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputCount</b> ()</td></tr>
-<tr class="memitem:a7646b66d8301ee002f78b1a5ab7d852f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7646b66d8301ee002f78b1a5ab7d852f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetComponentName</b> (std::string componentName)</td></tr>
-<tr class="memitem:ab4a9276a39adf1aa09737af618225198"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4a9276a39adf1aa09737af618225198"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>GetComponentName</b> ()</td></tr>
-<tr class="memitem:ab89793a6179926d4c509700ad27f5350"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab89793a6179926d4c509700ad27f5350"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindInput</b> (std::string signalName, unsigned long &amp;returnIndex) const </td></tr>
-<tr class="memitem:afbc8b99a62de4d548d3212ddc35f5ac8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbc8b99a62de4d548d3212ddc35f5ac8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindInput</b> (unsigned long signalIndex, unsigned long &amp;returnIndex) const </td></tr>
-<tr class="memitem:a8d0e5b339ac09c4754b05f0c570c7331"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d0e5b339ac09c4754b05f0c570c7331"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindOutput</b> (std::string signalName, unsigned long &amp;returnIndex) const </td></tr>
-<tr class="memitem:a40f3f6d88573484c96192dd9fb85f045"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40f3f6d88573484c96192dd9fb85f045"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindOutput</b> (unsigned long signalIndex, unsigned long &amp;returnIndex) const </td></tr>
-<tr class="memitem:a001f3cdb3b8e9c3ec9f609c681ed4a6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a001f3cdb3b8e9c3ec9f609c681ed4a6c"></a>
-<a class="el" href="class_dsp_circuit.html">DspCircuit</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetParentCircuit</b> ()</td></tr>
-<tr class="memitem:a65d802df3fd4dafa960d29fb0325153a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65d802df3fd4dafa960d29fb0325153a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetParentCircuit</b> (<a class="el" href="class_dsp_circuit.html">DspCircuit</a> *parentCircuit)</td></tr>
+<tr class="memitem:ac7d953d3caa7d578c034a7715e4e7f01"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7d953d3caa7d578c034a7715e4e7f01"></a>
+<a class="el" href="class_dsp_signal.html">DspSignal</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputSignal</b> (unsigned long outputIndex, unsigned long threadIndex)</td></tr>
 <tr><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a270c5825e9646fe84953182b98a126ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a270c5825e9646fe84953182b98a126ed"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Process_</b> (<a class="el" href="class_dsp_signal_bus.html">DspSignalBus</a> &amp;inputs, <a class="el" href="class_dsp_signal_bus.html">DspSignalBus</a> &amp;outputs)=0</td></tr>
+<tr class="memitem:a0f6035cae2be7ba3f5abf799d05bb6d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f6035cae2be7ba3f5abf799d05bb6d8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Process_</b> (<a class="el" href="class_dsp_signal_bus.html">DspSignalBus</a> &amp;inputs, <a class="el" href="class_dsp_signal_bus.html">DspSignalBus</a> &amp;outputs)</td></tr>
 <tr class="memitem:ab674f77c28364ec35014206d743e9427"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab674f77c28364ec35014206d743e9427"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddInput_</b> (std::string inputName=&quot;&quot;)</td></tr>
 <tr class="memitem:a4f9112f577caecc54470abfe4a769dc2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4f9112f577caecc54470abfe4a769dc2"></a>
@@ -216,8 +220,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearInputs_</b> ()</
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearOutputs_</b> ()</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Abstract base class for all DSPatch components. </p>
-<p>Classes derived from <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a> can be added to an <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> and routed to and from other DspComponents. On construction, derived classes must configure the component's IO buses by calling AddInput_() and AddOutput_() respectively. Derived classes must also implement the pure virtual method: Process_(). The Process_() method is a callback from the DSPatch engine that occurs when a new set of input signals is ready for processing. The Process_() method has 2 parameters: the input bus and the output bus. This method's purpose is to pull its required inputs out of the input bus, process these inputs, and populate the output bus with the results (see <a class="el" href="class_dsp_signal_bus.html" title="DspSignal container.">DspSignalBus</a>).</p>
+<div class="textblock"><p>Abstract base class for all <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> components. </p>
+<p>Classes derived from <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a> can be added to an <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> and routed to and from other DspComponents. On construction, derived classes must configure the component's IO buses by calling AddInput_() and AddOutput_() respectively. Derived classes must also implement the virtual method: Process_(). The Process_() method is a callback from the <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> engine that occurs when a new set of input signals is ready for processing. The Process_() method has 2 parameters: the input bus and the output bus. This method's purpose is to pull its required inputs out of the input bus, process these inputs, and populate the output bus with the results (see <a class="el" href="class_dsp_signal_bus.html" title="DspSignal container.">DspSignalBus</a>).</p>
 <p>In order for a component to do any work it must be ticked over. This is performed by repeatedly calling the Tick() and Reset() methods. The Tick() method is responsible for acquiring the next set of input signals from component input wires and populating the component's input bus. To insure that these inputs are up-to-date, the dependent component first calls all of its input components' Tick() methods -hence recursively called in all components going backward through the circuit (This is what's classified as a "pull system"). The acquired input bus is then passed to the Process_() method. The Reset() method then informs the component that the last circuit traversal has completed and hence can execute the next Tick() request. A component's Tick() and Reset() methods can be called in a loop from the main application thread, or alternatively, by calling StartAutoTick(), a seperate thread will spawn, automatically calling Tick() and Reset() methods continuously (This is most commonly used to tick over an instance of <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>). </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_dsp_component_8h_source.html">DspComponent.h</a></li>
@@ -227,7 +231,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearOutputs_</b> ()<
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 9 2012 00:39:01 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 15 2012 16:41:37 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.0
 </small></address>

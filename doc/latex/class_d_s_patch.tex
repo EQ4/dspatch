@@ -1,0 +1,53 @@
+\section{D\-S\-Patch Class Reference}
+\label{class_d_s_patch}\index{D\-S\-Patch@{D\-S\-Patch}}
+
+
+System-\/wide \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} functionality.  
+
+
+
+
+{\ttfamily \#include $<$D\-S\-Patch.\-h$>$}
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool {\bfseries Is\-This\-Global\-Circuit} ({\bf Dsp\-Component} $\ast$this\-Component)\label{class_d_s_patch_acf317063aa5bf2fa61296fced7d797cb}
+
+\item 
+static bool {\bfseries Add\-Global\-Component} ({\bf Dsp\-Component} $\ast$component, std\-::string component\-Name=\char`\"{}\char`\"{})\label{class_d_s_patch_aced2c04b2179152bd6768703f16f463c}
+
+\item 
+static void {\bfseries Remove\-Global\-Component} ({\bf Dsp\-Component} $\ast$component, bool delete\-Component=false)\label{class_d_s_patch_a67f61ffc54150718c1d2ee2abc1a4ee9}
+
+\item 
+static unsigned long {\bfseries Get\-Global\-Component\-Count} ()\label{class_d_s_patch_abcdb2127295fcfcb464c951363fb3bd4}
+
+\item 
+static void {\bfseries Start\-Global\-Auto\-Tick} ()\label{class_d_s_patch_af6f9996b569c48bae08e0e31cf29ffd2}
+
+\item 
+static void {\bfseries Stop\-Global\-Auto\-Tick} ()\label{class_d_s_patch_a75634f621fc5f9a7bda6cf2b4bf5e437}
+
+\item 
+static void {\bfseries Set\-Global\-Thread\-Count} (unsigned long thread\-Count)\label{class_d_s_patch_a76d951c9e7785caa1d47c3e4c8ddaf6a}
+
+\item 
+static void {\bfseries Finalize} ()\label{class_d_s_patch_aed47908ddab1d38d540f8000778f2657}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+System-\/wide \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} functionality. 
+
+This class provides global \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} functionality.
+
+At the core of the \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} framework is what's known as the \char`\"{}global circuit\char`\"{}. The \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} class and hence, the global circuit provides a transparent workspace for \char`\"{}global scoped components\char`\"{} (components not within a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}) to benefit from circuit parallel processing. As it is not required that components be explicitly added to a \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} in order to be routed etc., in order for these global scoped components to benefit from the multi threading associated with the circuit scheduler, they are automatically added to the \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} global circuit when parallel processing is required (i.\-e. Start\-Auto\-Tick() is called). Although global circuit operations are automatic and transparent to the user, if required, the user is may set the number of threads used by the global circuit by calling Set\-Global\-Thread\-Count().
+
+Lastly, the Finalize() method must be called on application exit in order for \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} to perform the necessary memory cleanup. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+D\-S\-Patch.\-h\item 
+D\-S\-Patch.\-cpp\end{DoxyCompactItemize}

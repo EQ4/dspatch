@@ -41,7 +41,7 @@ DspCircuit::DspCircuit( unsigned long threadCount )
 DspCircuit::~DspCircuit()
 {
 	StopAutoTick();
-	RemoveAllComponents( true );
+	RemoveAllComponents();
 	SetThreadCount( 0 );
 	delete _inToInWires;
 	delete _outToOutWires;
@@ -72,19 +72,20 @@ void DspCircuit::PauseAutoTick()
 
 void DspCircuit::SetThreadCount( unsigned long threadCount )
 {
-	// set thread count only if this circuit is not part of another circuit
-	if( threadCount != GetThreadCount() && GetParentCircuit() == NULL )
+	if( threadCount != _circuitThreads.size() )
 	{
 		PauseAutoTick();
+
+		unsigned long currentThreadCount = _circuitThreads.size();
 
 		// set all components to the new thread count
 		for( unsigned long i = 0; i < _components.size(); i++ )
 		{
-			_components[i]->SetThreadCount( threadCount );
+			_components[i]->SetBufferCount( threadCount );
 		}
 
 		// delete excess threads (if new thread count is less than current)
-		for( long i = GetThreadCount() - 1; i >= (long)threadCount; i-- )
+		for( long i = currentThreadCount - 1; i >= (long)threadCount; i-- )
 		{
 			delete _circuitThreads[i];
 		}
@@ -93,13 +94,10 @@ void DspCircuit::SetThreadCount( unsigned long threadCount )
 		_circuitThreads.resize( threadCount );
 
 		// create excess threads (if new thread count is more than current)
-		for( unsigned long i = GetThreadCount(); i < threadCount; i++ )
+		for( unsigned long i = currentThreadCount; i < threadCount; i++ )
 		{
 			_circuitThreads[i] = new DspCircuitThread( _components, i );
 		}
-
-		// set the system's new thread count
-		DspComponent::SetThreadCount( threadCount );
 
 		ResumeAutoTick();
 	}
@@ -107,69 +105,97 @@ void DspCircuit::SetThreadCount( unsigned long threadCount )
 
 //-------------------------------------------------------------------------------------------------
 
+unsigned long DspCircuit::GetThreadCount()
+{
+	return _circuitThreads.size();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 bool DspCircuit::AddComponent( DspComponent* component, std::string componentName )
 {
-	if( componentName == "" && component->GetComponentName() == "" )
+	if( component != this )
 	{
-		return false;	// a component can't be added to the circuit without a name
+		// if the component has a name already
+		if( component->GetComponentName() != "" && componentName == "" )
+		{
+			componentName = component->GetComponentName();
+		}
+
+		unsigned long componentIndex;
+
+		if( _FindComponent( component, componentIndex ) )
+		{
+			return false;	// if the component is already in the array
+		}
+		if( _FindComponent( componentName, componentIndex ) )
+		{
+			return false;	// if the component name is already in the array
+		}
+
+		PauseAutoTick();
+
+		// components within the circuit need to have as many buffers as there are threads in the circuit
+		component->SetBufferCount( _circuitThreads.size() );
+		component->SetComponentName( componentName );
+		component->SetParentCircuit( this );
+
+		_components.push_back( component );
+
+		ResumeAutoTick();
+
+		return true;
 	}
 
-	unsigned long componentIndex;
-
-	if( _FindComponent( component, componentIndex ) )
-	{
-		return false;	// if the component is already in the array
-	}
-	if( _FindComponent( component->GetComponentName(), componentIndex ) )
-	{
-		return false;	// if the component name is already in the array
-	}
-
-	component->SetComponentName( componentName );
-	component->SetThreadCount( GetThreadCount() );
-	component->SetParentCircuit( this );
-
-	PauseAutoTick();
-
-	_components.push_back( component );
-
-	ResumeAutoTick();
-
-	return true;
+	return false;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void DspCircuit::RemoveComponent( DspComponent* component, bool deleteComponent )
+bool DspCircuit::AddComponent( DspComponent& component, std::string componentName )
+{
+	return AddComponent( &component, componentName );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void DspCircuit::RemoveComponent( DspComponent* component )
 {
 	unsigned long componentIndex;
 
 	if( _FindComponent( component, componentIndex ) )
 	{
-		_RemoveComponent( componentIndex, deleteComponent );
+		_RemoveComponent( componentIndex );
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void DspCircuit::RemoveComponent( std::string componentName, bool deleteComponent )
+void DspCircuit::RemoveComponent( std::string componentName )
 {
 	unsigned long componentIndex;
 
 	if( _FindComponent( componentName, componentIndex ) )
 	{
-		_RemoveComponent( componentIndex, deleteComponent );
+		_RemoveComponent( componentIndex );
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void DspCircuit::RemoveAllComponents( bool deleteComponents )
+void DspCircuit::RemoveAllComponents()
 {
 	for( unsigned long i = 0; i < _components.size(); i++ )
 	{
-		_RemoveComponent( i--, deleteComponents );	// size drops as one is removed
+		_RemoveComponent( i-- ); // size drops as one is removed
 	}
+}
+
+//-------------------------------------------------------------------------------------------------
+
+unsigned long DspCircuit::GetComponentCount()
+{
+	return _components.size();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -218,18 +244,13 @@ void DspCircuit::ClearOutputs()
 
 void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 {
-	// process in a single thread if this circuit has no threads, or is part of another circuit
-	if( GetThreadCount() == 0 || GetParentCircuit() != NULL )
+	DspWire* wire;
+	DspSignal* signal;
+
+	// process in a single thread if this circuit has no threads
+	// =========================================================
+	if( _circuitThreads.size() == 0 )
 	{
-		DspWire* wire;
-		DspSignal* signal;
-
-		// reset all internal components
-		for( unsigned long i = 0; i < _components.size(); i++ )
-		{
-			_components[i]->Reset();
-		}
-
 		// set all internal component inputs from connected circuit inputs
 		for( unsigned long i = 0; i < _inToInWires->GetWireCount(); i++ )
 		{
@@ -244,6 +265,12 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 			_components[i]->Tick();
 		}
 
+		// reset all internal components
+		for( unsigned long i = 0; i < _components.size(); i++ )
+		{
+			_components[i]->Reset();
+		}
+
 		// set all circuit outputs from connected internal component outputs
 		for( unsigned long i = 0; i < _outToOutWires->GetWireCount(); i++ )
 		{
@@ -252,11 +279,31 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 			outputs.SetSignal( wire->toSignalIndex, signal );
 		}
 	}
+	// process in multiple thread if this circuit has threads
+	// ======================================================
 	else
 	{
+		_circuitThreads[_currentThreadIndex]->Sync();		// sync with thread x
+
+		// set all circuit outputs from connected internal component outputs
+		for( unsigned long i = 0; i < _outToOutWires->GetWireCount(); i++ )
+		{
+			wire = _outToOutWires->GetWire( i );
+			signal = wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex, _currentThreadIndex );
+			outputs.SetSignal( wire->toSignalIndex, signal );
+		}
+
+		// set all internal component inputs from connected circuit inputs
+		for( unsigned long i = 0; i < _inToInWires->GetWireCount(); i++ )
+		{
+			wire = _inToInWires->GetWire( i );
+			signal = inputs.GetSignal( wire->fromSignalIndex );
+			wire->linkedComponent->SetInputSignal( wire->toSignalIndex, _currentThreadIndex, signal );
+		}
+
 		_circuitThreads[_currentThreadIndex]->Resume(); // resume thread x
 
-		if( ++_currentThreadIndex >= GetThreadCount() )	// shift to thread x+1
+		if( ++_currentThreadIndex >= _circuitThreads.size() )	// shift to thread x+1
 		{
 			_currentThreadIndex = 0;
 		}
@@ -277,6 +324,13 @@ bool DspCircuit::_FindComponent( DspComponent* component, unsigned long& returnI
 	}
 
 	return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspCircuit::_FindComponent( DspComponent& component, unsigned long& returnIndex )
+{
+	return _FindComponent( &component, returnIndex );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -343,27 +397,27 @@ void DspCircuit::_DisconnectComponent( unsigned long componentIndex )
 
 //-------------------------------------------------------------------------------------------------
 
-void DspCircuit::_RemoveComponent( unsigned long componentIndex, bool deleteComponent )
+void DspCircuit::_RemoveComponent( unsigned long componentIndex )
 {
 	PauseAutoTick();
 
 	_DisconnectComponent( componentIndex );
 
-	if( deleteComponent )
-	{
-		delete _components[componentIndex];
-	}
-	else
+	// set the removed component's parent circuit to NULL
+	if( _components[componentIndex]->GetParentCircuit() != NULL )
 	{
 		_components[componentIndex]->SetParentCircuit( NULL );
 	}
-
-	for( unsigned long i = componentIndex; i < ( _components.size() - 1 ); i++ )
+	// setting a component's parent to NULL (above) calls _RemoveComponent (hence the following code will run)
+	else if( _components.size() != 0 )
 	{
-		_components[i] = _components[i + 1];	// shift all lower elements up
-	}
+		for( unsigned long i = componentIndex; i < _components.size() - 1; i++ )
+		{
+			_components[i] = _components[i + 1];	// shift all lower elements up
+		}
 
-	_components.pop_back();	// remove end item
+		_components.pop_back();	// remove end item
+	}
 
 	ResumeAutoTick();
 }

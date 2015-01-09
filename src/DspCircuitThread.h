@@ -39,11 +39,11 @@ class DspComponent;
 /** A DspCircuitThread is responsible for ticking and reseting all components in a DspCircuit.
 On construction, a reference to the vector of circuit components must be provided for the thread
 _Run() method to loop through. Each DspCircuitThread has a thread number (threadNo), which also
-must be provided on construction. When creating multiple DspCircuitThreads, each thread must have
+can be provided on construction. When creating multiple DspCircuitThreads, each thread must have
 their own unique thread number, beginning at 0 and incrementing by 1 for every thread added. This
-thread number corresponds with the DspComponent's thread number when calling it's ThreadTick() and
+thread number corresponds with the DspComponent's buffer number when calling it's ThreadTick() and
 ThreadReset() methods in the DspCircuitThread's component loop. Hence, for every circuit thread
-created, each component's thread count within that circuit must be incremented to match.
+created, each component's buffer count within that circuit must be incremented to match.
 
 The Resume() method causes the DspCircuitThread to tick and reset all circuit components once,
 after which the thread will wait until instructed to resume again. As each component is done

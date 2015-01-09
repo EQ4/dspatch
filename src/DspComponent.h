@@ -38,11 +38,11 @@ class DspComponentThread;
 
 /** Classes derived from DspComponent can be added to an DspCircuit and routed to and from other
 DspComponents. On construction, derived classes must configure the component's IO buses by calling
-AddInput_() and AddOutput_() respectively. Derived classes must also implement the pure virtual
-method: Process_(). The Process_() method is a callback from the DSPatch engine that occurs when a
-new set of input signals is ready for processing. The Process_() method has 2 parameters: the input
-bus and the output bus. This method's purpose is to pull its required inputs out of the input bus,
-process these inputs, and populate the output bus with the results (see DspSignalBus).
+AddInput_() and AddOutput_() respectively. Derived classes must also implement the virtual method:
+Process_(). The Process_() method is a callback from the DSPatch engine that occurs when a new set
+of input signals is ready for processing. The Process_() method has 2 parameters: the input bus and
+the output bus. This method's purpose is to pull its required inputs out of the input bus, process
+these inputs, and populate the output bus with the results (see DspSignalBus).
 
 In order for a component to do any work it must be ticked over. This is performed by repeatedly
 calling the Tick() and Reset() methods. The Tick() method is responsible for acquiring the next set
@@ -62,20 +62,44 @@ public:
 	DspComponent();
 	virtual ~DspComponent();
 
+	void SetComponentName( std::string componentName );
+	std::string GetComponentName();
+
+	void SetParentCircuit( DspCircuit* parentCircuit );
+	DspCircuit* GetParentCircuit();
+
 	bool ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput );
 	bool ConnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput );
 	bool ConnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput );
 	bool ConnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput );
+
+	bool ConnectInput( DspComponent& inputComponent, unsigned long fromOutput, unsigned long toInput );
+	bool ConnectInput( DspComponent& inputComponent, unsigned long fromOutput, std::string toInput );
+	bool ConnectInput( DspComponent& inputComponent, std::string fromOutput, unsigned long toInput );
+	bool ConnectInput( DspComponent& inputComponent, std::string fromOutput, std::string toInput );
 
 	void DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, unsigned long toInput );
 	void DisconnectInput( DspComponent* inputComponent, unsigned long fromOutput, std::string toInput );
 	void DisconnectInput( DspComponent* inputComponent, std::string fromOutput, unsigned long toInput );
 	void DisconnectInput( DspComponent* inputComponent, std::string fromOutput, std::string toInput );
 
+	void DisconnectInput( DspComponent& inputComponent, unsigned long fromOutput, unsigned long toInput );
+	void DisconnectInput( DspComponent& inputComponent, unsigned long fromOutput, std::string toInput );
+	void DisconnectInput( DspComponent& inputComponent, std::string fromOutput, unsigned long toInput );
+	void DisconnectInput( DspComponent& inputComponent, std::string fromOutput, std::string toInput );
+
 	void DisconnectInput( unsigned long inputIndex );
 	void DisconnectInput( std::string inputName );
 	void DisconnectInput( DspComponent* inputComponent );
 	void DisconnectInputs();
+
+	unsigned long GetInputCount();
+	unsigned long GetOutputCount();
+
+	bool FindInput( std::string signalName, unsigned long& returnIndex ) const;
+	bool FindInput( unsigned long signalIndex, unsigned long& returnIndex ) const;
+	bool FindOutput( std::string signalName, unsigned long& returnIndex ) const;
+	bool FindOutput( unsigned long signalIndex, unsigned long& returnIndex ) const;
 
 	void Tick();
 	void Reset();
@@ -85,51 +109,22 @@ public:
 	virtual void PauseAutoTick();
 	virtual void ResumeAutoTick();
 
-	void SetThreadCount( unsigned long threadCount );
-	unsigned long GetThreadCount();
+	// Methods for DspCircuit processing
+	// =================================
+
+	void SetBufferCount( unsigned long bufferCount );
+	unsigned long GetBufferCount();
 
 	void ThreadTick( unsigned long threadNo );
 	void ThreadReset( unsigned long threadNo );
 
-	// Only works with non-threaded ticking (_threadCount = 0)
-	// =======================================================
-
-	template< class ValueType >
-	bool SetInputValue( unsigned long inputIndex, const ValueType& newValue );
-
-	template< class ValueType >
-	bool SetInputValue( std::string inputName, const ValueType& newValue );
-
-	template< class ValueType >
-	bool GetOutputValue( unsigned long outputIndex, ValueType& returnValue );
-
-	template< class ValueType >
-	bool GetOutputValue( std::string outputName, ValueType& returnValue );
-
 	bool SetInputSignal( unsigned long inputIndex, const DspSignal* newSignal );
-	bool SetInputSignal( std::string inputName, const DspSignal* newSignal );
+	bool SetInputSignal( unsigned long inputIndex, unsigned long threadIndex, const DspSignal* newSignal );
 	DspSignal* GetOutputSignal( unsigned long outputIndex );
-	DspSignal* GetOutputSignal( std::string outputName );
-
-	// Only works with non-threaded ticking (_threadCount = 0)
-	// =======================================================
-
-	unsigned long GetInputCount();
-	unsigned long GetOutputCount();
-
-	bool SetComponentName( std::string componentName );
-	std::string GetComponentName();
-
-	bool FindInput( std::string signalName, unsigned long& returnIndex ) const;
-	bool FindInput( unsigned long signalIndex, unsigned long& returnIndex ) const;
-	bool FindOutput( std::string signalName, unsigned long& returnIndex ) const;
-	bool FindOutput( unsigned long signalIndex, unsigned long& returnIndex ) const;
-
-	DspCircuit* GetParentCircuit();
-	void SetParentCircuit( DspCircuit* parentCircuit );
+	DspSignal* GetOutputSignal( unsigned long outputIndex, unsigned long threadIndex );
 
 protected:
-	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs ) = 0;
+	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs ) {};
 
 	bool AddInput_( std::string inputName = "" );
 	bool AddOutput_( std::string outputName = "" );
@@ -140,7 +135,7 @@ protected:
 private:
 	DspCircuit* _parentCircuit;
 
-	unsigned long _threadCount;
+	unsigned long _bufferCount;
 
 	DspSignalBus _inputBus;
 	DspSignalBus _outputBus;
@@ -170,38 +165,6 @@ private:
 	virtual void _ProcessInputWire( DspWire* inputWire );
 	virtual void _ProcessInputWire( DspWire* inputWire, unsigned long threadNo );
 };
-
-//=================================================================================================
-
-template< class ValueType >
-bool DspComponent::SetInputValue( unsigned long inputIndex, const ValueType& newValue )
-{
-	return _inputBus.SetValue( inputIndex, newValue );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-template< class ValueType >
-bool DspComponent::SetInputValue( std::string inputName, const ValueType& newValue )
-{
-	return _inputBus.SetValue( inputName, newValue );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-template< class ValueType >
-bool DspComponent::GetOutputValue( unsigned long outputIndex, ValueType& returnValue )
-{
-	return _outputBus.GetValue( outputIndex, returnValue );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-template< class ValueType >
-bool DspComponent::GetOutputValue( std::string outputName, ValueType& returnValue )
-{
-	return _outputBus.GetValue( outputName, returnValue );
-}
 
 //=================================================================================================
 

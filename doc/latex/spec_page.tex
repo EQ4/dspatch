@@ -6,7 +6,7 @@ A circuit is comprised of a collection of interconnected components. Each compon
 
 
 
-\subsection*{2. The D\-S\-Patch Circuit System\-:}
+\subsection*{2. The \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} Circuit System\-:}
 
 {\bfseries 2.\-1 Structure\-:}
 
@@ -16,13 +16,13 @@ The nouns above are the classes we require in order to model our circuit in code
 
 {\bfseries 2.\-2.\-1 Component\-:}
 
-The component class will have a Tick() method responsible for acquiring its next set of inputs from its input wires and populating the component's input bus. To insure that these inputs are up-\/to-\/date, the dependent component first calls all of its input components' Tick() methods -\/hence recursively called in all components going backward through the circuit. The acquired input bus is then passed into a pure virtual method\-: Process() -\/it is the responsibility of the (derived) component creator to implement this virtual function. The Process() method has 2 input parameters\-: the input bus and the output bus. This method's purpose is to pull its required inputs out of the input bus, process these inputs, and populate the output bus with the results. These resultant outputs in the output bus are then acquired by dependent components via their Tick() functions.
+The component class will have a Tick() method responsible for acquiring its next set of inputs from its input wires and populating the component's input bus. To insure that these inputs are up-\/to-\/date, the dependent component first calls all of its input components' Tick() methods -\/hence recursively called in all components going backward through the circuit. The acquired input bus is then passed into a virtual method\-: Process() -\/it is the responsibility of the (derived) component creator to implement this virtual function. The Process() method has 2 input parameters\-: the input bus and the output bus. This method's purpose is to pull its required inputs out of the input bus, process these inputs, and populate the output bus with the results. These resultant outputs in the output bus are then acquired by dependent components via their Tick() functions.
 
 Component input and output buses (signal count, string I\-Ds etc.) will be configurable by derived component classes via protected base methods, whilst input wires to a component will be routable via public component class methods.
 
 The component class will also have a Reset() method. For optimization as well as to avoid feedback deadlocks, a component needs to be aware of whether or not it has already ticked during a circuit traversal so that if called to Tick() again, it can ignore the call. The Reset() method informs the component that the last circuit traversal has completed and hence can execute the next Tick() request.
 
-When a component is instantiated within a circuit, a unique string I\-D is required. This name is used to identify the component in the circuit's component collection.
+When a component is instantiated within a circuit, a unique string I\-D is optional. This name can be used to identify the component in the circuit's component collection.
 
 {\bfseries 1.\-2.\-2 Circuit\-:}
 
@@ -50,12 +50,12 @@ When a signal is instantiated, an optional unique string I\-D can be assigned. T
 
 \subsection*{3. Parallel Circuit Processing\-:}
 
-The multi-\/threading aspect of D\-S\-Patch is designed to allow the library user the ability to specify the number of threads in which he/she required the circuit to process, rather than the thread count growing as the system did. So for example, an application running on a quad core C\-P\-U could be limited to 4 threads in order to allow each core to handle just one thread each.
+The multi-\/threading aspect of \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} is designed to allow the library user the ability to specify the number of threads in which he/she required the circuit to process, rather than the thread count growing as the system does. So for example, an application running on a quad core C\-P\-U could be limited to 4 threads in order to allow each core to handle just one thread.
 
 {\bfseries 3.\-1 The Circuit Thread\-:}
 
-Circuits threads are threads that traverse entire circuits. The circuit runs through its array of components, calling each components' process method in a single thread loop. As each component is done processing, it hands over control to the next waiting circuit thread. Therefore, if you had 5 components in a process chain, and 5 circuit threads, at any point in time you could have one thread per component processing in parallel. With this in place, you now also have the option to select 0 circuit threads. In this state, the circuit's Tick() and Reset() methods can be called in a while loop, for example, in the main application thread. A null thread class that just implements stub thread methods allows for D\-S\-Patch to compile on platforms with no native thread support.
+Circuit threads are threads that traverse entire circuits. The circuit runs through its array of components, calling each components' process method in a single thread (circuit thread) loop. As each component is done processing, it hands over control to the next waiting circuit thread. Therefore, if you had 5 components in a process chain, and 5 circuit threads, at any point in time you could have one thread per component processing in parallel. With this in place, you now also have the option to select 0 circuit threads. In this state, the circuit's Tick() and Reset() methods will block the calling thread while all components in the circuit are processed, whereas with circuit threads enabled, the calling thread will block only if all circuit threads are busy. (A null thread class that implements stub thread methods allows for \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} to compile on platforms with no native thread support)
 
 {\bfseries 3.\-2 The Component Thread\-:}
 
-The component thread simply ticks a single component over and over. As the circuit class inherits from component, we use it's component thread to tick the circuit automatically whilst freeing up the main application thread for control. 
+The component thread simply ticks a single component over and over. As the circuit class inherits from component, we use it's component thread to \char`\"{}auto-\/tick\char`\"{} the circuit whilst freeing up the main application thread for control. In a circuit-\/less system of interconnected Dsp\-Components, each component must be auto-\/ticked in order for the component network to be parallel processed. Again, for non-\/threaded systems, a component's Tick() and Reset() methods can simply be called in a loop from the main application thread. 

@@ -119,11 +119,11 @@ void DspCircuitThread::_Run()
 		{
 			for( unsigned long i = 0; i < _components.size(); i++ )
 			{
-				_components[i]->ThreadReset( _threadNo );
+				_components[i]->ThreadTick( _threadNo );
 			}
 			for( unsigned long i = 0; i < _components.size(); i++ )
 			{
-				_components[i]->ThreadTick( _threadNo );
+				_components[i]->ThreadReset( _threadNo );
 			}
 		}
 

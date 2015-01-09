@@ -2,7 +2,7 @@
 \label{class_dsp_component}\index{Dsp\-Component@{Dsp\-Component}}
 
 
-Abstract base class for all D\-S\-Patch components.  
+Abstract base class for all \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} components.  
 
 
 
@@ -18,6 +18,18 @@ Inheritance diagram for Dsp\-Component\-:\begin{figure}[H]
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+void {\bfseries Set\-Component\-Name} (std\-::string component\-Name)\label{class_dsp_component_aa55f2a207ca6994034e3ffe85b6a23a3}
+
+\item 
+std\-::string {\bfseries Get\-Component\-Name} ()\label{class_dsp_component_ab4a9276a39adf1aa09737af618225198}
+
+\item 
+void {\bfseries Set\-Parent\-Circuit} ({\bf Dsp\-Circuit} $\ast$parent\-Circuit)\label{class_dsp_component_a65d802df3fd4dafa960d29fb0325153a}
+
+\item 
+{\bf Dsp\-Circuit} $\ast$ {\bfseries Get\-Parent\-Circuit} ()\label{class_dsp_component_a001f3cdb3b8e9c3ec9f609c681ed4a6c}
+
+\item 
 bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_abf0509fa67bc2c4864f2a32cd116ca33}
 
 \item 
@@ -28,6 +40,18 @@ bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, st
 
 \item 
 bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_aed39e15f7c71d0da6153e928f40cb62d}
+
+\item 
+bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_af59aa529298a2d39e87fb82ab0d3c6e9}
+
+\item 
+bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, std\-::string to\-Input)\label{class_dsp_component_aefd323ff61567f51e407c04a37d986d7}
+
+\item 
+bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, unsigned long to\-Input)\label{class_dsp_component_abedd938e2138e1b95a1b78a24237f220}
+
+\item 
+bool {\bfseries Connect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_a7ebdc419dc5cd71f10c52773d25c075c}
 
 \item 
 void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_a43d992808c64dd04892b06e40503b203}
@@ -42,6 +66,18 @@ void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component,
 void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_ac3830e4de1507f860a1cc70a0fecbe33}
 
 \item 
+void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, unsigned long to\-Input)\label{class_dsp_component_a2c90e7e0022d1cbac60f5f51203b2a1c}
+
+\item 
+void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, unsigned long from\-Output, std\-::string to\-Input)\label{class_dsp_component_aaccb8ceeb64186a36661d9c635df672a}
+
+\item 
+void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, unsigned long to\-Input)\label{class_dsp_component_ab9b750e30433bac7575c4a8bc1af5ed4}
+
+\item 
+void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} \&input\-Component, std\-::string from\-Output, std\-::string to\-Input)\label{class_dsp_component_a7e4ab98da1a1138f480399fc99744eb9}
+
+\item 
 void {\bfseries Disconnect\-Input} (unsigned long input\-Index)\label{class_dsp_component_a9fa9f43913650641233ac88d17bd620f}
 
 \item 
@@ -52,6 +88,24 @@ void {\bfseries Disconnect\-Input} ({\bf Dsp\-Component} $\ast$input\-Component)
 
 \item 
 void {\bfseries Disconnect\-Inputs} ()\label{class_dsp_component_aa1468c9d4a6ab92a9992361ad0a5ae4e}
+
+\item 
+unsigned long {\bfseries Get\-Input\-Count} ()\label{class_dsp_component_aff696890146a19d11c275f8ec5db00ea}
+
+\item 
+unsigned long {\bfseries Get\-Output\-Count} ()\label{class_dsp_component_a3883e91532aff3e3904f9efdca22a6c4}
+
+\item 
+bool {\bfseries Find\-Input} (std\-::string signal\-Name, unsigned long \&return\-Index) const \label{class_dsp_component_ab89793a6179926d4c509700ad27f5350}
+
+\item 
+bool {\bfseries Find\-Input} (unsigned long signal\-Index, unsigned long \&return\-Index) const \label{class_dsp_component_afbc8b99a62de4d548d3212ddc35f5ac8}
+
+\item 
+bool {\bfseries Find\-Output} (std\-::string signal\-Name, unsigned long \&return\-Index) const \label{class_dsp_component_a8d0e5b339ac09c4754b05f0c570c7331}
+
+\item 
+bool {\bfseries Find\-Output} (unsigned long signal\-Index, unsigned long \&return\-Index) const \label{class_dsp_component_a40f3f6d88573484c96192dd9fb85f045}
 
 \item 
 void {\bfseries Tick} ()\label{class_dsp_component_ac8e3f702b1284fb7b4fca5ade56e3d3f}
@@ -72,10 +126,10 @@ virtual void {\bfseries Pause\-Auto\-Tick} ()\label{class_dsp_component_a9930395
 virtual void {\bfseries Resume\-Auto\-Tick} ()\label{class_dsp_component_ad06e7e1a8c446d5c71e021e1c6b437f9}
 
 \item 
-void {\bfseries Set\-Thread\-Count} (unsigned long thread\-Count)\label{class_dsp_component_ad4327f345871a4b632dcd42ea128c730}
+void {\bfseries Set\-Buffer\-Count} (unsigned long buffer\-Count)\label{class_dsp_component_ab47078f040f78f47f9a5a9b39841c174}
 
 \item 
-unsigned long {\bfseries Get\-Thread\-Count} ()\label{class_dsp_component_a01b98818f142cae29c7c2d0cd6eaf0f3}
+unsigned long {\bfseries Get\-Buffer\-Count} ()\label{class_dsp_component_a7572a9631851fc19eefa874b1b3f24ba}
 
 \item 
 void {\bfseries Thread\-Tick} (unsigned long thread\-No)\label{class_dsp_component_abf80a2c68144f51810fbdbdf194f4067}
@@ -84,64 +138,22 @@ void {\bfseries Thread\-Tick} (unsigned long thread\-No)\label{class_dsp_compone
 void {\bfseries Thread\-Reset} (unsigned long thread\-No)\label{class_dsp_component_ab7de48de9cd4b750cc7d6b4faa33897f}
 
 \item 
-{\footnotesize template$<$class Value\-Type $>$ }\\bool {\bfseries Set\-Input\-Value} (unsigned long input\-Index, const Value\-Type \&new\-Value)\label{class_dsp_component_a2c647c74a7eb4025403f2b6f8ef7836a}
-
-\item 
-{\footnotesize template$<$class Value\-Type $>$ }\\bool {\bfseries Set\-Input\-Value} (std\-::string input\-Name, const Value\-Type \&new\-Value)\label{class_dsp_component_a3042b5c2dc2672947869b8b96ae0efce}
-
-\item 
-{\footnotesize template$<$class Value\-Type $>$ }\\bool {\bfseries Get\-Output\-Value} (unsigned long output\-Index, Value\-Type \&return\-Value)\label{class_dsp_component_a29a40ff583848103dfd5f1c3850d3a74}
-
-\item 
-{\footnotesize template$<$class Value\-Type $>$ }\\bool {\bfseries Get\-Output\-Value} (std\-::string output\-Name, Value\-Type \&return\-Value)\label{class_dsp_component_ad7532ea2a04b3103337fa23fe2325588}
-
-\item 
 bool {\bfseries Set\-Input\-Signal} (unsigned long input\-Index, const {\bf Dsp\-Signal} $\ast$new\-Signal)\label{class_dsp_component_a12f7999bfb2185db4285f7ec0d68bb90}
 
 \item 
-bool {\bfseries Set\-Input\-Signal} (std\-::string input\-Name, const {\bf Dsp\-Signal} $\ast$new\-Signal)\label{class_dsp_component_a9597e82d2854a364e6f8e4eca77bc392}
+bool {\bfseries Set\-Input\-Signal} (unsigned long input\-Index, unsigned long thread\-Index, const {\bf Dsp\-Signal} $\ast$new\-Signal)\label{class_dsp_component_af3b17d9a9d9bf80dd81260ae38643208}
 
 \item 
 {\bf Dsp\-Signal} $\ast$ {\bfseries Get\-Output\-Signal} (unsigned long output\-Index)\label{class_dsp_component_a09d5156797f1e36c3c1a5dd6dbd34e07}
 
 \item 
-{\bf Dsp\-Signal} $\ast$ {\bfseries Get\-Output\-Signal} (std\-::string output\-Name)\label{class_dsp_component_a5adc703ac04e5cb3a47531bfc9457c11}
-
-\item 
-unsigned long {\bfseries Get\-Input\-Count} ()\label{class_dsp_component_aff696890146a19d11c275f8ec5db00ea}
-
-\item 
-unsigned long {\bfseries Get\-Output\-Count} ()\label{class_dsp_component_a3883e91532aff3e3904f9efdca22a6c4}
-
-\item 
-bool {\bfseries Set\-Component\-Name} (std\-::string component\-Name)\label{class_dsp_component_a7646b66d8301ee002f78b1a5ab7d852f}
-
-\item 
-std\-::string {\bfseries Get\-Component\-Name} ()\label{class_dsp_component_ab4a9276a39adf1aa09737af618225198}
-
-\item 
-bool {\bfseries Find\-Input} (std\-::string signal\-Name, unsigned long \&return\-Index) const \label{class_dsp_component_ab89793a6179926d4c509700ad27f5350}
-
-\item 
-bool {\bfseries Find\-Input} (unsigned long signal\-Index, unsigned long \&return\-Index) const \label{class_dsp_component_afbc8b99a62de4d548d3212ddc35f5ac8}
-
-\item 
-bool {\bfseries Find\-Output} (std\-::string signal\-Name, unsigned long \&return\-Index) const \label{class_dsp_component_a8d0e5b339ac09c4754b05f0c570c7331}
-
-\item 
-bool {\bfseries Find\-Output} (unsigned long signal\-Index, unsigned long \&return\-Index) const \label{class_dsp_component_a40f3f6d88573484c96192dd9fb85f045}
-
-\item 
-{\bf Dsp\-Circuit} $\ast$ {\bfseries Get\-Parent\-Circuit} ()\label{class_dsp_component_a001f3cdb3b8e9c3ec9f609c681ed4a6c}
-
-\item 
-void {\bfseries Set\-Parent\-Circuit} ({\bf Dsp\-Circuit} $\ast$parent\-Circuit)\label{class_dsp_component_a65d802df3fd4dafa960d29fb0325153a}
+{\bf Dsp\-Signal} $\ast$ {\bfseries Get\-Output\-Signal} (unsigned long output\-Index, unsigned long thread\-Index)\label{class_dsp_component_ac7d953d3caa7d578c034a7715e4e7f01}
 
 \end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void {\bfseries Process\-\_\-} ({\bf Dsp\-Signal\-Bus} \&inputs, {\bf Dsp\-Signal\-Bus} \&outputs)=0\label{class_dsp_component_a270c5825e9646fe84953182b98a126ed}
+virtual void {\bfseries Process\-\_\-} ({\bf Dsp\-Signal\-Bus} \&inputs, {\bf Dsp\-Signal\-Bus} \&outputs)\label{class_dsp_component_a0f6035cae2be7ba3f5abf799d05bb6d8}
 
 \item 
 bool {\bfseries Add\-Input\-\_\-} (std\-::string input\-Name=\char`\"{}\char`\"{})\label{class_dsp_component_ab674f77c28364ec35014206d743e9427}
@@ -159,9 +171,9 @@ void {\bfseries Clear\-Outputs\-\_\-} ()\label{class_dsp_component_a3cd65fe02f00
 
 
 \subsection{Detailed Description}
-Abstract base class for all D\-S\-Patch components. 
+Abstract base class for all \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} components. 
 
-Classes derived from \doxyref{Dsp\-Component}{p.}{class_dsp_component} can be added to an \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} and routed to and from other Dsp\-Components. On construction, derived classes must configure the component's I\-O buses by calling Add\-Input\-\_\-() and Add\-Output\-\_\-() respectively. Derived classes must also implement the pure virtual method\-: Process\-\_\-(). The Process\-\_\-() method is a callback from the D\-S\-Patch engine that occurs when a new set of input signals is ready for processing. The Process\-\_\-() method has 2 parameters\-: the input bus and the output bus. This method's purpose is to pull its required inputs out of the input bus, process these inputs, and populate the output bus with the results (see \doxyref{Dsp\-Signal\-Bus}{p.}{class_dsp_signal_bus}).
+Classes derived from \doxyref{Dsp\-Component}{p.}{class_dsp_component} can be added to an \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit} and routed to and from other Dsp\-Components. On construction, derived classes must configure the component's I\-O buses by calling Add\-Input\-\_\-() and Add\-Output\-\_\-() respectively. Derived classes must also implement the virtual method\-: Process\-\_\-(). The Process\-\_\-() method is a callback from the \doxyref{D\-S\-Patch}{p.}{class_d_s_patch} engine that occurs when a new set of input signals is ready for processing. The Process\-\_\-() method has 2 parameters\-: the input bus and the output bus. This method's purpose is to pull its required inputs out of the input bus, process these inputs, and populate the output bus with the results (see \doxyref{Dsp\-Signal\-Bus}{p.}{class_dsp_signal_bus}).
 
 In order for a component to do any work it must be ticked over. This is performed by repeatedly calling the Tick() and Reset() methods. The Tick() method is responsible for acquiring the next set of input signals from component input wires and populating the component's input bus. To insure that these inputs are up-\/to-\/date, the dependent component first calls all of its input components' Tick() methods -\/hence recursively called in all components going backward through the circuit (This is what's classified as a \char`\"{}pull system\char`\"{}). The acquired input bus is then passed to the Process\-\_\-() method. The Reset() method then informs the component that the last circuit traversal has completed and hence can execute the next Tick() request. A component's Tick() and Reset() methods can be called in a loop from the main application thread, or alternatively, by calling Start\-Auto\-Tick(), a seperate thread will spawn, automatically calling Tick() and Reset() methods continuously (This is most commonly used to tick over an instance of \doxyref{Dsp\-Circuit}{p.}{class_dsp_circuit}). 
 

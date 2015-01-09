@@ -22,32 +22,84 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ************************************************************************/
 
+#ifndef DSPATCH_H
+#define DSPATCH_H
+
+//-------------------------------------------------------------------------------------------------
+
 #include "../src/DspCircuit.h"
+
+//=================================================================================================
+/// System-wide DSPatch functionality
+
+/** This class provides global DSPatch functionality.
+
+At the core of the DSPatch framework is what's known as the "global circuit". The DSPatch class and
+hence, the global circuit provides a transparent workspace for "global scoped components"
+(components not within a DspCircuit) to benefit from circuit parallel processing. As it is not
+required that components be explicitly added to a DspCircuit in order to be routed etc., in order
+for these global scoped components to benefit from the multi threading associated with the circuit
+scheduler, they are automatically added to the DSPatch global circuit when parallel processing is
+required (i.e. StartAutoTick() is called). Although global circuit operations are automatic and
+transparent to the user, if required, the user is may set the number of threads used by the global
+circuit by calling SetGlobalThreadCount(). 
+
+Lastly, the Finalize() method must be called on application exit in order for DSPatch to perform
+the necessary memory cleanup.*/
+
+class DLLEXPORT DSPatch
+{
+public:	
+	static bool IsThisGlobalCircuit( DspComponent* thisComponent );
+
+	static bool AddGlobalComponent( DspComponent* component, std::string componentName = "" );
+	static void RemoveGlobalComponent( DspComponent* component, bool deleteComponent = false );
+
+	static unsigned long GetGlobalComponentCount();
+
+	static void StartGlobalAutoTick();
+	static void StopGlobalAutoTick();
+
+	static void SetGlobalThreadCount( unsigned long threadCount );
+
+	static void Finalize();
+
+private:
+	static DspCircuit* _globalCircuit;
+};
+
+//=================================================================================================
+
+#endif // DSPATCH_H
+
+//=================================================================================================
 
 /**
 
 \mainpage Welcome
 
 	\section intro_sec Introduction
-		DSPatch, pronounced "dispatch", is a powerful C++ flow-based programming library that allows you
-		to create and route (or "patch") high performance signal processing circuits. DSPatch is not
-		limited to any particular type of circuit or signal, its generic object-oriented API allows you to
-		create almost any process chain imaginable, from simple logic circuits to full-blown electronics
-		simulation. DSPatch's simple framework makes development quick and easy, allowing you to hit the
-		ground running on every project.
+		DSPatch, pronounced "dispatch", is a powerful C++ flow-based programming library that allows
+    you to create and route (or "patch") high performance data processing circuits. DSPatch is not
+		limited to any particular type of circuit or signal, its generic object-oriented API allows you
+		to create almost any process chain imaginable, from simple logic circuits to full-blown
+		electronics simulation. DSPatch's simple framework makes development quick and easy, allowing
+    you to hit the ground running on every project.
 
-		The two most important classes to consider are DspComponent and DspCircuit. In order to route
+    DSPatch is designed around the concept of a "circuit" containing "components", interconnected
+    via "wires" that transfer "signals" to and from input and output "buses". For more detail on
+    how DSPatch works, check out the <a href="spec_page.html"><b>DSPatch Design Specification</b></a>.
+    
+    The two most important classes to consider are DspComponent and DspCircuit.  In order to route
 		data to and from DspComponents they can either be added to an DspCircuit, where they can be
-		wired together (recommended), or they can be wired directly via public DspComponent methods. The
-		DSPatch engine takes care of all data transfer between interconnected components, when data is
-		ready for a component to process, a callback: "Process_()" is executed in that component. For a
-		component to form part of the DSPatch framework, designers simply have to derive their component
-		from the DspComponent base class, configure the component IO in the component constructor, and
-		implement the virtual Process_() callback method.
-
-		For more detail on how DSPatch works, check out the <a href="spec_page.html"><b>DSPatch Design Specification</b></a>.
-
-	\n
+		wired together (recommended), or they can be wired directly via public DspComponent methods.
+    The DSPatch engine takes care of data transfer between interconnected components, when data is
+    ready for a component to process, a callback: "Process_()" is executed in that component. For a
+    component to form part of the DSPatch framework, designers simply have to derive their
+    component from the DspComponent base class, configure the component's IO buses, and implement
+    the virtual Process_() callback method.
+    
+  \n
 
 	\section features_sec Features
 		- Automatic branch synchronization.
@@ -70,7 +122,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 			Download the project archive and extract the contents anywhere you like.
 
 		\subsection step2 Step 2: Read the Tutorials
-			The "Tutorials" section (below) covers 2 vital aspects to developing with DSPatch:
+			The "Tutorials" section below covers 2 vital aspects to developing with DSPatch:
 			1. Creating a DspComponent - This tutorial is a start to finish demonstration of how to
 			create a DSPatch component.
 			2. Building a DspCircuit - In this tutorial you will learn how to use the DSPatch framework
@@ -115,7 +167,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 		\subsection create_component 1. Creating a DspComponent
 			In order to create a new DspComponent, we must derive our component class from the
-			DspComponent base class, configure component IO, and implement the inherited pure virtual
+			DspComponent base class, configure component IO, and implement the inherited virtual
 			"Process_()" method.
 			
 			Lets take a look at how we would go about creating a boolean logic "AND" component. This
@@ -124,6 +176,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 			We begin by deriving our new "DspAnd" component from DspComponent:
 
 			\code
+// 1. Derive component class from DspComponent
+// ===========================================
 class DspAnd : public DspComponent
 {
 			\endcode
@@ -136,6 +190,8 @@ class DspAnd : public DspComponent
 
 			\code
 public:
+	// 2. Configure component IO buses
+	// ===============================
 	DspAnd()
 	{
 		// add 2 inputs
@@ -152,7 +208,7 @@ public:
 			optional. If we do not require a signal to have a string ID associated with it, we can simply
 			leave the parenthesis empty.
 
-			Lastly, our component must implement the DspComponent pure virtual Process_() method. This is
+			Lastly, our component must implement the DspComponent virtual Process_() method. This is
 			where our component does it's work. The Process_() method provides us with 2 parameters: the
 			input bus and the output bus. It is our duty as the component designer to pull the inputs we
 			require out of the input bus, process them accordingly, and populate the output bus with the
@@ -160,18 +216,20 @@ public:
 
 			\code
 protected:
+	// 3. Implement virtual Process_() method
+	// ======================================
 	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 	{
 		// create local stack variables to hold input values
-		bool state1 = false;
-		bool state2 = false;
+		bool bool1 = false;
+		bool bool2 = false;
 
 		// get values from inputs bus ( GetValue() returns true if successful )
-		if( inputs.GetValue( "input1", state1 ) &&  // equivalent: inputs.GetValue( 0, state1 );
-		    inputs.GetValue( "input2", state2 ) )   // equivalent: inputs.GetValue( 1, state2 );
+		if( inputs.GetValue( 0, bool1 ) && //OR inputs.GetValue( "input1", bool1 );
+		    inputs.GetValue( 1, bool2 ) )  //OR inputs.GetValue( "input2", bool2 );
 		{
-			// set output as the result of state1 AND state2
-			outputs.SetValue( "output", state1 && state2 );	// equivalent: outputs.SetValue( 0, state1 && state2 );
+			// set output as the result of bool1 AND bool2
+			outputs.SetValue( 0, bool1 && bool2 ); //OR outputs.SetValue( "output", bool1 && bool2 );
 		}
 	}
 };
@@ -187,7 +245,8 @@ protected:
 			In order for us to get any real use out of our DspComponents, we need them to interact with
 			each other. This is where the DspCircuit class comes in. A DspCircuit is a workspace for
 			adding and routing DspComponents. In this section we will have a look at how to create a
-			simple DSPatch application using DspCircuit.
+			simple DSPatch application that generates random boolean pairs, performs a logic AND on each
+			pair, then prints the result to screen.
 
 			First we must include the DSPatch header and any other headers that contain DspComponents we
 			wish to use in our application:
@@ -211,10 +270,10 @@ void main()
 
 	// 2. Create instances of the components needed for our circuit
 	// ============================================================
-	DspRandBool* randBoolGen1 = new DspRandBool();
-	DspRandBool* randBoolGen2 = new DspRandBool();
-	DspAnd* logicAnd = new DspAnd();
-	DspPrintBool* boolPrinter = new DspPrintBool();
+	DspRandBool randBoolGen1;
+	DspRandBool randBoolGen2;
+	DspAnd logicAnd;
+	DspPrintBool boolPrinter;
 		\endcode
 
 		Now that we have a circuit and some components, lets add all of our components to the circuit:
@@ -222,19 +281,18 @@ void main()
 		\code
 	// 3. Add component instances to circuit
 	// =====================================
-
 	circuit.AddComponent( randBoolGen1, "Bool Generator 1" );
 	circuit.AddComponent( randBoolGen2, "Bool Generator 2" );
 	circuit.AddComponent( logicAnd, "Logic AND" );
 	circuit.AddComponent( boolPrinter, "Bool Printer" );
 		\endcode
 
-		The string values passed into the AddComponent() method calls are component names / IDs. Unlike
-		signal names, component names are compulsory when added to a circuit. Although we still have
-		the option of referencing a component via it's pointer in a circuit, forcing component string
-		IDs causes circuit objects to be entirely self-contained. This gives us the ability to pass
-		circuits around by reference, allowing the receiver access to all circuit components via their
-		string ID references.
+		The string values passed into the AddComponent() method calls are component names / IDs.
+		Although we still have the option of referencing a component via it's pointer in a circuit,
+		component string IDs can allow circuit objects to be entirely self-contained. This could give
+		us the ability to pass circuits around by reference, allowing the receiver access to all
+		circuit components via their string IDs, without having to manage both component and circuit
+		references everywhere.
 
 		We are now ready to begin wiring the circuit:
 
@@ -262,6 +320,10 @@ void main()
 	                              |"Logic AND"| 0 ---> 0 ["Bool Printer"]
 	["Bool Generator 2"] 0 ---> 1 |___________|
 		\endcode
+
+		*N.B. Each component input can only accept one wire at a time. When another wire is connected
+		to an input that already has a connected wire, that wire is replaced with the new one. One
+		output, on the other hand, can be distributed to multiple inputs.
 
 		Lastly, in order for our circuit to do any work it must be ticked over. This is performed by
 		repeatedly calling the circuit's Tick() and Reset() methods. These methods can be called
@@ -293,7 +355,15 @@ void main()
 	// Press any key to quit
 	getchar();
 
-	// DspCircuit's destructor takes care of component garbage collection
+		\endcode
+
+		Lastly, the DSPatch::Finalize() method must be called on application exit in order for DSPatch
+		to perform its own internal memory cleanup.
+
+		\code
+	// 6. Clean up
+	// ===========
+	DSPatch::Finalize();
 }
 		\endcode
 
@@ -303,11 +373,18 @@ void main()
 
 	\section release_notes Release Notes
 
+		\subsection v23 v.2.3 (15 December 2012)
+		- Circuit interface simplified.
+		- Completed "circuit-less" component processing.
+		- Component names now optional.
+		- DspCircuit no longer deletes external memory.
+		- Optimized circuit-in-circuit processing.
+
 		\subsection v22 v.2.2 (08 December 2012)
+		- A component can no longer exist in multiple circuits.
 		- Added coding tutorials
 		- Cleaned up project directory structure.
 		- Comments and documentation updates.
-		- Components can no longer exist in multiple circuits.
 		- Resolved component / circuit thread count clash.
 
 		\subsection v21 v.2.1 (06 November 2012)
@@ -329,6 +406,9 @@ void main()
 		- Added 2 more components to the DspDemo project.
 		- Optimized threaded circuit processing.
 		- AddComponent() updated to accept pre-constructed DspComponents.
+
+		\subsection v10 v.1.0 (14 October 2012)
+		- Extracted routing engine behind "Crosstalk" to form: "DSPatch".
 
 	\page spec_page DSPatch Design Specification
 
@@ -366,7 +446,7 @@ next set of inputs from its input wires and populating the component's input
 bus. To insure that these inputs are up-to-date, the dependent component
 first calls all of its input components' Tick() methods -hence recursively
 called in all components going backward through the circuit.  The acquired
-input bus is then passed into a pure virtual method: Process() -it is the
+input bus is then passed into a virtual method: Process() -it is the
 responsibility of the (derived) component creator to implement this virtual
 function. The Process() method has 2 input parameters: the input bus and the
 output bus. This method's purpose is to pull its required inputs out of the
@@ -387,7 +467,7 @@ component that the last circuit traversal has completed and hence can execute
 the next Tick() request.
 
 When a component is instantiated within a circuit, a unique string ID is
-required. This name is used to identify the component in the circuit's
+optional. This name can be used to identify the component in the circuit's
 component collection.
 
 **1.2.2 Circuit:**
@@ -452,27 +532,31 @@ ______________________________________________________________________________
 
 The multi-threading aspect of DSPatch is designed to allow the library user the
 ability to specify the number of threads in which he/she required the circuit
-to process, rather than the thread count growing as the system did. So for
+to process, rather than the thread count growing as the system does. So for
 example, an application running on a quad core CPU could be limited to 4
-threads in order to allow each core to handle just one thread each.
+threads in order to allow each core to handle just one thread.
 
 **3.1 The Circuit Thread:**
 
-Circuits threads are threads that traverse entire circuits. The circuit runs
+Circuit threads are threads that traverse entire circuits. The circuit runs
 through its array of components, calling each components' process method in a
-single thread loop. As each component is done processing, it hands over control
-to the next waiting circuit thread. Therefore, if you had 5 components in a
-process chain, and 5 circuit threads, at any point in time you could have one
-thread per component processing in parallel. With this in place, you now also
-have the option to select 0 circuit threads. In this state, the circuit's
-Tick() and Reset() methods can be called in a while loop, for example, in the
-main application thread. A null thread class that just implements stub thread
-methods allows for DSPatch to compile on platforms with no native thread
-support.
+single thread (circuit thread) loop. As each component is done processing, it
+hands over control to the next waiting circuit thread. Therefore, if you had 5
+components in a process chain, and 5 circuit threads, at any point in time you
+could have one thread per component processing in parallel. With this in place,
+you now also have the option to select 0 circuit threads. In this state, the
+circuit's Tick() and Reset() methods will block the calling thread while all
+components in the circuit are processed, whereas with circuit threads enabled,
+the calling thread will block only if all circuit threads are busy. (A null
+thread class that implements stub thread methods allows for DSPatch to compile
+on platforms with no native thread support)
 
 **3.2 The Component Thread:**
 
 The component thread simply ticks a single component over and over. As the
-circuit class inherits from component, we use it's component thread to tick
-the circuit automatically whilst freeing up the main application thread for
-control. */
+circuit class inherits from component, we use it's component thread to
+"auto-tick" the circuit whilst freeing up the main application thread for
+control. In a circuit-less system of interconnected DspComponents, each
+component must be auto-ticked in order for the component network to be parallel
+processed. Again, for non-threaded systems, a component's Tick() and Reset()
+methods can simply be called in a loop from the main application thread.*/
