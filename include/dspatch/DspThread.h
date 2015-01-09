@@ -22,62 +22,22 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ************************************************************************/
 
-#ifndef DSPGAIN_H
-#define DSPGAIN_H
+#ifdef _WIN32
 
-#include <DSPatch.h>
+  #define DLLEXPORT __declspec(dllexport)
+  #include <dspatch/DspThreadWin.h>
 
-//=================================================================================================
+  #pragma warning(disable:4251) // disable class needs to have dll-interface warning
+  #pragma warning(disable:4275) // disable non dll-interface class used as base warning
 
-class DspGain : public DspComponent
-{
-public:
-  DspGain()
-  : _gain( 1.0 )
-  {
-    AddInput_();
-    AddOutput_();
-  }
-  ~DspGain() {}
+#elif DSP_NOTHREADS
 
-  void SetGain( float gain )
-  {
-    if( gain < 0.0 )
-    {
-      _gain = 0;
-    }
-    else
-    {
-      _gain = gain;
-    }
-  }
+  #define DLLEXPORT
+  #include <dspatch/DspThreadNull.h>
 
-  float GetGain() const
-  {
-    return _gain;
-  }
+#else
 
-protected:
-  virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
-  {
-    if( !inputs.GetValue( 0, _stream ) )
-    {
-      _stream.assign( _stream.size(), 0 );
-    }
+  #define DLLEXPORT
+  #include <dspatch/DspThreadUnix.h>
 
-    for( unsigned long i = 0; i < _stream.size(); i++ )
-    {
-      _stream[i] *= _gain;
-    }
-
-    outputs.SetValue( 0, _stream );
-  }
-
-private:
-  std::vector< float > _stream;
-  float _gain;
-};
-
-//=================================================================================================
-
-#endif // DSPGAIN_H
+#endif

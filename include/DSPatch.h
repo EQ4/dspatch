@@ -27,7 +27,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 //-------------------------------------------------------------------------------------------------
 
-#include "../src/DspCircuit.h"
+#include <dspatch/DspCircuit.h>
 
 //=================================================================================================
 /// System-wide DSPatch functionality
@@ -251,8 +251,8 @@ protected:
 	wish to use in our application:
 
 	\code
-#include "DSPatch.h"
-#include "components.h"
+#include <DSPatch.h>
+#include <components.h>
 	\endcode
 
 	Next, we must instantiate our DspCircuit object and all DspComponent objects needed for our
@@ -370,6 +370,11 @@ void main()
 \n
 
 \section release_notes Release Notes
+
+\subsection v260 v.2.60 (19 January 2014)
+  - Replaced project files with more flexible CMakeLists.
+  - DspWaveStreamer fix (don't assume standard type sizes).
+  - Reduced size of distributable.
 
 \subsection v251 v.2.51 (13 September 2013)
   - Fixed Unix thread detach error.

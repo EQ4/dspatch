@@ -22,7 +22,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ************************************************************************/
 
-#include "DspWaveStreamer.h"
+#include <DspWaveStreamer.h>
 
 #include <fstream>
 #include <iostream>
@@ -31,7 +31,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //=================================================================================================
 
 DspWaveStreamer::DspWaveStreamer()
-: _waveData( NULL ),
+: _waveData( 0 ),
   _isPlaying( false ),
   _bufferSize( 512 ),
   _sampleIndex( 0 ),
@@ -80,7 +80,7 @@ bool DspWaveStreamer::LoadFile( const char* filePath )
     return false;
   }
   inFile.seekg( 4, std::ios::beg ); //get file size
-  inFile.read( reinterpret_cast<char*>( &dwFileSize ), sizeof( dwFileSize ) );
+  inFile.read( reinterpret_cast<char*>( &dwFileSize ), 4 );
   if( dwFileSize <= 16 )
   {
     inFile.close();
@@ -101,7 +101,7 @@ bool DspWaveStreamer::LoadFile( const char* filePath )
     inFile.seekg( i, std::ios::beg );
     inFile.read( dwChunkId, 4 );
     inFile.seekg( i + 4, std::ios::beg );
-    inFile.read( reinterpret_cast<char*>( &dwChunkSize ), sizeof( dwChunkSize ) );
+    inFile.read( reinterpret_cast<char*>( &dwChunkSize ), 4 );
     if( !strcmp( dwChunkId, "fmt " ) )
     {
       inFile.seekg( i + 8, std::ios::beg );
@@ -136,7 +136,7 @@ bool DspWaveStreamer::LoadFile( const char* filePath )
     inFile.seekg( i, std::ios::beg );
     inFile.read( dwChunkId, 4 );
     inFile.seekg( i + 4, std::ios::beg );
-    inFile.read( reinterpret_cast<char*>( &dwChunkSize ), sizeof( dwChunkSize ) );
+    inFile.read( reinterpret_cast<char*>( &dwChunkSize ), 4 );
     if( !strcmp( dwChunkId, "data" ) )
     {
       _waveData.resize( dwChunkSize / 2 );

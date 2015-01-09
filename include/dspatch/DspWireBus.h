@@ -22,60 +22,50 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ************************************************************************/
 
-#include <dspatch/DspSignal.h>
+#ifndef DSPWIREBUS_H
+#define DSPWIREBUS_H
+
+//-------------------------------------------------------------------------------------------------
+
+#include <vector>
+
+#include <dspatch/DspWire.h>
+#include <dspatch/DspThread.h>
+
+class DspComponent;
+
+//=================================================================================================
+/// DspWire container
+
+/**
+A DspWireBus contains DspWires (see DspWire). Each component contains an input wire bus. Via
+the Tick() method, a DspComponent uses it's input wire bus to retrieve it's input signals from
+incoming linked components, as mapped out in each DspWire. The DspCircuit class has an additional 2
+wire buses use to connect the circuit's IO signals to and from it's internal components.
+*/
+
+class DLLEXPORT DspWireBus
+{
+public:
+  DspWireBus( bool isLinkedComponentReceivingSignals = false );
+  virtual ~DspWireBus();
+
+  bool AddWire( DspComponent* linkedComponent, unsigned short fromSignalIndex, unsigned short toSignalIndex );
+
+  bool RemoveWire( unsigned short wireIndex );
+  bool RemoveWire( DspComponent* linkedComponent, unsigned short fromSignalIndex, unsigned short toSignalIndex );
+
+  void RemoveAllWires();
+
+  DspWire* GetWire( unsigned short wireIndex );
+
+  unsigned short GetWireCount() const;
+
+private:
+  bool _isLinkedComponentReceivingSignals;
+  std::vector< DspWire > _wires;
+};
 
 //=================================================================================================
 
-DspSignal::DspSignal( std::string signalName )
-: _signalName( signalName ),
-  _valueAvailable( false ) {}
-
-//-------------------------------------------------------------------------------------------------
-
-DspSignal::~DspSignal() {};
-
-//=================================================================================================
-
-bool DspSignal::SetSignal( const DspSignal* newSignal )
-{
-  if( newSignal != NULL )
-  {
-    if( newSignal->_valueAvailable == false )
-    {
-      return false;
-    }
-    else
-    {
-      _signalValue.CopyFrom( newSignal->_signalValue );
-      _valueAvailable = true;
-      return true;
-    }
-  }
-  else
-  {
-    return false;
-  }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void DspSignal::ClearValue()
-{
-  _valueAvailable = false;
-}
-
-//-------------------------------------------------------------------------------------------------
-
-const std::type_info& DspSignal::GetSignalType() const
-{
-  return _signalValue.GetType();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-std::string DspSignal::GetSignalName() const
-{
-  return _signalName;
-}
-
-//=================================================================================================
+#endif // DSPWIREBUS_H

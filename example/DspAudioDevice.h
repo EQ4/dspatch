@@ -25,7 +25,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #ifndef DSPAUDIODEVICE_H
 #define DSPAUDIODEVICE_H
 
-#include "../include/DSPatch.h"
+#include <DSPatch.h>
 
 struct RtAudioMembers;
 
@@ -64,9 +64,6 @@ private:
   unsigned long _sampleRate;
 
   unsigned short _deviceCount;
-
-  unsigned short _inputDevice;
-  unsigned short _outputDevice;
 
   DspMutex _buffersMutex;
   DspMutex _syncMutex;
