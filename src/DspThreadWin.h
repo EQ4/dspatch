@@ -91,6 +91,7 @@ private:
 
   virtual void _Run() = 0;
 
+private:
   HANDLE _threadHandle;
 };
 

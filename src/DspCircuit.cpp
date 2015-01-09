@@ -93,7 +93,7 @@ void DspCircuit::SetThreadCount( unsigned short threadCount )
     // set all components to the new thread count
     for( unsigned short i = 0; i < _components.size(); i++ )
     {
-      _components[i]->SetBufferCount( threadCount );
+      _components[i]->_SetBufferCount( threadCount );
     }
 
     ResumeAutoTick();
@@ -121,6 +121,10 @@ bool DspCircuit::AddComponent( DspComponent* component, std::string componentNam
 
     unsigned short componentIndex;
 
+    if( component->_GetParentCircuit() != NULL )
+    {
+      return false; // if the component is already part of another circuit
+    }
     if( _FindComponent( component, componentIndex ) )
     {
       return false; // if the component is already in the array
@@ -131,8 +135,8 @@ bool DspCircuit::AddComponent( DspComponent* component, std::string componentNam
     }
 
     // components within the circuit need to have as many buffers as there are threads in the circuit
-    component->SetParentCircuit( this );
-    component->SetBufferCount( _circuitThreads.size() );
+    component->_SetParentCircuit( this );
+    component->_SetBufferCount( _circuitThreads.size() );
     component->SetComponentName( componentName );
 
     PauseAutoTick();
@@ -246,16 +250,16 @@ bool DspCircuit::AddOutput( std::string outputName )
 
 //-------------------------------------------------------------------------------------------------
 
-void DspCircuit::ClearInputs()
+void DspCircuit::RemoveInputs()
 {
-  ClearInputs_();
+  RemoveInputs_();
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void DspCircuit::ClearOutputs()
+void DspCircuit::RemoveOutputs()
 {
-  ClearOutputs_();
+  RemoveOutputs_();
 }
 
 //=================================================================================================
@@ -274,7 +278,7 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
     {
       wire = _inToInWires.GetWire( i );
       signal = inputs.GetSignal( wire->fromSignalIndex );
-      wire->linkedComponent->SetInputSignal( wire->toSignalIndex, signal );
+      wire->linkedComponent->_SetInputSignal( wire->toSignalIndex, signal );
     }
 
     // tick all internal components
@@ -293,7 +297,7 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
     for( unsigned short i = 0; i < _outToOutWires.GetWireCount(); i++ )
     {
       wire = _outToOutWires.GetWire( i );
-      signal = wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex );
+      signal = wire->linkedComponent->_GetOutputSignal( wire->fromSignalIndex );
       outputs.SetSignal( wire->toSignalIndex, signal );
     }
   }
@@ -307,7 +311,7 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
     for( unsigned short i = 0; i < _outToOutWires.GetWireCount(); i++ )
     {
       wire = _outToOutWires.GetWire( i );
-      signal = wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex, _currentThreadIndex );
+      signal = wire->linkedComponent->_GetOutputSignal( wire->fromSignalIndex, _currentThreadIndex );
       outputs.SetSignal( wire->toSignalIndex, signal );
     }
 
@@ -316,7 +320,7 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
     {
       wire = _inToInWires.GetWire( i );
       signal = inputs.GetSignal( wire->fromSignalIndex );
-      wire->linkedComponent->SetInputSignal( wire->toSignalIndex, _currentThreadIndex, signal );
+      wire->linkedComponent->_SetInputSignal( wire->toSignalIndex, _currentThreadIndex, signal );
     }
 
     _circuitThreads[_currentThreadIndex].Resume(); // resume thread x
@@ -416,9 +420,9 @@ void DspCircuit::_RemoveComponent( unsigned short componentIndex )
   _DisconnectComponent( componentIndex );
 
   // set the removed component's parent circuit to NULL
-  if( _components[componentIndex]->GetParentCircuit() != NULL )
+  if( _components[componentIndex]->_GetParentCircuit() != NULL )
   {
-    _components[componentIndex]->SetParentCircuit( NULL );
+    _components[componentIndex]->_SetParentCircuit( NULL );
   }
   // setting a component's parent to NULL (above) calls _RemoveComponent (hence the following code will run)
   else if( _components.size() != 0 )

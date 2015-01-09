@@ -52,7 +52,7 @@ DspComponent::~DspComponent()
   }
 
   StopAutoTick();
-  SetBufferCount( 0 );
+  _SetBufferCount( 0 );
   DisconnectInputs();
 }
 
@@ -68,34 +68,6 @@ void DspComponent::SetComponentName( std::string componentName )
 std::string DspComponent::GetComponentName() const
 {
   return _componentName;
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void DspComponent::SetParentCircuit( DspCircuit* parentCircuit )
-{
-  if( _parentCircuit != parentCircuit && parentCircuit != this )
-  {
-    DspCircuit* currentParent = _parentCircuit;
-    _parentCircuit = NULL;
-
-    // if this component is part of another circuit, remove it from that circuit first
-    if( currentParent != NULL )
-    {
-      currentParent->RemoveComponent( this );
-    }
-
-    _parentCircuit = parentCircuit;
-
-    // this method is called from within AddComponent() so don't call AddComponent() here
-  }
-}
-
-//-------------------------------------------------------------------------------------------------
-
-DspCircuit* DspComponent::GetParentCircuit()
-{
-  return _parentCircuit;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -124,7 +96,7 @@ void DspComponent::DisconnectInput( std::string inputName )
 {
   unsigned short inputIndex;
 
-  if( FindInput( inputName, inputIndex ) )
+  if( _FindInput( inputName, inputIndex ) )
   {
     DisconnectInput( inputIndex );
   }
@@ -170,46 +142,6 @@ unsigned short DspComponent::GetInputCount() const
 unsigned short DspComponent::GetOutputCount() const
 {
   return _outputBus.GetSignalCount();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspComponent::FindInput( std::string signalName, unsigned short& returnIndex ) const
-{
-  return _inputBus.FindSignal( signalName, returnIndex );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspComponent::FindInput( unsigned short signalIndex, unsigned short& returnIndex ) const
-{
-  if( signalIndex < _inputBus.GetSignalCount() )
-  {
-    returnIndex = signalIndex;
-    return true;
-  }
-
-  return false;
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspComponent::FindOutput( std::string signalName, unsigned short& returnIndex ) const
-{
-  return _outputBus.FindSignal( signalName, returnIndex );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspComponent::FindOutput( unsigned short signalIndex, unsigned short& returnIndex ) const
-{
-  if( signalIndex < _outputBus.GetSignalCount() )
-  {
-    returnIndex = signalIndex;
-    return true;
-  }
-
-  return false;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -260,7 +192,7 @@ void DspComponent::StartAutoTick()
   // auto-ticks all components contained.
 
   // if this is the global circuit
-  if( DSPatch::IsThisGlobalCircuit( this ) )
+  if( DSPatch::_IsThisGlobalCircuit( this ) )
   {
     if( _componentThread.IsStopped() )
     {
@@ -275,10 +207,10 @@ void DspComponent::StartAutoTick()
     }
   }
   // else if this component has no parent or it's parent is the global circuit
-  else if( _parentCircuit == NULL || DSPatch::IsThisGlobalCircuit( _parentCircuit ) )
+  else if( _parentCircuit == NULL || DSPatch::_IsThisGlobalCircuit( _parentCircuit ) )
   {
-    DSPatch::AddGlobalComponent( this );
-    DSPatch::StartGlobalAutoTick();
+    DSPatch::_AddGlobalComponent( this );
+    DSPatch::_StartGlobalAutoTick();
   }
 }
 
@@ -291,7 +223,7 @@ void DspComponent::StopAutoTick()
   // global circuit auto-ticking is stopped.
 
   // if this is the global circuit
-  if( DSPatch::IsThisGlobalCircuit( this ) && !_componentThread.IsStopped() )
+  if( DSPatch::_IsThisGlobalCircuit( this ) && !_componentThread.IsStopped() )
   {
     _componentThread.Stop();
 
@@ -299,13 +231,13 @@ void DspComponent::StopAutoTick()
     _isAutoTickPaused = false;
   }
   // else if this component's parent is the global circuit
-  else if( DSPatch::IsThisGlobalCircuit( _parentCircuit ) )
+  else if( DSPatch::_IsThisGlobalCircuit( _parentCircuit ) )
   {
-    DSPatch::RemoveGlobalComponent( this );
+    DSPatch::_RemoveGlobalComponent( this );
 
-    if( DSPatch::GetGlobalComponentCount() == 0 )
+    if( DSPatch::_GetGlobalComponentCount() == 0 )
     {
-      DSPatch::StopGlobalAutoTick();
+      DSPatch::_StopGlobalAutoTick();
     }
   }
 }
@@ -318,7 +250,7 @@ void DspComponent::PauseAutoTick()
   // global circuit. When the global circuit is reached, it's auto-tick is paused.
 
   // if this is the global circuit
-  if( DSPatch::IsThisGlobalCircuit( this ) && !_componentThread.IsStopped() )
+  if( DSPatch::_IsThisGlobalCircuit( this ) && !_componentThread.IsStopped() )
   {
     if( _isAutoTickRunning )
     {
@@ -341,7 +273,7 @@ void DspComponent::ResumeAutoTick()
   // global circuit. When the global circuit is reached, it's auto-tick is resumed.
 
   // if this is the global circuit
-  if( DSPatch::IsThisGlobalCircuit( this ) && _isAutoTickPaused )
+  if( DSPatch::_IsThisGlobalCircuit( this ) && _isAutoTickPaused )
   {
     _componentThread.Resume();
     _isAutoTickPaused = false;
@@ -355,7 +287,133 @@ void DspComponent::ResumeAutoTick()
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::SetBufferCount( unsigned short bufferCount )
+DspSignal* DspComponent::_GetOutputSignal( unsigned short outputIndex )
+{
+  return _outputBus.GetSignal( outputIndex );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+DspSignal* DspComponent::_GetOutputSignal( unsigned short outputIndex, unsigned short threadIndex )
+{
+  return _outputBuses[threadIndex].GetSignal( outputIndex );
+}
+
+//=================================================================================================
+
+bool DspComponent::AddInput_( std::string inputName )
+{
+  for( unsigned short i = 0; i < _inputBuses.size(); i++ )
+  {
+    _inputBuses[i].AddSignal( inputName );
+  }
+  return _inputBus.AddSignal( inputName );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::AddOutput_( std::string outputName )
+{
+  for( unsigned short i = 0; i < _outputBuses.size(); i++ )
+  {
+    _outputBuses[i].AddSignal( outputName );
+  }
+  return _outputBus.AddSignal( outputName );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void DspComponent::RemoveInputs_()
+{
+  for( unsigned short i = 0; i < _inputBuses.size(); i++ )
+  {
+    _inputBuses[i].RemoveAllSignals();
+  }
+  return _inputBus.RemoveAllSignals();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void DspComponent::RemoveOutputs_()
+{
+  for( unsigned short i = 0; i < _outputBuses.size(); i++ )
+  {
+    _outputBuses[i].RemoveAllSignals();
+  }
+  return _outputBus.RemoveAllSignals();
+}
+
+//=================================================================================================
+
+void DspComponent::_SetParentCircuit( DspCircuit* parentCircuit )
+{
+  if( _parentCircuit != parentCircuit && parentCircuit != this )
+  {
+    DspCircuit* currentParent = _parentCircuit;
+    _parentCircuit = NULL;
+
+    // if this component is part of another circuit, remove it from that circuit first
+    if( currentParent != NULL )
+    {
+      currentParent->RemoveComponent( this );
+    }
+
+    _parentCircuit = parentCircuit;
+
+    // this method is called from within AddComponent() so don't call AddComponent() here
+  }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+DspCircuit* DspComponent::_GetParentCircuit()
+{
+  return _parentCircuit;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::_FindInput( std::string signalName, unsigned short& returnIndex ) const
+{
+  return _inputBus.FindSignal( signalName, returnIndex );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::_FindInput( unsigned short signalIndex, unsigned short& returnIndex ) const
+{
+  if( signalIndex < _inputBus.GetSignalCount() )
+  {
+    returnIndex = signalIndex;
+    return true;
+  }
+
+  return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::_FindOutput( std::string signalName, unsigned short& returnIndex ) const
+{
+  return _outputBus.FindSignal( signalName, returnIndex );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::_FindOutput( unsigned short signalIndex, unsigned short& returnIndex ) const
+{
+  if( signalIndex < _outputBus.GetSignalCount() )
+  {
+    returnIndex = signalIndex;
+    return true;
+  }
+
+  return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void DspComponent::_SetBufferCount( unsigned short bufferCount )
 {
   // _bufferCount is the current thread count / bufferCount is new thread count
 
@@ -407,14 +465,14 @@ void DspComponent::SetBufferCount( unsigned short bufferCount )
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned short DspComponent::GetBufferCount() const
+unsigned short DspComponent::_GetBufferCount() const
 {
   return _bufferCount;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::ThreadTick( unsigned short threadNo )
+void DspComponent::_ThreadTick( unsigned short threadNo )
 {
   // continue only if this component has not already been ticked
   if( *_hasTickeds[threadNo] == false )
@@ -426,7 +484,7 @@ void DspComponent::ThreadTick( unsigned short threadNo )
     for( unsigned short i = 0; i < _inputWires.GetWireCount(); i++ )
     {
       DspWire* wire = _inputWires.GetWire( i );
-      wire->linkedComponent->ThreadTick( threadNo );
+      wire->linkedComponent->_ThreadTick( threadNo );
 
       DspSignal* signal = wire->linkedComponent->_outputBuses[threadNo].GetSignal( wire->fromSignalIndex );
       _inputBuses[threadNo].SetSignal( wire->toSignalIndex, signal );
@@ -448,7 +506,7 @@ void DspComponent::ThreadTick( unsigned short threadNo )
 
 //-------------------------------------------------------------------------------------------------
 
-void DspComponent::ThreadReset( unsigned short threadNo )
+void DspComponent::_ThreadReset( unsigned short threadNo )
 {
   // clear all inputs
   _inputBuses[threadNo].ClearAllValues();
@@ -459,77 +517,19 @@ void DspComponent::ThreadReset( unsigned short threadNo )
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::SetInputSignal( unsigned short inputIndex, const DspSignal* newSignal )
+bool DspComponent::_SetInputSignal( unsigned short inputIndex, const DspSignal* newSignal )
 {
   return _inputBus.SetSignal( inputIndex, newSignal );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::SetInputSignal( unsigned short inputIndex, unsigned short threadIndex, const DspSignal* newSignal )
+bool DspComponent::_SetInputSignal( unsigned short inputIndex, unsigned short threadIndex, const DspSignal* newSignal )
 {
   return _inputBuses[threadIndex].SetSignal( inputIndex, newSignal );
 }
 
 //-------------------------------------------------------------------------------------------------
-
-DspSignal* DspComponent::GetOutputSignal( unsigned short outputIndex )
-{
-  return _outputBus.GetSignal( outputIndex );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-DspSignal* DspComponent::GetOutputSignal( unsigned short outputIndex, unsigned short threadIndex )
-{
-  return _outputBuses[threadIndex].GetSignal( outputIndex );
-}
-
-//=================================================================================================
-
-bool DspComponent::AddInput_( std::string inputName )
-{
-  for( unsigned short i = 0; i < _inputBuses.size(); i++ )
-  {
-    _inputBuses[i].AddSignal( inputName );
-  }
-  return _inputBus.AddSignal( inputName );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspComponent::AddOutput_( std::string outputName )
-{
-  for( unsigned short i = 0; i < _outputBuses.size(); i++ )
-  {
-    _outputBuses[i].AddSignal( outputName );
-  }
-  return _outputBus.AddSignal( outputName );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void DspComponent::ClearInputs_()
-{
-  for( unsigned short i = 0; i < _inputBuses.size(); i++ )
-  {
-    _inputBuses[i].RemoveAllSignals();
-  }
-  return _inputBus.RemoveAllSignals();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void DspComponent::ClearOutputs_()
-{
-  for( unsigned short i = 0; i < _outputBuses.size(); i++ )
-  {
-    _outputBuses[i].RemoveAllSignals();
-  }
-  return _outputBus.RemoveAllSignals();
-}
-
-//=================================================================================================
 
 void DspComponent::_WaitForRelease( unsigned short threadNo )
 {

@@ -60,15 +60,15 @@ most commonly used to tick over an instance of DspCircuit).
 
 class DLLEXPORT DspComponent
 {
+  friend class DspCircuit;
+  friend class DspCircuitThread;
+
 public:
   DspComponent();
   virtual ~DspComponent();
 
   void SetComponentName( std::string componentName );
   std::string GetComponentName() const;
-
-  void SetParentCircuit( DspCircuit* parentCircuit );
-  DspCircuit* GetParentCircuit();
 
   template< class FromOutputType, class ToInputType >
   bool ConnectInput( DspComponent* fromComponent, FromOutputType fromOutput, ToInputType toInput );
@@ -90,11 +90,6 @@ public:
   unsigned short GetInputCount() const;
   unsigned short GetOutputCount() const;
 
-  bool FindInput( std::string signalName, unsigned short& returnIndex ) const;
-  bool FindInput( unsigned short signalIndex, unsigned short& returnIndex ) const;
-  bool FindOutput( std::string signalName, unsigned short& returnIndex ) const;
-  bool FindOutput( unsigned short signalIndex, unsigned short& returnIndex ) const;
-
   void Tick();
   void Reset();
 
@@ -103,28 +98,37 @@ public:
   virtual void PauseAutoTick();
   virtual void ResumeAutoTick();
 
-  // Methods for DspCircuit processing
-  // =================================
-
-  void SetBufferCount( unsigned short bufferCount );
-  unsigned short GetBufferCount() const;
-
-  void ThreadTick( unsigned short threadNo );
-  void ThreadReset( unsigned short threadNo );
-
-  bool SetInputSignal( unsigned short inputIndex, const DspSignal* newSignal );
-  bool SetInputSignal( unsigned short inputIndex, unsigned short threadIndex, const DspSignal* newSignal );
-  DspSignal* GetOutputSignal( unsigned short outputIndex );
-  DspSignal* GetOutputSignal( unsigned short outputIndex, unsigned short threadIndex );
-
 protected:
   virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs ) {};
 
   bool AddInput_( std::string inputName = "" );
   bool AddOutput_( std::string outputName = "" );
 
-  void ClearInputs_();
-  void ClearOutputs_();
+  void RemoveInputs_();
+  void RemoveOutputs_();
+
+private:
+  void _SetParentCircuit( DspCircuit* parentCircuit );
+  DspCircuit* _GetParentCircuit();
+
+  bool _FindInput( std::string signalName, unsigned short& returnIndex ) const;
+  bool _FindInput( unsigned short signalIndex, unsigned short& returnIndex ) const;
+  bool _FindOutput( std::string signalName, unsigned short& returnIndex ) const;
+  bool _FindOutput( unsigned short signalIndex, unsigned short& returnIndex ) const;
+
+  void _SetBufferCount( unsigned short bufferCount );
+  unsigned short _GetBufferCount() const;
+
+  void _ThreadTick( unsigned short threadNo );
+  void _ThreadReset( unsigned short threadNo );
+
+  bool _SetInputSignal( unsigned short inputIndex, const DspSignal* newSignal );
+  bool _SetInputSignal( unsigned short inputIndex, unsigned short threadIndex, const DspSignal* newSignal );
+  DspSignal* _GetOutputSignal( unsigned short outputIndex );
+  DspSignal* _GetOutputSignal( unsigned short outputIndex, unsigned short threadIndex );
+
+  void _WaitForRelease( unsigned short threadNo );
+  void _ReleaseThread( unsigned short threadNo );
 
 private:
   DspCircuit* _parentCircuit;
@@ -151,9 +155,6 @@ private:
   std::vector< bool > _gotReleases; // bool pointers not used here as only 1 thread writes to this vector at a time
   std::vector< DspMutex > _releaseMutexes;
   std::vector< DspWaitCondition > _releaseCondts;
-
-  void _WaitForRelease( unsigned short threadNo );
-  void _ReleaseThread( unsigned short threadNo );
 };
 
 //=================================================================================================

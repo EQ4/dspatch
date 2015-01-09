@@ -49,20 +49,22 @@ the necessary memory cleanup.
 
 class DLLEXPORT DSPatch
 {
+  friend class DspComponent;
+
 public:
-  static bool IsThisGlobalCircuit( DspComponent* thisComponent );
-
-  static bool AddGlobalComponent( DspComponent* component, std::string componentName = "" );
-  static void RemoveGlobalComponent( DspComponent* component );
-
-  static unsigned short GetGlobalComponentCount();
-
-  static void StartGlobalAutoTick();
-  static void StopGlobalAutoTick();
-
   static void SetGlobalThreadCount( unsigned short threadCount );
-
   static void Finalize();
+
+private:
+  static bool _IsThisGlobalCircuit( DspComponent* thisComponent );
+
+  static bool _AddGlobalComponent( DspComponent* component );
+  static void _RemoveGlobalComponent( DspComponent* component );
+
+  static unsigned short _GetGlobalComponentCount();
+
+  static void _StartGlobalAutoTick();
+  static void _StopGlobalAutoTick();
 
 private:
   static DspCircuit* _globalCircuit;
@@ -368,6 +370,11 @@ void main()
 \n
 
 \section release_notes Release Notes
+
+\subsection v251 v.2.51 (13 September 2013)
+  - Fixed Unix thread detach error.
+  - Improved overall encapsulation.
+  - Replaced "Clear" with "Remove" for I/O removal.
 
 \subsection v250 v.2.50 (14 July 2013)
   - Reduced size of distributable.

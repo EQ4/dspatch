@@ -35,7 +35,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class DspThread
 {
 public:
-  DspThread() {}
+  DspThread()
+  : _threadAttatched( false ) {}
 
   virtual ~DspThread()
   {
@@ -58,13 +59,18 @@ public:
   virtual void Start( Priority priority = NormalPriority )
   {
     pthread_create( &_thread, NULL, _ThreadFunc, this );
+    _threadAttatched = true;
 
     _SetPriority( _thread, priority );
   }
 
   virtual void Stop()
   {
-    pthread_detach( _thread );
+    if( _threadAttatched )
+    {
+      pthread_detach( _thread );
+      _threadAttatched = false;
+    }
   }
 
   static void SetPriority( Priority priority )
@@ -78,8 +84,6 @@ public:
   }
 
 private:
-  pthread_t _thread;
-
   static void* _ThreadFunc( void* pv )
   {
     ( reinterpret_cast<DspThread*>( pv ) )->_Run();
@@ -100,6 +104,10 @@ private:
 
     pthread_setschedparam( threadID, policy, &param );
   }
+
+private:
+  pthread_t _thread;
+  bool _threadAttatched;
 };
 
 //=================================================================================================

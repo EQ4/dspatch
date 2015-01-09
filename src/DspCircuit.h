@@ -113,8 +113,8 @@ public:
   bool AddInput( std::string inputName = "" );
   bool AddOutput( std::string outputName = "" );
 
-  void ClearInputs();
-  void ClearOutputs();
+  void RemoveInputs();
+  void RemoveOutputs();
 
 protected:
   virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs );
@@ -188,9 +188,9 @@ bool DspCircuit::ConnectInToIn( FromInputType fromInput, ToComponentType& toComp
   unsigned short toInputIndex;
 
   // only interconnect components that have been added to this system
-  if( !FindInput( fromInput, fromInputIndex ) ||
+  if( !_FindInput( fromInput, fromInputIndex ) ||
       !_FindComponent( toComponent, toComponentIndex ) ||
-      !_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )
+      !_components[toComponentIndex]->_FindInput( toInput, toInputIndex ) )
   {
     return false;
   }
@@ -215,8 +215,8 @@ bool DspCircuit::ConnectOutToOut( FromComponentType& fromComponent, FromOutputTy
 
   // only interconnect components that have been added to this system
   if( !_FindComponent( fromComponent, fromComponentIndex ) ||
-      !_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||
-      !FindOutput( toOutput, toOutputIndex ) )
+      !_components[fromComponentIndex]->_FindOutput( fromOutput, fromOutputIndex ) ||
+      !_FindOutput( toOutput, toOutputIndex ) )
   {
     return false;
   }
@@ -262,9 +262,9 @@ bool DspCircuit::DisconnectInToIn( FromInputType fromInput, ToComponentType& toC
   unsigned short toInputIndex;
 
   // only interconnect components that have been added to this system
-  if( !FindInput( fromInput, fromInputIndex ) ||
+  if( !_FindInput( fromInput, fromInputIndex ) ||
       !_FindComponent( toComponent, toComponentIndex ) ||
-      !_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )
+      !_components[toComponentIndex]->_FindInput( toInput, toInputIndex ) )
   {
     return false;
   }
@@ -289,8 +289,8 @@ bool DspCircuit::DisconnectOutToOut( FromComponentType& fromComponent, FromOutpu
 
   // only interconnect components that have been added to this system
   if( !_FindComponent( fromComponent, fromComponentIndex ) ||
-      !_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||
-      !FindOutput( toOutput, toOutputIndex ) )
+      !_components[fromComponentIndex]->_FindOutput( fromOutput, fromOutputIndex ) ||
+      !_FindOutput( toOutput, toOutputIndex ) )
   {
     return false;
   }
