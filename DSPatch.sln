@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DSPatch", "DSPatch\DSPatch.vcproj", "{52011C67-6870-4DDE-A0A8-CB559700C874}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DspDemo", "DspDemo\DspDemo\DspDemo.vcproj", "{C640F95F-D784-4A0D-B1CC-C00695CF7819}"
+	ProjectSection(ProjectDependencies) = postProject
+		{52011C67-6870-4DDE-A0A8-CB559700C874} = {52011C67-6870-4DDE-A0A8-CB559700C874}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52011C67-6870-4DDE-A0A8-CB559700C874}.Debug|Win32.ActiveCfg = Debug|Win32
+		{52011C67-6870-4DDE-A0A8-CB559700C874}.Debug|Win32.Build.0 = Debug|Win32
+		{52011C67-6870-4DDE-A0A8-CB559700C874}.Release|Win32.ActiveCfg = Release|Win32
+		{52011C67-6870-4DDE-A0A8-CB559700C874}.Release|Win32.Build.0 = Release|Win32
+		{C640F95F-D784-4A0D-B1CC-C00695CF7819}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C640F95F-D784-4A0D-B1CC-C00695CF7819}.Debug|Win32.Build.0 = Debug|Win32
+		{C640F95F-D784-4A0D-B1CC-C00695CF7819}.Release|Win32.ActiveCfg = Release|Win32
+		{C640F95F-D784-4A0D-B1CC-C00695CF7819}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
