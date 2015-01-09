@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -37,11 +38,10 @@ public:
 	DspWireBus( bool isLinkedComponentReceivingSignals = false );
 	virtual ~DspWireBus();
 
-	void AddWire( DspSafePointer< DspComponent > linkedComponent,	unsigned long fromSignalIndex, unsigned long toSignalIndex );
+	void AddWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
 
 	void RemoveWire( unsigned long wireIndex );
-
-	void RemoveWire( DspSafePointer< DspComponent > linkedComponent,	unsigned long fromSignalIndex, unsigned long toSignalIndex );
+	void RemoveWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
 
 	void RemoveAllWires();
 

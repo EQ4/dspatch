@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.

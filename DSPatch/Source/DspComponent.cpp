@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -145,6 +146,39 @@ void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponen
 			_inputBus.FindSignal( toInput, toInputIndex ) )
 	{
 		DisconnectInput( inputComponent, fromOutputIndex, toInputIndex );
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void DspComponent::DisconnectInput( unsigned long inputIndex )
+{
+	PauseAutoTick();
+
+	// remove inputComponent from _inputWires
+	DspSafePointer< DspWire > wire;
+	for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
+	{
+		_inputWires.GetWire( i, wire );
+		if( wire->toSignalIndex == inputIndex )
+		{
+			_inputWires.RemoveWire( i );
+			break;
+		}
+	}
+
+	ResumeAutoTick();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void DspComponent::DisconnectInput( std::string inputName )
+{
+	unsigned long inputIndex;
+
+	if( FindInput( inputName, inputIndex ) )
+	{
+		DisconnectInput( inputIndex );
 	}
 }
 
@@ -481,20 +515,6 @@ void DspComponent::ClearOutputs_()
 		_outputBuses[i].RemoveAllSignals();
 	}
 	return _outputBus.RemoveAllSignals();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspComponent::SetOutputSignal_( unsigned long outputIndex, const DspSafePointer< DspSignal >& newSignal )
-{
-	return _outputBus.SetSignal( outputIndex, newSignal );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-bool DspComponent::GetInputSignal_( unsigned long inputIndex, DspSafePointer< DspSignal >& returnSignal )
-{
-	return _inputBus.GetSignal( inputIndex, returnSignal );
 }
 
 //=================================================================================================

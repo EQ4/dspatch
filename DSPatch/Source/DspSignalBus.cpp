@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -52,7 +53,9 @@ bool DspSignalBus::AddSignal( const DspSafePointer< DspSignal >& signal )
 	if( signal.IsPointerValid() )
 	{
 		DspSafePointer< DspSignal > newSignal;
-		newSignal.New( signal->GetSignalName() );
+        std::string signalName = signal->GetSignalName();
+        
+		newSignal.New( signalName );
 		newSignal.LockPointer();
 
 		newSignal->SetSignal( signal );

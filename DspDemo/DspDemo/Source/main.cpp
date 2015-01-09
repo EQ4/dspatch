@@ -38,7 +38,7 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 // This is a simple program that streams an mp3 out of an audio device,
 // then overlays a 1KHz oscillator when a key is pressed.
 
-void main()
+int main()
 {
 	// 1. Stream MP3
 	// =============
@@ -97,6 +97,8 @@ void main()
 	circuit.ConnectOutToIn( ADDERCH2, 0, AUDIODEVICE, 1 );
 
 	getchar();	//wait for key press
+    
+    return 0;
 }
 
 /*-----------------------------------------------------------------------------------------------------*/

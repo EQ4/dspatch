@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -56,13 +57,13 @@ public:
 	bool ConnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, unsigned long toInput );
 	bool ConnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, std::string toInput );
 
-	// circuit input to component input (currently only works with non-threaded ticking (_threadCount = 0))
+	// circuit input to component input
 	bool ConnectInToIn( unsigned long fromInput, std::string toComponent, unsigned long toInput );
 	bool ConnectInToIn( unsigned long fromInput, std::string toComponent, std::string toInput );
 	bool ConnectInToIn( std::string fromInput, std::string toComponent, unsigned long toInput );
 	bool ConnectInToIn( std::string fromInput, std::string toComponent, std::string toInput );
 
-	// component output to circuit output (currently only works with non-threaded ticking (_threadCount = 0))
+	// component output to circuit output
 	bool ConnectOutToOut( std::string fromComponent, unsigned long fromOutput, unsigned long toOutput );
 	bool ConnectOutToOut( std::string fromComponent, unsigned long fromOutput, std::string toOutput );
 	bool ConnectOutToOut( std::string fromComponent, std::string fromOutput, unsigned long toOutput );
@@ -74,13 +75,13 @@ public:
 	void DisconnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, unsigned long toInput );
 	void DisconnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, std::string toInput );
 
-	// circuit input to component input (currently only works with non-threaded ticking (_threadCount = 0))
+	// circuit input to component input
 	void DisconnectInToIn( unsigned long fromInput, std::string toComponent, unsigned long toInput );
 	void DisconnectInToIn( unsigned long fromInput, std::string toComponent, std::string toInput );
 	void DisconnectInToIn( std::string fromInput, std::string toComponent, unsigned long toInput );
 	void DisconnectInToIn( std::string fromInput, std::string toComponent, std::string toInput );
 
-	// component output to circuit output (currently only works with non-threaded ticking (_threadCount = 0))
+	// component output to circuit output
 	void DisconnectOutToOut( std::string fromComponent, unsigned long fromOutput, unsigned long toOutput );
 	void DisconnectOutToOut( std::string fromComponent, unsigned long fromOutput, std::string toOutput );
 	void DisconnectOutToOut( std::string fromComponent, std::string fromOutput, unsigned long toOutput );
@@ -100,6 +101,9 @@ protected:
 private:
 	std::vector< DspSafePointer< DspComponent > > _components;
 
+	std::vector< DspSafePointer< DspCircuitThread > > _circuitThreads;
+	unsigned long _currentThreadIndex;
+
 	DspWireBus* _inToInWires;
 	DspWireBus* _outToOutWires;
 
@@ -107,10 +111,6 @@ private:
 	bool _FindComponent( std::string componentName, unsigned long& returnIndex );
 	void _DisconnectComponent( unsigned long componentIndex );
 	void _RemoveComponent( unsigned long componentIndex );
-
-	std::vector< DspSafePointer< DspCircuitThread > > _circuitThreads;
-
-	unsigned long _currentThreadIndex;
 };
 
 //=================================================================================================

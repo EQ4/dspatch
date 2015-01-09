@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -35,13 +36,13 @@ DspWireBus::~DspWireBus()
 
 //=================================================================================================
 
-void DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent,	unsigned long fromSignalIndex, unsigned long toSignalIndex )
+void DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
 {
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
 		if( _wires[i]->linkedComponent == linkedComponent &&
-			_wires[i]->fromSignalIndex == fromSignalIndex &&
-			_wires[i]->toSignalIndex == toSignalIndex )
+				_wires[i]->fromSignalIndex == fromSignalIndex &&
+				_wires[i]->toSignalIndex == toSignalIndex )
 		{
 			return;	// wire already exists
 		}
@@ -50,14 +51,14 @@ void DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent,	unsign
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
 		if( _isLinkedComponentReceivingSignals &&
-			_wires[i]->linkedComponent == linkedComponent &&
-			_wires[i]->toSignalIndex == toSignalIndex )	// if there's a wire to the receiving component's input already
+				_wires[i]->linkedComponent == linkedComponent &&
+				_wires[i]->toSignalIndex == toSignalIndex )	// if there's a wire to the receiving component's input already
 		{
 			RemoveWire( i );	// remove the wire (only one wire can connect to an input at a time)
 			break;
 		}
 		else if( !_isLinkedComponentReceivingSignals &&
-			_wires[i]->toSignalIndex == toSignalIndex )
+						 _wires[i]->toSignalIndex == toSignalIndex )
 		{
 			RemoveWire( i );	// remove the wire (only one wire can connect to an input at a time)
 			break;
@@ -94,13 +95,13 @@ void DspWireBus::RemoveWire( unsigned long wireIndex )
 
 //-------------------------------------------------------------------------------------------------
 
-void DspWireBus::RemoveWire( DspSafePointer< DspComponent > linkedComponent,	unsigned long fromSignalIndex, unsigned long toSignalIndex )
+void DspWireBus::RemoveWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
 {
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
 		if( _wires[i]->linkedComponent == linkedComponent &&
-			_wires[i]->fromSignalIndex == fromSignalIndex &&
-			_wires[i]->toSignalIndex == toSignalIndex )
+				_wires[i]->fromSignalIndex == fromSignalIndex &&
+				_wires[i]->toSignalIndex == toSignalIndex )
 		{
 			RemoveWire( i );
 			break;

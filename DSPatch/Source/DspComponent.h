@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -46,6 +47,8 @@ public:
 	void DisconnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, unsigned long toInput );
 	void DisconnectInput( DspSafePointer< DspComponent > inputComponent, std::string fromOutput, std::string toInput );
 
+	void DisconnectInput( unsigned long inputIndex );
+	void DisconnectInput( std::string inputName );
 	void DisconnectInput( DspSafePointer< DspComponent > inputComponent );
 	void DisconnectInputs();
 
@@ -63,8 +66,8 @@ public:
 	void ThreadTick( unsigned long threadNo );
 	void ThreadReset( unsigned long threadNo );
 
-	// currently only works with non-threaded ticking (_threadCount = 0)
-	// -----------------------------------------------------------------
+	// Only works with non-threaded ticking (_threadCount = 0)
+	// =======================================================
 
 	template< class ValueType >
 	bool SetInputValue( unsigned long inputIndex, const ValueType& newValue );
@@ -83,8 +86,8 @@ public:
 	bool GetOutputSignal( unsigned long outputIndex, DspSafePointer< DspSignal >& returnSignal );
 	bool GetOutputSignal( std::string outputName, DspSafePointer< DspSignal >& returnSignal );
 
-	// currently only works with non-threaded ticking (_threadCount = 0)
-	// -----------------------------------------------------------------
+	// Only works with non-threaded ticking (_threadCount = 0)
+	// =======================================================
 
 	unsigned long GetInputCount();
 	unsigned long GetOutputCount();
@@ -103,9 +106,6 @@ protected:
 
 	void ClearInputs_();
 	void ClearOutputs_();
-
-	bool SetOutputSignal_( unsigned long outputIndex, const DspSafePointer< DspSignal >& newSignal );
-	bool GetInputSignal_( unsigned long inputIndex, DspSafePointer< DspSignal >& returnSignal );
 
 private:
 	unsigned long _threadCount;

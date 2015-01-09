@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -33,15 +34,12 @@ public:
 	virtual ~DspSignalBus();
 
 	bool AddSignal( std::string signalName = "" );
-
 	bool AddSignal( const DspSafePointer< DspSignal >& signal );
 
 	bool SetSignal( unsigned long signalIndex, const DspSafePointer< DspSignal >& newSignal );
-
 	bool SetSignal( std::string signalName, const DspSafePointer< DspSignal >& newSignal );
 
 	bool GetSignal( unsigned long signalIndex, DspSafePointer< DspSignal >& returnSignal );
-
 	bool GetSignal( std::string signalName, DspSafePointer< DspSignal >& returnSignal );
 
 	bool FindSignal( std::string signalName, unsigned long& signalIndex ) const;
@@ -63,7 +61,6 @@ public:
 	bool GetValue( std::string signalName, ValueType& returnValue ) const;
 
 	void ClearValue( unsigned long signalIndex );
-
 	void ClearValue( std::string signalName );
 
 private:

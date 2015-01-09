@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -57,7 +58,7 @@ void DspCircuit::PauseAutoTick()
 	}
 
 	// sync all threads
-	for( unsigned long i = 0; i < GetThreadCount(); i++ )
+	for( unsigned long i = 0; i < _circuitThreads.size(); i++ )
 	{
 		_circuitThreads[i]->Sync();
 	}
@@ -74,7 +75,7 @@ void DspCircuit::SetThreadCount( unsigned long threadCount )
 		// set all components to the new thread count
 		for( unsigned long i = 0; i < _components.size(); i++ )
 		{
-			_components[i]->SetThreadCount( threadCount );
+			_components[i]->DspComponent::SetThreadCount( threadCount );
 		}
 
 		// resize local thread array
@@ -219,6 +220,7 @@ bool DspCircuit::ConnectInToIn( unsigned long fromInput, std::string toComponent
 
 	PauseAutoTick();
 
+	_components[toComponentIndex]->DisconnectInput( toInput );
 	_inToInWires->AddWire( _components[toComponentIndex], fromInput, toInput );
 
 	ResumeAutoTick();
@@ -242,6 +244,7 @@ bool DspCircuit::ConnectInToIn( unsigned long fromInput, std::string toComponent
 
 	PauseAutoTick();
 
+	_components[toComponentIndex]->DisconnectInput( toInput );
 	_inToInWires->AddWire( _components[toComponentIndex], fromInput, toInputIndex );
 
 	ResumeAutoTick();
@@ -265,6 +268,7 @@ bool DspCircuit::ConnectInToIn( std::string fromInput, std::string toComponent, 
 
 	PauseAutoTick();
 
+	_components[toComponentIndex]->DisconnectInput( toInput );
 	_inToInWires->AddWire( _components[toComponentIndex], fromInputIndex, toInput );
 
 	ResumeAutoTick();
@@ -289,6 +293,7 @@ bool DspCircuit::ConnectInToIn( std::string fromInput, std::string toComponent, 
 
 	PauseAutoTick();
 
+	_components[toComponentIndex]->DisconnectInput( toInput );
 	_inToInWires->AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
 
 	ResumeAutoTick();
@@ -303,8 +308,8 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, unsigned long fromO
 	unsigned long fromComponentIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||							// verify component exists
-			fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||		// verify component output
-			toOutput >= GetOutputCount() )																				// verify circuit output
+			fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||	// verify component output
+			toOutput >= GetOutputCount() )																			// verify circuit output
 	{
 		return false;
 	}
@@ -326,8 +331,8 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, unsigned long fromO
 	unsigned long toOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||							// verify component exists
-		fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
-		!FindOutput( toOutput, toOutputIndex ) )															// verify circuit output
+			fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
+			!FindOutput( toOutput, toOutputIndex ) )															// verify circuit output
 	{
 		return false;
 	}
@@ -349,8 +354,8 @@ bool DspCircuit::ConnectOutToOut( std::string fromComponent, std::string fromOut
 	unsigned long fromOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||												// verify component exists
-		!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
-		toOutput >= GetOutputCount() )																										// verify circuit output
+			!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
+			toOutput >= GetOutputCount() )																										// verify circuit output
 	{
 		return false;
 	}
@@ -475,8 +480,8 @@ void DspCircuit::DisconnectInToIn( unsigned long fromInput, std::string toCompon
 	unsigned long toComponentIndex;
 
 	if( fromInput >= GetInputCount() ||														// verify circuit input
-		!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
-		toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
+			!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
+			toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
 	{
 		return;
 	}
@@ -496,8 +501,8 @@ void DspCircuit::DisconnectInToIn( unsigned long fromInput, std::string toCompon
 	unsigned long toInputIndex;
 
 	if( fromInput >= GetInputCount() ||																			// verify circuit input
-		!_FindComponent( toComponent, toComponentIndex ) ||										// verify component exists
-		!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )	// verify component exists
+			!_FindComponent( toComponent, toComponentIndex ) ||										// verify component exists
+			!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )	// verify component exists
 	{
 		return;
 	}
@@ -517,8 +522,8 @@ void DspCircuit::DisconnectInToIn( std::string fromInput, std::string toComponen
 	unsigned long fromInputIndex;
 
 	if( !FindInput( fromInput, fromInputIndex ) ||								// verify circuit input
-		!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
-		toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
+			!_FindComponent( toComponent, toComponentIndex ) ||					// verify component exists
+			toInput >= _components[toComponentIndex]->GetInputCount() )	// verify component input
 	{
 		return;
 	}
@@ -539,8 +544,8 @@ void DspCircuit::DisconnectInToIn( std::string fromInput, std::string toComponen
 	unsigned long toInputIndex;
 
 	if( !FindInput( fromInput, fromInputIndex ) ||													// verify circuit input
-		!_FindComponent( toComponent, toComponentIndex ) ||										// verify component exists
-		!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )	// verify component exists
+			!_FindComponent( toComponent, toComponentIndex ) ||										// verify component exists
+			!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )	// verify component exists
 	{
 		return;
 	}
@@ -559,8 +564,8 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, unsigned long fr
 	unsigned long fromComponentIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||						// verify component exists
-		fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||		// verify component output
-		toOutput >= GetOutputCount() )																				// verify circuit output
+			fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||		// verify component output
+			toOutput >= GetOutputCount() )																				// verify circuit output
 	{
 		return;
 	}
@@ -580,8 +585,8 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, unsigned long fr
 	unsigned long toOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||							// verify component exists
-		fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
-		!FindOutput( toOutput, toOutputIndex ) )															// verify circuit output
+			fromOutput >= _components[fromComponentIndex]->GetOutputCount() ||			// verify component output
+			!FindOutput( toOutput, toOutputIndex ) )															// verify circuit output
 	{
 		return;
 	}
@@ -601,8 +606,8 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, std::string from
 	unsigned long fromOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||												// verify component exists
-		!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
-		toOutput >= GetOutputCount() )																										// verify circuit output
+			!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
+			toOutput >= GetOutputCount() )																										// verify circuit output
 	{
 		return;
 	}
@@ -623,8 +628,8 @@ void DspCircuit::DisconnectOutToOut( std::string fromComponent, std::string from
 	unsigned long toOutputIndex;
 
 	if( !_FindComponent( fromComponent, fromComponentIndex ) ||												// verify component exists
-		!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
-		!FindOutput( toOutput, toOutputIndex ) )																				// verify circuit output
+			!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||		// verify component output
+			!FindOutput( toOutput, toOutputIndex ) )																				// verify circuit output
 	{
 		return;
 	}
@@ -682,19 +687,19 @@ void DspCircuit::ClearOutputs()
 
 void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 {
-	if( GetThreadCount() == 0 )
+	DspSafePointer< DspWire > wire;
+	DspSafePointer< DspSignal > signal;
+
+	// set all internal component inputs from connected circuit inputs
+	for( unsigned long i = 0; i < _inToInWires->GetWireCount(); i++ )
 	{
-		DspSafePointer< DspWire > wire;
-		DspSafePointer< DspSignal > signal;
+		_inToInWires->GetWire( i, wire );
+		inputs.GetSignal( wire->fromSignalIndex, signal );
+		wire->linkedComponent->SetInputSignal( wire->toSignalIndex, signal );
+	}
 
-		// set all internal component inputs from connected circuit inputs
-		for( unsigned long i = 0; i < _inToInWires->GetWireCount(); i++ )
-		{
-			_inToInWires->GetWire( i, wire );
-			GetInputSignal_( wire->fromSignalIndex, signal );
-			wire->linkedComponent->SetInputSignal( wire->toSignalIndex, signal );
-		}
-
+	if( _circuitThreads.size() == 0 || GetThreadCount() == 0 )
+	{
 		// tick and reset all internal components
 		for( unsigned long i = 0; i < _components.size(); i++ )
 		{
@@ -705,24 +710,24 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 		{
 			_components[i]->Reset();
 		}
-
-		// set all circuit outputs from connected internal component outputs
-		for( unsigned long i = 0; i < _outToOutWires->GetWireCount(); i++ )
-		{
-			_outToOutWires->GetWire( i, wire );
-			wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex, signal );
-			SetOutputSignal_( wire->toSignalIndex, signal );
-		}
 	}
 	else
 	{
-		_circuitThreads[_currentThreadIndex]->Sync();
-		_circuitThreads[_currentThreadIndex++]->Resume();
+		_circuitThreads[_currentThreadIndex]->Sync(); // sync with thread x
+		_circuitThreads[_currentThreadIndex]->Resume(); // resume thread x
 
-		if( _currentThreadIndex >= GetThreadCount() )
+		if( ++_currentThreadIndex >= GetThreadCount() )	// shift to thread x+1
 		{
 			_currentThreadIndex = 0;
 		}
+	}
+
+	// set all circuit outputs from connected internal component outputs
+	for( unsigned long i = 0; i < _outToOutWires->GetWireCount(); i++ )
+	{
+		_outToOutWires->GetWire( i, wire );
+		wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex, signal );
+		outputs.SetSignal( wire->toSignalIndex, signal );
 	}
 }
 

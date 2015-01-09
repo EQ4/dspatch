@@ -1,0 +1,337 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2D077EC6163345120063C031 /* DSPatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077EC5163345120063C031 /* DSPatch.h */; };
+		2D077EDB1633451C0063C031 /* DspCircuit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077EC71633451B0063C031 /* DspCircuit.cpp */; };
+		2D077EDC1633451C0063C031 /* DspCircuit.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077EC81633451B0063C031 /* DspCircuit.h */; };
+		2D077EDD1633451C0063C031 /* DspCircuitThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077EC91633451B0063C031 /* DspCircuitThread.cpp */; };
+		2D077EDE1633451C0063C031 /* DspCircuitThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ECA1633451B0063C031 /* DspCircuitThread.h */; };
+		2D077EDF1633451C0063C031 /* DspComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ECB1633451B0063C031 /* DspComponent.cpp */; };
+		2D077EE01633451C0063C031 /* DspComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ECC1633451B0063C031 /* DspComponent.h */; };
+		2D077EE11633451C0063C031 /* DspComponentThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ECD1633451B0063C031 /* DspComponentThread.cpp */; };
+		2D077EE21633451C0063C031 /* DspComponentThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ECE1633451B0063C031 /* DspComponentThread.h */; };
+		2D077EE31633451C0063C031 /* DspRunType.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ECF1633451B0063C031 /* DspRunType.h */; };
+		2D077EE41633451C0063C031 /* DspSafePointer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED01633451B0063C031 /* DspSafePointer.h */; };
+		2D077EE51633451C0063C031 /* DspSignal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ED11633451B0063C031 /* DspSignal.cpp */; };
+		2D077EE61633451C0063C031 /* DspSignal.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED21633451B0063C031 /* DspSignal.h */; };
+		2D077EE71633451C0063C031 /* DspSignalBus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ED31633451B0063C031 /* DspSignalBus.cpp */; };
+		2D077EE81633451C0063C031 /* DspSignalBus.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED41633451B0063C031 /* DspSignalBus.h */; };
+		2D077EE91633451C0063C031 /* DspThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED51633451B0063C031 /* DspThread.h */; };
+		2D077EEA1633451C0063C031 /* DspThreadUnix.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED61633451B0063C031 /* DspThreadUnix.h */; };
+		2D077EEB1633451C0063C031 /* DspThreadWin.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED71633451B0063C031 /* DspThreadWin.h */; };
+		2D077EEC1633451C0063C031 /* DspWire.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077ED81633451B0063C031 /* DspWire.h */; };
+		2D077EED1633451C0063C031 /* DspWireBus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D077ED91633451B0063C031 /* DspWireBus.cpp */; };
+		2D077EEE1633451C0063C031 /* DspWireBus.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D077EDA1633451B0063C031 /* DspWireBus.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2D077F0B1633456A0063C031 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D077F07163345690063C031 /* DspDemo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D077EFA163345690063C031;
+			remoteInfo = DspDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2D077EBC163344D00063C031 /* libDSPatch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDSPatch.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D077EC5163345120063C031 /* DSPatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSPatch.h; path = ../../DSPatch/Include/DSPatch.h; sourceTree = "<group>"; };
+		2D077EC71633451B0063C031 /* DspCircuit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspCircuit.cpp; path = ../../DSPatch/Source/DspCircuit.cpp; sourceTree = "<group>"; };
+		2D077EC81633451B0063C031 /* DspCircuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspCircuit.h; path = ../../DSPatch/Source/DspCircuit.h; sourceTree = "<group>"; };
+		2D077EC91633451B0063C031 /* DspCircuitThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspCircuitThread.cpp; path = ../../DSPatch/Source/DspCircuitThread.cpp; sourceTree = "<group>"; };
+		2D077ECA1633451B0063C031 /* DspCircuitThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspCircuitThread.h; path = ../../DSPatch/Source/DspCircuitThread.h; sourceTree = "<group>"; };
+		2D077ECB1633451B0063C031 /* DspComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspComponent.cpp; path = ../../DSPatch/Source/DspComponent.cpp; sourceTree = "<group>"; };
+		2D077ECC1633451B0063C031 /* DspComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspComponent.h; path = ../../DSPatch/Source/DspComponent.h; sourceTree = "<group>"; };
+		2D077ECD1633451B0063C031 /* DspComponentThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspComponentThread.cpp; path = ../../DSPatch/Source/DspComponentThread.cpp; sourceTree = "<group>"; };
+		2D077ECE1633451B0063C031 /* DspComponentThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspComponentThread.h; path = ../../DSPatch/Source/DspComponentThread.h; sourceTree = "<group>"; };
+		2D077ECF1633451B0063C031 /* DspRunType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspRunType.h; path = ../../DSPatch/Source/DspRunType.h; sourceTree = "<group>"; };
+		2D077ED01633451B0063C031 /* DspSafePointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspSafePointer.h; path = ../../DSPatch/Source/DspSafePointer.h; sourceTree = "<group>"; };
+		2D077ED11633451B0063C031 /* DspSignal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspSignal.cpp; path = ../../DSPatch/Source/DspSignal.cpp; sourceTree = "<group>"; };
+		2D077ED21633451B0063C031 /* DspSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspSignal.h; path = ../../DSPatch/Source/DspSignal.h; sourceTree = "<group>"; };
+		2D077ED31633451B0063C031 /* DspSignalBus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspSignalBus.cpp; path = ../../DSPatch/Source/DspSignalBus.cpp; sourceTree = "<group>"; };
+		2D077ED41633451B0063C031 /* DspSignalBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspSignalBus.h; path = ../../DSPatch/Source/DspSignalBus.h; sourceTree = "<group>"; };
+		2D077ED51633451B0063C031 /* DspThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspThread.h; path = ../../DSPatch/Source/DspThread.h; sourceTree = "<group>"; };
+		2D077ED61633451B0063C031 /* DspThreadUnix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspThreadUnix.h; path = ../../DSPatch/Source/DspThreadUnix.h; sourceTree = "<group>"; };
+		2D077ED71633451B0063C031 /* DspThreadWin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspThreadWin.h; path = ../../DSPatch/Source/DspThreadWin.h; sourceTree = "<group>"; };
+		2D077ED81633451B0063C031 /* DspWire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspWire.h; path = ../../DSPatch/Source/DspWire.h; sourceTree = "<group>"; };
+		2D077ED91633451B0063C031 /* DspWireBus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DspWireBus.cpp; path = ../../DSPatch/Source/DspWireBus.cpp; sourceTree = "<group>"; };
+		2D077EDA1633451B0063C031 /* DspWireBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DspWireBus.h; path = ../../DSPatch/Source/DspWireBus.h; sourceTree = "<group>"; };
+		2D077F07163345690063C031 /* DspDemo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DspDemo.xcodeproj; path = DspDemo/DspDemo.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2D077EB9163344D00063C031 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2D077EB1163344D00063C031 = {
+			isa = PBXGroup;
+			children = (
+				2D077EC3163344DE0063C031 /* Include */,
+				2D077EC4163344E50063C031 /* Source */,
+				2D077EBD163344D00063C031 /* Products */,
+				2D077F07163345690063C031 /* DspDemo.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		2D077EBD163344D00063C031 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2D077EBC163344D00063C031 /* libDSPatch.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2D077EC3163344DE0063C031 /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				2D077EC5163345120063C031 /* DSPatch.h */,
+			);
+			name = Include;
+			sourceTree = "<group>";
+		};
+		2D077EC4163344E50063C031 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				2D077EC71633451B0063C031 /* DspCircuit.cpp */,
+				2D077EC81633451B0063C031 /* DspCircuit.h */,
+				2D077EC91633451B0063C031 /* DspCircuitThread.cpp */,
+				2D077ECA1633451B0063C031 /* DspCircuitThread.h */,
+				2D077ECB1633451B0063C031 /* DspComponent.cpp */,
+				2D077ECC1633451B0063C031 /* DspComponent.h */,
+				2D077ECD1633451B0063C031 /* DspComponentThread.cpp */,
+				2D077ECE1633451B0063C031 /* DspComponentThread.h */,
+				2D077ECF1633451B0063C031 /* DspRunType.h */,
+				2D077ED01633451B0063C031 /* DspSafePointer.h */,
+				2D077ED11633451B0063C031 /* DspSignal.cpp */,
+				2D077ED21633451B0063C031 /* DspSignal.h */,
+				2D077ED31633451B0063C031 /* DspSignalBus.cpp */,
+				2D077ED41633451B0063C031 /* DspSignalBus.h */,
+				2D077ED51633451B0063C031 /* DspThread.h */,
+				2D077ED61633451B0063C031 /* DspThreadUnix.h */,
+				2D077ED71633451B0063C031 /* DspThreadWin.h */,
+				2D077ED81633451B0063C031 /* DspWire.h */,
+				2D077ED91633451B0063C031 /* DspWireBus.cpp */,
+				2D077EDA1633451B0063C031 /* DspWireBus.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		2D077F08163345690063C031 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2D077F0C1633456A0063C031 /* DspDemo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2D077EBA163344D00063C031 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D077EC6163345120063C031 /* DSPatch.h in Headers */,
+				2D077EDC1633451C0063C031 /* DspCircuit.h in Headers */,
+				2D077EDE1633451C0063C031 /* DspCircuitThread.h in Headers */,
+				2D077EE01633451C0063C031 /* DspComponent.h in Headers */,
+				2D077EE21633451C0063C031 /* DspComponentThread.h in Headers */,
+				2D077EE31633451C0063C031 /* DspRunType.h in Headers */,
+				2D077EE41633451C0063C031 /* DspSafePointer.h in Headers */,
+				2D077EE61633451C0063C031 /* DspSignal.h in Headers */,
+				2D077EE81633451C0063C031 /* DspSignalBus.h in Headers */,
+				2D077EE91633451C0063C031 /* DspThread.h in Headers */,
+				2D077EEA1633451C0063C031 /* DspThreadUnix.h in Headers */,
+				2D077EEB1633451C0063C031 /* DspThreadWin.h in Headers */,
+				2D077EEC1633451C0063C031 /* DspWire.h in Headers */,
+				2D077EEE1633451C0063C031 /* DspWireBus.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2D077EBB163344D00063C031 /* DSPatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D077EC0163344D00063C031 /* Build configuration list for PBXNativeTarget "DSPatch" */;
+			buildPhases = (
+				2D077EB8163344D00063C031 /* Sources */,
+				2D077EB9163344D00063C031 /* Frameworks */,
+				2D077EBA163344D00063C031 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DSPatch;
+			productName = DSPatch;
+			productReference = 2D077EBC163344D00063C031 /* libDSPatch.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2D077EB3163344D00063C031 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Adapt Audio";
+			};
+			buildConfigurationList = 2D077EB6163344D00063C031 /* Build configuration list for PBXProject "DSPatch" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2D077EB1163344D00063C031;
+			productRefGroup = 2D077EBD163344D00063C031 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2D077F08163345690063C031 /* Products */;
+					ProjectRef = 2D077F07163345690063C031 /* DspDemo.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				2D077EBB163344D00063C031 /* DSPatch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		2D077F0C1633456A0063C031 /* DspDemo */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = DspDemo;
+			remoteRef = 2D077F0B1633456A0063C031 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2D077EB8163344D00063C031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D077EDB1633451C0063C031 /* DspCircuit.cpp in Sources */,
+				2D077EDD1633451C0063C031 /* DspCircuitThread.cpp in Sources */,
+				2D077EDF1633451C0063C031 /* DspComponent.cpp in Sources */,
+				2D077EE11633451C0063C031 /* DspComponentThread.cpp in Sources */,
+				2D077EE51633451C0063C031 /* DspSignal.cpp in Sources */,
+				2D077EE71633451C0063C031 /* DspSignalBus.cpp in Sources */,
+				2D077EED1633451C0063C031 /* DspWireBus.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2D077EBE163344D00063C031 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2D077EBF163344D00063C031 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2D077EC1163344D00063C031 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					DSP_UNIX,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2D077EC2163344D00063C031 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = DSP_UNIX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D077EB6163344D00063C031 /* Build configuration list for PBXProject "DSPatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D077EBE163344D00063C031 /* Debug */,
+				2D077EBF163344D00063C031 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D077EC0163344D00063C031 /* Build configuration list for PBXNativeTarget "DSPatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D077EC1163344D00063C031 /* Debug */,
+				2D077EC2163344D00063C031 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2D077EB3163344D00063C031 /* Project object */;
+}

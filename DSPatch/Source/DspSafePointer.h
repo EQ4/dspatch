@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -68,22 +69,22 @@ public:
 	}
 
 	template< class OtherType >
-	DspSafePointer<PointerType>( const DspSafePointer<OtherType>& other )
+	DspSafePointer< PointerType >( const DspSafePointer< OtherType >& other )
 	: _pointer( NULL ),
 		_pointerLocked( NULL ),
 		_pointerLockedMutex( NULL ),
 		_referenceCount( NULL ),
 		_referenceCountMutex( NULL )
 	{
-		 if( other.IsPointerValid() )
-		 {
-			 _pointer = ( ( DspSafePointer<PointerType>& ) other )._pointer;
-			 _pointerLocked = ( ( DspSafePointer<PointerType>& ) other )._pointerLocked;
-			 _pointerLockedMutex = ( ( DspSafePointer<PointerType>& ) other )._pointerLockedMutex;
-			 _referenceCount = ( ( DspSafePointer<PointerType>& ) other )._referenceCount;
-			 _referenceCountMutex = ( ( DspSafePointer<PointerType>& ) other )._referenceCountMutex;
-			 _AttachToPointer();
-		 }
+		if( other.IsPointerValid() )
+		{
+			_pointer = ( ( DspSafePointer< PointerType >& ) other )._pointer;
+			_pointerLocked = ( ( DspSafePointer< PointerType >& ) other )._pointerLocked;
+			_pointerLockedMutex = ( ( DspSafePointer< PointerType >& ) other )._pointerLockedMutex;
+			_referenceCount = ( ( DspSafePointer< PointerType >& ) other )._referenceCount;
+			_referenceCountMutex = ( ( DspSafePointer< PointerType >& ) other )._referenceCountMutex;
+			_AttachToPointer();
+		}
 	}
 
 	virtual ~DspSafePointer()
@@ -237,10 +238,10 @@ public:
 	bool IsPointerValid() const
 	{
 		return _pointer != NULL &&
-					 _pointerLocked != NULL &&
-					 _pointerLockedMutex != NULL &&
-					 _referenceCount != NULL &&
-					 _referenceCountMutex != NULL;
+			_pointerLocked != NULL &&
+			_pointerLockedMutex != NULL &&
+			_referenceCount != NULL &&
+			_referenceCountMutex != NULL;
 	}
 
 	void LockPointer()
@@ -289,15 +290,15 @@ public:
 	}
 
 	template< class OtherType >
-	bool operator==( const DspSafePointer<OtherType>& rhs )
+	bool operator==( const DspSafePointer< OtherType >& rhs )
 	{
-		return _pointer == ( ( DspSafePointer<PointerType>& ) rhs )._pointer;
+		return _pointer == ( ( DspSafePointer< PointerType >& ) rhs )._pointer;
 	}
 
 	template< class OtherType >
-	bool operator!=( const DspSafePointer<OtherType>& rhs )
+	bool operator!=( const DspSafePointer< OtherType >& rhs )
 	{
-		return _pointer != ( ( DspSafePointer<PointerType>& ) rhs )._pointer;
+		return _pointer != ( ( DspSafePointer< PointerType >& ) rhs )._pointer;
 	}
 
 public:
@@ -331,16 +332,16 @@ public:
 	}
 
 	template< class OtherType >
-	DspSafePointer<PointerType>& operator=( const DspSafePointer<OtherType>& rhs )
+	DspSafePointer< PointerType >& operator=( const DspSafePointer< OtherType >& rhs )
 	{
-		if( this != &( ( DspSafePointer<PointerType>& ) rhs ) && rhs.IsPointerValid() )
+		if( this != &( ( DspSafePointer< PointerType >& ) rhs ) && rhs.IsPointerValid() )
 		{
 			_DetachFromPointer();
-			_pointer = ( ( DspSafePointer<PointerType>& ) rhs )._pointer;
-			_pointerLocked = ( ( DspSafePointer<PointerType>& ) rhs )._pointerLocked;
-			_pointerLockedMutex = ( ( DspSafePointer<PointerType>& ) rhs )._pointerLockedMutex;
-			_referenceCount = ( ( DspSafePointer<PointerType>& ) rhs )._referenceCount;
-			_referenceCountMutex = ( ( DspSafePointer<PointerType>& ) rhs )._referenceCountMutex;
+			_pointer = ( ( DspSafePointer< PointerType >& ) rhs )._pointer;
+			_pointerLocked = ( ( DspSafePointer< PointerType >& ) rhs )._pointerLocked;
+			_pointerLockedMutex = ( ( DspSafePointer< PointerType >& ) rhs )._pointerLockedMutex;
+			_referenceCount = ( ( DspSafePointer< PointerType >& ) rhs )._referenceCount;
+			_referenceCountMutex = ( ( DspSafePointer< PointerType >& ) rhs )._referenceCountMutex;
 			_AttachToPointer();
 		}
 		return *this;
@@ -367,7 +368,7 @@ private:
 		if( _referenceCount != NULL )
 		{
 			_referenceCountMutex->Lock();
-			(*_referenceCount)--;
+			( *_referenceCount )--;
 			_referenceCountMutex->Unlock();
 
 			if( *_referenceCount == 0 )
@@ -388,7 +389,7 @@ private:
 		if( _referenceCount != NULL )
 		{
 			_referenceCountMutex->Lock();
-			(*_referenceCount)++;
+			( *_referenceCount )++;
 			_referenceCountMutex->Unlock();
 		}
 		else if( _pointer != NULL )

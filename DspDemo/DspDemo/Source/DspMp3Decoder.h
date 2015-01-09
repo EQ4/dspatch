@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -17,15 +18,16 @@ You should have received a copy of the GNU General Public License
 along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+/*
+copyright 1995-2010 by the mpg123 project - free software under the terms of the LGPL 2.1
+see COPYING and AUTHORS files at http://mpg123.org
+initially written by Michael Hipp
+*/
+
 #ifndef DSPMP3DECODER_H
 #define DSPMP3DECODER_H
 
 #include "DSPatch.h"
-
-#ifndef __ssize_t_defined
-typedef unsigned long ssize_t;
-#define __ssize_t_defined
-#endif
 
 struct mpg123_handle_struct;
 typedef struct mpg123_handle_struct mpg123_handle;

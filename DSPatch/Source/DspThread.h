@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -17,4 +18,12 @@ You should have received a copy of the GNU General Public License
 along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#include "DspThreadWin.h"	// TODO: Redirect #include depending on OS
+#ifdef DSP_UNIX
+
+#include "DspThreadUnix.h"
+
+#else
+
+#include "DspThreadWin.h"
+
+#endif

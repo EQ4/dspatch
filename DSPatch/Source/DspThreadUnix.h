@@ -18,151 +18,145 @@ You should have received a copy of the GNU General Public License
 along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
-#ifndef DSPTHREADWIN_H
-#define DSPTHREADWIN_H
+#ifndef DSPTHREADUNIX_H
+#define DSPTHREADUNIX_H
 
 //-------------------------------------------------------------------------------------------------
 
-#include <windows.h>
+#include <pthread.h>
+#include <unistd.h>
 
 //=================================================================================================
 
 class DspThread
 {
-private:
-
-	static DWORD WINAPI _ThreadFunc( LPVOID pv )
-	{
-		( reinterpret_cast<DspThread*>( pv ) )->_Run();
-		return 0;
-	}
-
-	virtual void _Run() = 0;
-
-	HANDLE _threadHandle;
-
 public:
-	DspThread()
-	: _threadHandle( NULL ) {}
-
-	DspThread( const DspThread& )
-	: _threadHandle( NULL ) {}
-
+	DspThread() {}
+    
 	virtual ~DspThread()
-	{
-		CloseHandle( _threadHandle );
-	}
+    {
+        pthread_detach( _thread );
+    }
 
 	enum Priority
 	{
-		IdlePriority = -15,
+		IdlePriority,
 
-		LowestPriority = -2,
-		LowPriority = -1,
-		NormalPriority = 0,
-		HighPriority = 1,
-		HighestPriority = 2,
+		LowestPriority,
+		LowPriority,
+		NormalPriority,
+		HighPriority,
+		HighestPriority,
 
-		TimeCriticalPriority = 15,
+		TimeCriticalPriority,
 	};
 
 	virtual void Start( Priority priority = NormalPriority )
-	{
-		DWORD threadId;
-		_threadHandle = CreateThread( NULL, 0, _ThreadFunc, this, CREATE_SUSPENDED, &threadId );
-		SetThreadPriority( _threadHandle, priority );
-		ResumeThread( _threadHandle );
-	}
+    {
+        pthread_create( &_thread, NULL, _ThreadFunc, this );
+        
+        _SetPriority( _thread, priority );        
+    }
 
 	static void SetPriority( Priority priority )
-	{
-		SetThreadPriority( GetCurrentThread(), priority );
-	}
+    {        
+        _SetPriority( pthread_self(), priority );
+    }
 
 	static void MsSleep( unsigned long milliseconds )
+    {
+        //usleep( ( unsigned int )milliseconds );
+    }
+    
+private:
+	static void* _ThreadFunc( void *pv )
 	{
-		Sleep( milliseconds );
+		( reinterpret_cast<DspThread*>( pv ) )->_Run();
+		return NULL;
 	}
+    
+    virtual void _Run() = 0;
+    
+    static void _SetPriority( pthread_t threadID, Priority priority )
+    {
+        int retcode;
+        int policy;
+        struct sched_param param;
+        
+        retcode = pthread_getschedparam( threadID, &policy, &param );
+        
+        policy = SCHED_FIFO;
+        param.sched_priority = ( ( priority - IdlePriority ) * ( 99 - 1 ) / TimeCriticalPriority ) + 1;
+        
+        retcode = pthread_setschedparam( threadID, policy, &param );
+    }
+    
+    pthread_t _thread;
+    
 };
 
 //=================================================================================================
 
 class DspMutex
 {
-private:
+friend class DspWaitCondition;
 
-	CRITICAL_SECTION _cs;
+private:
+    pthread_mutex_t _mutex;
 
 public:
 
 	DspMutex()
-	{
-		InitializeCriticalSection( &_cs );
-	}
-
-	DspMutex( const DspMutex& )
-	{
-		InitializeCriticalSection( &_cs );
-	}
+    {
+        pthread_mutex_init( &_mutex, NULL );
+    }
 
 	virtual ~DspMutex()
-	{
-		DeleteCriticalSection( &_cs );
-	}
+    {
+        pthread_mutex_destroy( &_mutex );
+    }
 
 	void Lock()
-	{
-		EnterCriticalSection( &_cs );
-	}
+    {
+        pthread_mutex_lock( &_mutex );
+    }
 
 	void Unlock()
-	{
-		LeaveCriticalSection( &_cs );
-	}
-};
+    {
+        pthread_mutex_unlock( &_mutex );
+    }
+ };
 
 //=================================================================================================
 
 class DspWaitCondition
 {
 private:
-
-	HANDLE _hEvent;
+    pthread_cond_t _cond;
 
 public:
 
 	DspWaitCondition()
-	{
-		_hEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
-	}
-
-	DspWaitCondition( const DspWaitCondition& )
-	{
-		_hEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
-	}
+    {
+        pthread_cond_init( &_cond, NULL );
+    }
 
 	virtual ~DspWaitCondition()
-	{
-		CloseHandle( _hEvent );
-	}
+    {
+        pthread_cond_destroy( &_cond );
+    }
 
 	void Wait( DspMutex& mutex )
-	{
-		ResetEvent( _hEvent );
-
-		mutex.Unlock();
-
-		WaitForSingleObject( _hEvent, INFINITE );
-
-		mutex.Lock();
-	}
+    {
+        pthread_cond_wait( &_cond, &(mutex._mutex) );
+    }
 
 	void WakeAll()
-	{
-		SetEvent( _hEvent );
-	}
+    {
+        pthread_cond_broadcast( &_cond );
+    }
 };
 
 //=================================================================================================
 
-#endif // DSPTHREADWIN_H
+#endif // DSPTHREADUNIX_H

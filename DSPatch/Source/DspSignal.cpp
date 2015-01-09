@@ -1,4 +1,5 @@
 /********************************************************************
+DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
 Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
 
 This file is part of DSPatch.
@@ -61,7 +62,7 @@ void DspSignal::ClearValue()
 
 //-------------------------------------------------------------------------------------------------
 
-const type_info& DspSignal::GetSignalType()
+const std::type_info& DspSignal::GetSignalType()
 {
 	return _signalValue.GetType();
 }
