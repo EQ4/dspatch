@@ -23,6 +23,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ************************************************************************/
 
 #include "DspOscillator.h"
+
 #include <math.h>
 
 static const float PI = 3.1415926535897932384626433832795f;
@@ -35,13 +36,13 @@ DspOscillator::DspOscillator( float startFreq, float startAmpl )
   _ampl( startAmpl ),
   _lastPos( 0 ),
   _lookupLength( 0 ),
-  _bufferSize( 128 ),
+  _bufferSize( 512 ),
   _sampleRate( 44100 )
 {
   _BuildLookup();
 
-  AddInput_( "Buffer Size Sync" );
   AddInput_( "Sample Rate" );
+  AddInput_( "Buffer Size" );
 
   AddOutput_();
 }
@@ -112,7 +113,7 @@ void DspOscillator::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 
   // Synchronise buffer size with the size of incoming buffers
   // =========================================================
-  if( inputs.GetValue( 0, _signal ) )
+  if( inputs.GetValue( "Buffer Size", _signal ) )
   {
     if( _bufferSize != _signal.size() )
     {

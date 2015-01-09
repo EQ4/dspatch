@@ -80,24 +80,24 @@ private:
 
 \section intro_sec Introduction
 	DSPatch, pronounced "dispatch", is a powerful C++ flow-based programming library that allows
-  you to create and route (or "patch") high performance data processing circuits. DSPatch is not
+	you to create and route (or "patch") high performance data processing circuits. DSPatch is not
 	limited to any particular type of circuit or signal, its generic object-oriented API allows you
-	to create almost any process chain imaginable, from simple logic circuits to full-blown
-	electronics simulation. DSPatch's simple framework makes development quick and easy, allowing
-  you to hit the ground running on every project.
-
-  DSPatch is designed around the concept of a "circuit" containing "components", interconnected
-  via "wires" that transfer "signals" to and from input and output "buses". For more detail on
-  how DSPatch works, check out the <a href="spec_page.html"><b>DSPatch Design Specification</b></a>.
-  
-  The two most important classes to consider are DspComponent and DspCircuit.  In order to route
+	to create almost any system imaginable, from simple logic circuits to high performance audio
+	process chains and electronics simulation. DSPatch's simple framework makes development quick
+	and easy, allowing you to hit the ground running on every project.
+	
+	DSPatch is designed around the concept of a "circuit" containing "components", interconnected
+	via "wires" that transfer "signals" to and from input and output "buses". For more detail on
+	how DSPatch works, check out the <a href="spec_page.html"><b>DSPatch Design Specification</b></a>.
+	
+	The two most important classes to consider are DspComponent and DspCircuit.  In order to route
 	data to and from DspComponents they can either be added to an DspCircuit, where they can be
 	wired together (recommended), or they can be wired directly via public DspComponent methods.
-  The DSPatch engine takes care of data transfer between interconnected components, when data is
-  ready for a component to process, a callback: "Process_()" is executed in that component. For a
-  component to form part of the DSPatch framework, designers simply have to derive their
-  component from the DspComponent base class, configure the component's IO buses, and implement
-  the virtual Process_() callback method.
+	The DSPatch engine takes care of data transfer between interconnected components, when data is
+	ready for a component to process, a callback: "Process_()" is executed in that component. For a
+	component to form part of the DSPatch framework, designers simply have to derive their
+	component from the DspComponent base class, configure the component's IO buses, and implement
+	the virtual Process_() callback method.
   
 \n
 
@@ -128,16 +128,13 @@ private:
 	2. Building a DspCircuit - In this tutorial you will learn how to use the DSPatch framework
 	to interconnect and process DspComponent networks using the DspCircuit interface.
 
-\subsection step3 Step 3: Check out the DspDemo project
-	In the "example" folder (in the DSPatch root directory) you will find a simple DSPatch
-	example project: "DspDemo". This project has been written to assist developers in
-	understanding the DSPatch API as well as to demonstrate how it could be used to build a
-	real-time audio process chain. The quickest way to get this project compiled and running is
-  to simply open the "dspdemo.sln" (Windows) or "dspdemo.xcodeproj" (Mac OS X) file (found in
-  the "/example/windows", and "/example/mac_os_x" directories respectively) depending on the
-	platform used -This solution contains both the DSPatch library and DspDemo project
-	side-by-side as would be typical in developing a DSPatch application.
-
+\subsection step3 Step 3: Check out the example project
+	In the "example" folder (in the DSPatch root directory) you will find a DSPatch demo project,
+	written to assist developers in understanding the DSPatch API as well as to demonstrate how it
+	could be used to build audio process chains. This project uses the open-source library RtAudio
+	in order to stream sound to your computer's audio device -Linux users will need to install
+	"libasound2-dev" (ALSA) before attempting to build.
+	
 \subsection step4 Step 4: Make your own DspComponents
 	A fast way to create your own DspComponent could be to copy an existing component to another
 	destination, rename it, and edit the contents to satisfy your component's required behavior.
@@ -153,11 +150,11 @@ private:
 	compile and run is relatively painless. All you need to do from your project is #include
 	"DSPatch.h" from the "include" folder (in the DSPatch root directory), and link to the
 	DSPatch library (either by including all DSPatch source or by linking to a compiled library
-	file). To speed things up you may want to copy, rename, and edit the DspDemo project from
+	file). To speed things up you may want to copy, rename, and edit the example project from
 	step 3 to get up and running faster.
 
 \subsection step6 Step 6: Refer to the documentation
-	Between the DspDemo project, the DspAdder component template, and the documentation found
+	Between the example project, the DspAdder component template, and the documentation found
 	here, you should have enough resources to get started with DSPatch straight away. If you have
 	any questions or wish to report a bug, feel free to email me at marcus@adaptaudio.com.
 
@@ -372,12 +369,20 @@ void main()
 
 \section release_notes Release Notes
 
+\subsection v250 v.2.50 (14 July 2013)
+  - Reduced size of distributable.
+  - Removed closed source dependency from example project.
+  - Added Linux makefiles.
+
+\subsection v243 v.2.43 (30 June 2013)
+  - Simplified platform selection macros.
+
 \subsection v242 v.2.42 (24 June 2013)
   - Added vs2008 and vs2010 versions of dspdemo.
   - Code style and performance improvements.
 
 \subsection v241 v.2.41 (07 February 2013)
-  - Fixed VS2010 DspDemo linker errors.
+  - Fixed VS2010 dspdemo linker errors.
 
 \subsection v240 v.2.40 (04 February 2013)
   - Optimized DspRunType.
@@ -427,7 +432,7 @@ void main()
 
 \subsection v11 v.1.1 (17 October 2012)
   - Various bug fixes.
-  - Added 2 more components to the DspDemo project.
+  - Added 2 more components to the dspdemo project.
   - Optimized threaded circuit processing.
   - AddComponent() updated to accept pre-constructed DspComponents.
 

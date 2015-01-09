@@ -22,30 +22,30 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ************************************************************************/
 
-#include "DSPatch.h"
+#include "../include/DSPatch.h"
 
-#include "DspMp3Decoder.h"
+#include "DspWaveStreamer.h"
 #include "DspGain.h"
 #include "DspAudioDevice.h"
 #include "DspOscillator.h"
 #include "DspAdder.h"
 
-#include <iostream>
+#include <stdio.h>
 
 //=================================================================================================
-// This is a simple program that streams an mp3 out of an audio device,
+// This is a simple program that streams an wave out of an audio device,
 // then overlays a 1KHz oscillator when a key is pressed.
 
 int main()
 {
-  // 1. Stream MP3
-  // =============
+  // 1. Stream Wave
+  // ==============
 
   // create a circuit 
   DspCircuit circuit;
 
   // declare components to be added to the circuit
-  DspMp3Decoder mp3Decoder;
+  DspWaveStreamer waveStreamer;
   DspAudioDevice audioDevice;
   DspGain gainLeft;
   DspGain gainRight;
@@ -57,24 +57,28 @@ int main()
   circuit.StartAutoTick();
 
   // add new components to the circuit (these methods return pointers to the new components)
-  circuit.AddComponent( mp3Decoder );
+  circuit.AddComponent( waveStreamer );
   circuit.AddComponent( audioDevice );
   circuit.AddComponent( gainLeft );
   circuit.AddComponent( gainRight );
 
-  // connect component output signals to respective component input signals
-  circuit.ConnectOutToIn( mp3Decoder, 0, gainLeft, 0 );   // mp3 left channel into gain left
-  circuit.ConnectOutToIn( mp3Decoder, 1, gainRight, 0 );  // mp3 right channel into gain right
-  circuit.ConnectOutToIn( gainLeft, 0, audioDevice, 0 );  // gain left into audio device left channel
-  circuit.ConnectOutToIn( gainRight, 0, audioDevice, 1 ); // gain right into audio device right channel
+  // DspWaveStreamer has an output signal named "Sample Rate" that streams the current wave's sample rate
+  // DspAudioDevice's "Sample Rate" input receives a sample rate value and updates the audio stream accordingly 
+  circuit.ConnectOutToIn( waveStreamer, "Sample Rate", audioDevice, "Sample Rate" ); // sample rate sync
 
-  // set the gain of components gainLeft and gainRight (mp3 left and right channels)
+  // connect component output signals to respective component input signals
+  circuit.ConnectOutToIn( waveStreamer, 0, gainLeft, 0 );   // wave left channel into gain left
+  circuit.ConnectOutToIn( waveStreamer, 1, gainRight, 0 );  // wave right channel into gain right
+  circuit.ConnectOutToIn( gainLeft, 0, audioDevice, 0 );    // gain left into audio device left channel
+  circuit.ConnectOutToIn( gainRight, 0, audioDevice, 1 );   // gain right into audio device right channel
+
+  // set the gain of components gainLeft and gainRight (wave left and right channels)
   gainLeft.SetGain( 0.75 );
   gainRight.SetGain( 0.75 );
 
-  // load an mp3 into the mp3 decoder and start playing the track
-  mp3Decoder.LoadFile( "../../Tchaikovski-Swan-Lake-Scene.mp3" );
-  mp3Decoder.Play();
+  // load a wave into the wave streamer and start playing the track
+  waveStreamer.LoadFile( "../Tchaikovski-Swan-Lake-Scene.wav" );
+  waveStreamer.Play();
 
   // wait for key press
   getchar();
@@ -94,16 +98,16 @@ int main()
   circuit.AddComponent( adder1 );
   circuit.AddComponent( adder2 );
 
-  // DspMp3Decoder has an output signal named "Sample Rate" that streams the current mp3's sample rate
-  // DspOscillator's "Sample Rate" input receives a sample rate value and re-builds its wave table accordingly 
-  circuit.ConnectOutToIn( mp3Decoder, "Sample Rate", oscillator, "Sample Rate" ); // sample rate sync
+  // DspOscillator's "Sample Rate" / "Buffer Size" input values are used to re-build its wave table accordingly
+  circuit.ConnectOutToIn( waveStreamer, "Sample Rate", oscillator, "Sample Rate" ); // sample rate sync
+  circuit.ConnectOutToIn( waveStreamer, 0, oscillator, "Buffer Size" );             // buffer size sync
 
   // connect component output signals to respective component input signals
-  circuit.ConnectOutToIn( gainLeft, 0, adder1, 0 );     // mp3 left channel into adder1 ch0
+  circuit.ConnectOutToIn( gainLeft, 0, adder1, 0 );     // wave left channel into adder1 ch0
   circuit.ConnectOutToIn( oscillator, 0, adder1, 1 );   // oscillator output into adder1 ch1
   circuit.ConnectOutToIn( adder1, 0, audioDevice, 0 );  // adder1 output into audio device left channel
 
-  circuit.ConnectOutToIn( gainRight, 0, adder2, 0 );    // mp3 right channel into adder2 ch0
+  circuit.ConnectOutToIn( gainRight, 0, adder2, 0 );    // wave right channel into adder2 ch0
   circuit.ConnectOutToIn( oscillator, 0, adder2, 1 );   // oscillator output into adder2 ch1
   circuit.ConnectOutToIn( adder2, 0, audioDevice, 1 );  // adder2 output into audio device right channel
 

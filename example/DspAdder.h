@@ -25,6 +25,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #ifndef DSPADDER_H
 #define DSPADDER_H
 
+#include "../include/DSPatch.h"
+
 //=================================================================================================
 /// Example DspComponent: Adder
 
@@ -85,7 +87,7 @@ protected:
       }
       outputs.SetValue( 0, _stream1 ); // set output 1
     }
-    // if input sizes don't match
+      // if input sizes don't match
     else
     {
       outputs.ClearValue( 0 ); // clear the output

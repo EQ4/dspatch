@@ -25,7 +25,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #ifndef DSPOSCILLATOR_H
 #define DSPOSCILLATOR_H
 
-#include "DSPatch.h"
+#include "../include/DSPatch.h"
 
 //=================================================================================================
 

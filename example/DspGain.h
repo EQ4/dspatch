@@ -25,7 +25,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #ifndef DSPGAIN_H
 #define DSPGAIN_H
 
-#include "DSPatch.h"
+#include "../include/DSPatch.h"
 
 //=================================================================================================
 
