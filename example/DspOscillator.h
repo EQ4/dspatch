@@ -41,22 +41,22 @@ public:
   void SetAmpl( float ampl );
   void SetFreq( float freq );
 
-  unsigned long GetBufferSize()
+  unsigned long GetBufferSize() const
   {
     return _bufferSize;
   }
 
-  unsigned long GetSampleRate()
+  unsigned long GetSampleRate() const
   {
     return _sampleRate;
   }
 
-  float GetAmpl()
+  float GetAmpl() const
   {
     return _ampl;
   }
 
-  float GetFreq()
+  float GetFreq() const
   {
     return _freq;
   }
@@ -73,8 +73,8 @@ private:
 
   unsigned long _lastPos;
   unsigned long _lookupLength;
-  unsigned long _sampleRate;
   unsigned long _bufferSize;
+  unsigned long _sampleRate;
 
   DspMutex _processMutex;
 

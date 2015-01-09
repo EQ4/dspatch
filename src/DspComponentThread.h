@@ -50,7 +50,7 @@ public:
   ~DspComponentThread();
 
   void Initialise( DspComponent* component );
-  bool IsStopped();
+  bool IsStopped() const;
 
   void Start( Priority priority = TimeCriticalPriority );
   void Stop();
@@ -64,7 +64,7 @@ private:
   DspMutex _resumeMutex;
   DspWaitCondition _resumeCondt, _pauseCondt;
 
-  void _Run();
+  virtual void _Run();
 };
 
 //=================================================================================================

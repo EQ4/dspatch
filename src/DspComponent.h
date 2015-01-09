@@ -65,7 +65,7 @@ public:
   virtual ~DspComponent();
 
   void SetComponentName( std::string componentName );
-  std::string GetComponentName();
+  std::string GetComponentName() const;
 
   void SetParentCircuit( DspCircuit* parentCircuit );
   DspCircuit* GetParentCircuit();
@@ -87,8 +87,8 @@ public:
   void DisconnectInput( DspComponent* inputComponent );
   void DisconnectInputs();
 
-  unsigned short GetInputCount();
-  unsigned short GetOutputCount();
+  unsigned short GetInputCount() const;
+  unsigned short GetOutputCount() const;
 
   bool FindInput( std::string signalName, unsigned short& returnIndex ) const;
   bool FindInput( unsigned short signalIndex, unsigned short& returnIndex ) const;
@@ -107,7 +107,7 @@ public:
   // =================================
 
   void SetBufferCount( unsigned short bufferCount );
-  unsigned short GetBufferCount();
+  unsigned short GetBufferCount() const;
 
   void ThreadTick( unsigned short threadNo );
   void ThreadReset( unsigned short threadNo );

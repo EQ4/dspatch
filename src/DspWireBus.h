@@ -59,7 +59,7 @@ public:
 
   DspWire* GetWire( unsigned short wireIndex );
 
-  unsigned short GetWireCount();
+  unsigned short GetWireCount() const;
 
 private:
   bool _isLinkedComponentReceivingSignals;

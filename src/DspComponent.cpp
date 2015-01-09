@@ -33,11 +33,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 DspComponent::DspComponent()
 : _parentCircuit( NULL ),
+  _bufferCount( 0 ),
   _componentName( "" ),
   _isAutoTickRunning( false ),
   _isAutoTickPaused( false ),
-  _hasTicked( false ),
-  _bufferCount( 0 )
+  _hasTicked( false )
 {
   _componentThread.Initialise( this );
 }
@@ -65,7 +65,7 @@ void DspComponent::SetComponentName( std::string componentName )
 
 //-------------------------------------------------------------------------------------------------
 
-std::string DspComponent::GetComponentName()
+std::string DspComponent::GetComponentName() const
 {
   return _componentName;
 }
@@ -105,10 +105,9 @@ void DspComponent::DisconnectInput( unsigned short inputIndex )
   PauseAutoTick();
 
   // remove inputComponent from _inputWires
-  DspWire* wire;
   for( unsigned short i = 0; i < _inputWires.GetWireCount(); i++ )
   {
-    wire = _inputWires.GetWire( i );
+    DspWire* wire = _inputWires.GetWire( i );
     if( wire->toSignalIndex == inputIndex )
     {
       _inputWires.RemoveWire( i );
@@ -138,10 +137,9 @@ void DspComponent::DisconnectInput( DspComponent* inputComponent )
   PauseAutoTick();
 
   // remove inputComponent from _inputWires
-  DspWire* wire;
   for( unsigned short i = 0; i < _inputWires.GetWireCount(); i++ )
   {
-    wire = _inputWires.GetWire( i );
+    DspWire* wire = _inputWires.GetWire( i );
     if( wire->linkedComponent == inputComponent )
     {
       _inputWires.RemoveWire( i );
@@ -162,14 +160,14 @@ void DspComponent::DisconnectInputs()
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned short DspComponent::GetInputCount()
+unsigned short DspComponent::GetInputCount() const
 {
   return _inputBus.GetSignalCount();
 }
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned short DspComponent::GetOutputCount()
+unsigned short DspComponent::GetOutputCount() const
 {
   return _outputBus.GetSignalCount();
 }
@@ -225,15 +223,12 @@ void DspComponent::Tick()
     _hasTicked = true;
 
     // 2. get outputs required from input components
-    DspWire* wire;
-    DspSignal* signal;
-
     for( unsigned short i = 0; i < _inputWires.GetWireCount(); i++ )
     {
-      wire = _inputWires.GetWire( i );
+      DspWire* wire = _inputWires.GetWire( i );
       wire->linkedComponent->Tick();
 
-      signal = wire->linkedComponent->_outputBus.GetSignal( wire->fromSignalIndex );
+      DspSignal* signal = wire->linkedComponent->_outputBus.GetSignal( wire->fromSignalIndex );
       _inputBus.SetSignal( wire->toSignalIndex, signal );
     }
 
@@ -412,7 +407,7 @@ void DspComponent::SetBufferCount( unsigned short bufferCount )
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned short DspComponent::GetBufferCount()
+unsigned short DspComponent::GetBufferCount() const
 {
   return _bufferCount;
 }
@@ -428,15 +423,12 @@ void DspComponent::ThreadTick( unsigned short threadNo )
     *_hasTickeds[threadNo] = true;
 
     // 2. get outputs required from input components
-    DspWire* wire;
-    DspSignal* signal;
-
     for( unsigned short i = 0; i < _inputWires.GetWireCount(); i++ )
     {
-      wire = _inputWires.GetWire( i );
+      DspWire* wire = _inputWires.GetWire( i );
       wire->linkedComponent->ThreadTick( threadNo );
 
-      signal = wire->linkedComponent->_outputBuses[threadNo].GetSignal( wire->fromSignalIndex );
+      DspSignal* signal = wire->linkedComponent->_outputBuses[threadNo].GetSignal( wire->fromSignalIndex );
       _inputBuses[threadNo].SetSignal( wire->toSignalIndex, signal );
     }
 

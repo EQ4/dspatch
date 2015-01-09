@@ -52,7 +52,7 @@ public:
     }
   }
 
-  float GetGain()
+  float GetGain() const
   {
     return _gain;
   }

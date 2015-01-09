@@ -102,7 +102,7 @@ void DspCircuit::SetThreadCount( unsigned short threadCount )
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned short DspCircuit::GetThreadCount()
+unsigned short DspCircuit::GetThreadCount() const
 {
   return _circuitThreads.size();
 }
@@ -201,7 +201,7 @@ void DspCircuit::RemoveAllComponents()
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned short DspCircuit::GetComponentCount()
+unsigned short DspCircuit::GetComponentCount() const
 {
   return _components.size();
 }
@@ -330,7 +330,7 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
 
 //=================================================================================================
 
-bool DspCircuit::_FindComponent( DspComponent* component, unsigned short& returnIndex )
+bool DspCircuit::_FindComponent( DspComponent* component, unsigned short& returnIndex ) const
 {
   for( unsigned short i = 0; i < _components.size(); i++ )
   {
@@ -346,14 +346,14 @@ bool DspCircuit::_FindComponent( DspComponent* component, unsigned short& return
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspCircuit::_FindComponent( DspComponent& component, unsigned short& returnIndex )
+bool DspCircuit::_FindComponent( DspComponent& component, unsigned short& returnIndex ) const
 {
   return _FindComponent( &component, returnIndex );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspCircuit::_FindComponent( std::string componentName, unsigned short& returnIndex )
+bool DspCircuit::_FindComponent( std::string componentName, unsigned short& returnIndex ) const
 {
   for( unsigned short i = 0; i < _components.size(); i++ )
   {
@@ -369,7 +369,7 @@ bool DspCircuit::_FindComponent( std::string componentName, unsigned short& retu
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspCircuit::_FindComponent( unsigned short componentIndex, unsigned short& returnIndex )
+bool DspCircuit::_FindComponent( unsigned short componentIndex, unsigned short& returnIndex ) const
 {
   if( componentIndex < _components.size() )
   {

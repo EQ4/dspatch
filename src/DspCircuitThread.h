@@ -81,7 +81,7 @@ private:
   DspMutex _resumeMutex;
   DspWaitCondition _resumeCondt, _syncCondt;
 
-  void _Run();
+  virtual void _Run();
 };
 
 //=================================================================================================

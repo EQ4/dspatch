@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dspdemo", "dspdemo\dspdemo.vcproj", "{F3461398-06FF-4C36-A7CA-61AD00D03343}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dspdemo", "dspdemo.vcproj", "{F3461398-06FF-4C36-A7CA-61AD00D03343}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FBA28B81-51F3-495D-9845-D546FFF3757F} = {FBA28B81-51F3-495D-9845-D546FFF3757F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dspatch", "..\..\build\windows\dspatch.vcproj", "{FBA28B81-51F3-495D-9845-D546FFF3757F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dspatch", "..\..\..\build\windows\dspatch.vcproj", "{FBA28B81-51F3-495D-9845-D546FFF3757F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

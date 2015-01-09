@@ -63,7 +63,7 @@ public:
 
   void ClearValue();
 
-  const std::type_info& GetSignalType();
+  const std::type_info& GetSignalType() const;
 
   std::string GetSignalName() const;
 

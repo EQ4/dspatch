@@ -90,16 +90,15 @@ private:
 
   static void _SetPriority( pthread_t threadID, Priority priority )
   {
-    int retcode;
     int policy;
     struct sched_param param;
 
-    retcode = pthread_getschedparam( threadID, &policy, &param );
+    pthread_getschedparam( threadID, &policy, &param );
 
     policy = SCHED_FIFO;
     param.sched_priority = ( ( priority - IdlePriority ) * ( 99 - 1 ) / TimeCriticalPriority ) + 1;
 
-    retcode = pthread_setschedparam( threadID, policy, &param );
+    pthread_setschedparam( threadID, policy, &param );
   }
 };
 

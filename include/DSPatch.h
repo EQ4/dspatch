@@ -372,6 +372,10 @@ void main()
 
 \section release_notes Release Notes
 
+\subsection v242 v.2.42 (24 June 2013)
+  - Added vs2008 and vs2010 versions of dspdemo.
+  - Code style and performance improvements.
+
 \subsection v241 v.2.41 (07 February 2013)
   - Fixed VS2010 DspDemo linker errors.
 

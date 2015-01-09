@@ -66,7 +66,7 @@ void DspSignal::ClearValue()
 
 //-------------------------------------------------------------------------------------------------
 
-const std::type_info& DspSignal::GetSignalType()
+const std::type_info& DspSignal::GetSignalType() const
 {
   return _signalValue.GetType();
 }

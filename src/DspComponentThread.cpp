@@ -49,7 +49,7 @@ void DspComponentThread::Initialise( DspComponent* component )
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponentThread::IsStopped()
+bool DspComponentThread::IsStopped() const
 {
   return _stopped;
 }

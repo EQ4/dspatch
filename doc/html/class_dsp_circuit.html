@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.41</span>
+   &#160;<span id="projectnumber">v.2.42</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -114,8 +114,8 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PauseAutoTick</b> ()</td></tr>
 <tr class="memitem:aba82b8d14578e22bd9477246c1febd53"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba82b8d14578e22bd9477246c1febd53"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetThreadCount</b> (unsigned short threadCount)</td></tr>
-<tr class="memitem:a9c3db2c0d537a0e4110e6729570bc9c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c3db2c0d537a0e4110e6729570bc9c1"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetThreadCount</b> ()</td></tr>
+<tr class="memitem:aee3a948fafd30d638947c10939f64552"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aee3a948fafd30d638947c10939f64552"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetThreadCount</b> () const </td></tr>
 <tr class="memitem:aff0ae9d54041e4afac1a7b2ebe93077c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff0ae9d54041e4afac1a7b2ebe93077c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddComponent</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *component, std::string componentName=&quot;&quot;)</td></tr>
 <tr class="memitem:aae8c00f798fbbfb0b1b0042a2b5ed5fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae8c00f798fbbfb0b1b0042a2b5ed5fc"></a>
@@ -131,8 +131,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveAllComponents</
 <tr class="memitem:ac81a2e3fef6b4156a93d1a0f3ae1a6ac"><td class="memTemplParams" colspan="2"><a class="anchor" id="ac81a2e3fef6b4156a93d1a0f3ae1a6ac"></a>
 template&lt;class ComponentType &gt; </td></tr>
 <tr class="memitem:ac81a2e3fef6b4156a93d1a0f3ae1a6ac"><td class="memTemplItemLeft" align="right" valign="top">ComponentType *&#160;</td><td class="memTemplItemRight" valign="bottom"><b>GetComponent</b> (std::string componentName)</td></tr>
-<tr class="memitem:a8910ddf31a6a8051946e0d7c693309ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8910ddf31a6a8051946e0d7c693309ad"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetComponentCount</b> ()</td></tr>
+<tr class="memitem:a90cc77fbd797ee9df5187b758d92f39f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90cc77fbd797ee9df5187b758d92f39f"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetComponentCount</b> () const </td></tr>
 <tr class="memitem:afee5d54b818b5f9b24f531e772d3b540"><td class="memTemplParams" colspan="2"><a class="anchor" id="afee5d54b818b5f9b24f531e772d3b540"></a>
 template&lt;class FromComponentType , class FromOutputType , class ToComponentType , class ToInputType &gt; </td></tr>
 <tr class="memitem:afee5d54b818b5f9b24f531e772d3b540"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ConnectOutToIn</b> (FromComponentType &amp;fromComponent, FromOutputType fromOutput, ToComponentType &amp;toComponent, ToInputType toInput)</td></tr>
@@ -164,8 +164,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearOutputs</b> ()</
 <tr class="inherit_header pub_methods_class_dsp_component"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_dsp_component')"><img src="closed.png" alt="-"/>&nbsp;Public Member Functions inherited from <a class="el" href="class_dsp_component.html">DspComponent</a></td></tr>
 <tr class="memitem:aa55f2a207ca6994034e3ffe85b6a23a3 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa55f2a207ca6994034e3ffe85b6a23a3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetComponentName</b> (std::string componentName)</td></tr>
-<tr class="memitem:ab4a9276a39adf1aa09737af618225198 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4a9276a39adf1aa09737af618225198"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>GetComponentName</b> ()</td></tr>
+<tr class="memitem:a56a79450b648dabc80c8d40254ed4ef1 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56a79450b648dabc80c8d40254ed4ef1"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>GetComponentName</b> () const </td></tr>
 <tr class="memitem:a65d802df3fd4dafa960d29fb0325153a inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65d802df3fd4dafa960d29fb0325153a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetParentCircuit</b> (<a class="el" href="class_dsp_circuit.html">DspCircuit</a> *parentCircuit)</td></tr>
 <tr class="memitem:a001f3cdb3b8e9c3ec9f609c681ed4a6c inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a001f3cdb3b8e9c3ec9f609c681ed4a6c"></a>
@@ -190,10 +190,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInput</b> (<a class="el" href="class_dsp_component.html">DspComponent</a> *inputComponent)</td></tr>
 <tr class="memitem:aa1468c9d4a6ab92a9992361ad0a5ae4e inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1468c9d4a6ab92a9992361ad0a5ae4e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DisconnectInputs</b> ()</td></tr>
-<tr class="memitem:a69907d60dfb2318d4dc579623d280d25 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69907d60dfb2318d4dc579623d280d25"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputCount</b> ()</td></tr>
-<tr class="memitem:afed5360bff6e961db5f65c1161cf8b26 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afed5360bff6e961db5f65c1161cf8b26"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputCount</b> ()</td></tr>
+<tr class="memitem:a5f15bc1bbe13ea04635d0cb51ade67c7 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f15bc1bbe13ea04635d0cb51ade67c7"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetInputCount</b> () const </td></tr>
+<tr class="memitem:a57e1ee354bdbe6ee3c5513179c7745f4 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57e1ee354bdbe6ee3c5513179c7745f4"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputCount</b> () const </td></tr>
 <tr class="memitem:a8a562f06f31f13ebbaa671ce0e75fee6 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a562f06f31f13ebbaa671ce0e75fee6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>FindInput</b> (std::string signalName, unsigned short &amp;returnIndex) const </td></tr>
 <tr class="memitem:aa09c07bd565f83f81918d713ba9264d1 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa09c07bd565f83f81918d713ba9264d1"></a>
@@ -214,8 +214,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>StopAutoTick<
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResumeAutoTick</b> ()</td></tr>
 <tr class="memitem:a7d08194412f14afde4a66d2b34159cfd inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d08194412f14afde4a66d2b34159cfd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBufferCount</b> (unsigned short bufferCount)</td></tr>
-<tr class="memitem:ad771cdc45a48bc63c8f686bdf75af074 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad771cdc45a48bc63c8f686bdf75af074"></a>
-unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetBufferCount</b> ()</td></tr>
+<tr class="memitem:a30f9e70989f4b6b2010237325c8c00ef inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30f9e70989f4b6b2010237325c8c00ef"></a>
+unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>GetBufferCount</b> () const </td></tr>
 <tr class="memitem:afc29df4fd71f102d593352ca385dcf3d inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc29df4fd71f102d593352ca385dcf3d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ThreadTick</b> (unsigned short threadNo)</td></tr>
 <tr class="memitem:aebb8938adca0e72d3bda3341a4b3ca79 inherit pub_methods_class_dsp_component"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebb8938adca0e72d3bda3341a4b3ca79"></a>
@@ -258,7 +258,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearOutputs_</b> ()<
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 7 2013 05:55:35 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 24 2013 19:14:04 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.1
 </small></address>

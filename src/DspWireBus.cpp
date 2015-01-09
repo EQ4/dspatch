@@ -136,7 +136,7 @@ DspWire* DspWireBus::GetWire( unsigned short wireIndex )
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned short DspWireBus::GetWireCount()
+unsigned short DspWireBus::GetWireCount() const
 {
   return _wires.size();
 }

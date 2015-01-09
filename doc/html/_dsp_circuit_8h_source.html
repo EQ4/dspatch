@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.41</span>
+   &#160;<span id="projectnumber">v.2.42</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -133,7 +133,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PauseAutoTick();</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> SetThreadCount( <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> threadCount );</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> GetThreadCount();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> GetThreadCount() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">bool</span> AddComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>* component, std::string componentName = <span class="stringliteral">&quot;&quot;</span> );</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">bool</span> AddComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>&amp; component, std::string componentName = <span class="stringliteral">&quot;&quot;</span> );</div>
@@ -147,7 +147,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keyword">template</span>&lt; <span class="keyword">class</span> ComponentType &gt;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  ComponentType* GetComponent( std::string componentName );</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> GetComponentCount();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> GetComponentCount() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="comment">// component output to component input</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">template</span>&lt; <span class="keyword">class</span> FromComponentType, <span class="keyword">class</span> FromOutputType, <span class="keyword">class</span> ToComponentType, <span class="keyword">class</span> ToInputType &gt;</div>
@@ -193,10 +193,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <a class="code" href="class_dsp_wire_bus.html" title="DspWire container.">DspWireBus</a> _inToInWires;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <a class="code" href="class_dsp_wire_bus.html" title="DspWire container.">DspWireBus</a> _outToOutWires;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>* component, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex );</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>&amp; component, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex );</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( std::string componentName, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex );</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> componentIndex, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex );</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>* component, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>&amp; component, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( std::string componentName, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> componentIndex, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex ) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordtype">void</span> _DisconnectComponent( <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> componentIndex );</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  <span class="keywordtype">void</span> _RemoveComponent( <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> componentIndex );</div>
@@ -211,7 +211,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  <span class="keywordflow">if</span>( _FindComponent( componentName, componentIndex ) )</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> ( ComponentType* ) _components[componentIndex];</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span> ComponentType* <span class="keyword">&gt;</span>( _components[componentIndex] );</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  }</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  {</div>
@@ -375,7 +375,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 7 2013 05:55:35 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 24 2013 19:14:04 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.1
 </small></address>

@@ -68,7 +68,7 @@ public:
   virtual void PauseAutoTick();
 
   void SetThreadCount( unsigned short threadCount );
-  unsigned short GetThreadCount();
+  unsigned short GetThreadCount() const;
 
   bool AddComponent( DspComponent* component, std::string componentName = "" );
   bool AddComponent( DspComponent& component, std::string componentName = "" );
@@ -82,7 +82,7 @@ public:
   template< class ComponentType >
   ComponentType* GetComponent( std::string componentName );
 
-  unsigned short GetComponentCount();
+  unsigned short GetComponentCount() const;
 
   // component output to component input
   template< class FromComponentType, class FromOutputType, class ToComponentType, class ToInputType >
@@ -128,10 +128,10 @@ private:
   DspWireBus _inToInWires;
   DspWireBus _outToOutWires;
 
-  bool _FindComponent( DspComponent* component, unsigned short& returnIndex );
-  bool _FindComponent( DspComponent& component, unsigned short& returnIndex );
-  bool _FindComponent( std::string componentName, unsigned short& returnIndex );
-  bool _FindComponent( unsigned short componentIndex, unsigned short& returnIndex );
+  bool _FindComponent( DspComponent* component, unsigned short& returnIndex ) const;
+  bool _FindComponent( DspComponent& component, unsigned short& returnIndex ) const;
+  bool _FindComponent( std::string componentName, unsigned short& returnIndex ) const;
+  bool _FindComponent( unsigned short componentIndex, unsigned short& returnIndex ) const;
 
   void _DisconnectComponent( unsigned short componentIndex );
   void _RemoveComponent( unsigned short componentIndex );
@@ -146,7 +146,7 @@ ComponentType* DspCircuit::GetComponent( std::string componentName )
 
   if( _FindComponent( componentName, componentIndex ) )
   {
-    return ( ComponentType* ) _components[componentIndex];
+    return static_cast< ComponentType* >( _components[componentIndex] );
   }
   else
   {

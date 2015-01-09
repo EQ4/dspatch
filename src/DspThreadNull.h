@@ -80,8 +80,8 @@ public:
 
   virtual ~DspMutex() {}
 
-  void Lock() {}
-  void Unlock() {}
+  static void Lock() {}
+  static void Unlock() {}
 };
 
 //=================================================================================================
@@ -100,8 +100,8 @@ public:
 
   virtual ~DspWaitCondition() {}
 
-  void Wait( DspMutex& mutex ) {}
-  void WakeAll() {}
+  static void Wait( DspMutex& mutex ) {}
+  static void WakeAll() {}
 };
 
 //=================================================================================================
