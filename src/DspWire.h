@@ -41,6 +41,13 @@ in retrieving and providing signals across component connections.
 
 struct DspWire
 {
+  DspWire( DspComponent* newLinkedComponent,
+           unsigned short newFromSignalIndex,
+           unsigned short newToSignalIndex )
+  : linkedComponent( newLinkedComponent ),
+    fromSignalIndex( newFromSignalIndex ),
+    toSignalIndex( newToSignalIndex ) {}
+
   DspComponent* linkedComponent;
   unsigned short fromSignalIndex;
   unsigned short toSignalIndex;

@@ -29,9 +29,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 #include "DspSignalBus.h"
 #include "DspWireBus.h"
+#include "DspComponentThread.h"
 
 class DspCircuit;
-class DspComponentThread;
 
 //=================================================================================================
 /// Abstract base class for all DSPatch components
@@ -145,7 +145,7 @@ private:
 
   bool _hasTicked;
 
-  DspComponentThread* _componentThread;
+  DspComponentThread _componentThread;
 
   std::vector< bool* > _hasTickeds; // bool pointers ensure that parallel threads will only read from this vector
   std::vector< bool > _gotReleases; // bool pointers not used here as only 1 thread writes to this vector at a time

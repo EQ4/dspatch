@@ -58,7 +58,7 @@ public:
   {
     if( other._valueHolder != NULL )
     {
-      _valueHolder = other._valueHolder->Copy();
+      _valueHolder = other._valueHolder->GetCopy();
     }
     else
     {
@@ -72,10 +72,23 @@ public:
   }
 
 public:
-  DspRunType& Swap( DspRunType& rhs )
+  DspRunType& MoveTo( DspRunType& rhs )
   {
     std::swap( _valueHolder, rhs._valueHolder );
     return *this;
+  }
+
+  void CopyFrom( const DspRunType& rhs )
+  {
+    if( _valueHolder != NULL && rhs._valueHolder != NULL &&
+        _valueHolder->GetType() == rhs._valueHolder->GetType() )
+    {
+      _valueHolder->SetValue( rhs._valueHolder );
+    }
+    else
+    {
+      *this = rhs;
+    }
   }
 
   template< typename ValueType >
@@ -87,14 +100,14 @@ public:
     }
     else
     {
-      DspRunType( rhs ).Swap( *this );
+      DspRunType( rhs ).MoveTo( *this );
     }
     return *this;
   }
 
   DspRunType& operator=( DspRunType rhs )
   {
-    rhs.Swap( *this );
+    rhs.MoveTo( *this );
     return *this;
   }
 
@@ -143,7 +156,8 @@ private:
 
   public:
     virtual const std::type_info& GetType() const = 0;
-    virtual _DspRtValueHolder* Copy() const = 0;
+    virtual _DspRtValueHolder* GetCopy() const = 0;
+    virtual void SetValue( _DspRtValueHolder* valueHolder ) = 0;
   };
 
   template< typename ValueType >
@@ -159,9 +173,14 @@ private:
       return typeid( ValueType );
     }
 
-    virtual _DspRtValueHolder* Copy() const
+    virtual _DspRtValueHolder* GetCopy() const
     {
       return new _DspRtValue( value );
+    }
+
+    void SetValue( _DspRtValueHolder* valueHolder )
+    {
+      value = ( ( _DspRtValue< ValueType >* ) valueHolder )->value;
     }
 
   public:

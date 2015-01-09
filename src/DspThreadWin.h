@@ -42,7 +42,7 @@ public:
 
   virtual ~DspThread()
   {
-    CloseHandle( _threadHandle );
+    Stop();
   }
 
   enum Priority
@@ -66,6 +66,12 @@ public:
     ResumeThread( _threadHandle );
   }
 
+  virtual void Stop()
+  {
+    CloseHandle( _threadHandle );
+    _threadHandle = NULL;
+  }
+
   static void SetPriority( Priority priority )
   {
     SetThreadPriority( GetCurrentThread(), priority );
@@ -86,7 +92,6 @@ private:
   virtual void _Run() = 0;
 
   HANDLE _threadHandle;
-
 };
 
 //=================================================================================================

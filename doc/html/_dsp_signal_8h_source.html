@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.33</span>
+   &#160;<span id="projectnumber">v.2.40</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -137,7 +137,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">bool</span> SetValue( <span class="keyword">const</span> ValueType&amp; newValue );</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">template</span>&lt; <span class="keyword">class</span> ValueType &gt;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">bool</span> GetValue( ValueType&amp; returnValue );</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">bool</span> GetValue( ValueType&amp; returnValue ) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">bool</span> SetSignal( <span class="keyword">const</span> <a class="code" href="class_dsp_signal.html" title="Value container used to carry data between components.">DspSignal</a>* newSignal );</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
@@ -166,11 +166,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">//-------------------------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">class</span> ValueType &gt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">bool</span> DspSignal::GetValue( ValueType&amp; returnValue )</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;{</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">bool</span> DspSignal::GetValue( ValueType&amp; returnValue )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordflow">if</span>( _valueAvailable )</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    ValueType* returnValuePtr = DspRunType::RunTypeCast&lt; ValueType &gt;( &amp;_signalValue );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">const</span> ValueType* returnValuePtr = DspRunType::RunTypeCast&lt; ValueType &gt;( &amp;_signalValue );</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">if</span>( returnValuePtr != NULL )</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    {</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      returnValue = *returnValuePtr;</div>
@@ -193,7 +193,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 1 2013 21:58:13 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 4 2013 16:55:16 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.1
 </small></address>

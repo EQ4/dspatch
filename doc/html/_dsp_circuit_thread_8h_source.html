@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.33</span>
+   &#160;<span id="projectnumber">v.2.40</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -129,33 +129,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00062"></a><span class="lineno"><a class="code" href="class_dsp_circuit_thread.html">   62</a></span>&#160;<span class="keyword">class </span>DLLEXPORT <a class="code" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a> : <span class="keyword">public</span> <a class="code" href="class_dsp_thread.html" title="Cross-platform, object-oriented thread.">DspThread</a></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a>( std::vector&lt; DspComponent* &gt;&amp; components, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> threadNo );</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <a class="code" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a>();</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  ~<a class="code" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a>();</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> Start( Priority priority = TimeCriticalPriority );</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">void</span> Stop();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> Sync();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">void</span> Resume();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  std::vector&lt; DspComponent* &gt;&amp; _components;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> _threadNo;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordtype">bool</span> _stop;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">bool</span> _stopped;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">bool</span> _gotResume, _gotSync;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <a class="code" href="class_dsp_mutex.html" title="Cross-platform, object-oriented mutex.">DspMutex</a> _resumeMutex;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <a class="code" href="class_dsp_wait_condition.html" title="Cross-platform, object-oriented conditional wait.">DspWaitCondition</a> _resumeCondt, _syncCondt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <span class="keywordtype">void</span> _Run();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">//=================================================================================================</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> Initialise(  std::vector&lt; DspComponent* &gt;* components, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> threadNo );</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keywordtype">void</span> Start( Priority priority = TimeCriticalPriority );</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">void</span> Stop();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">void</span> Sync();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">void</span> Resume();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  std::vector&lt; DspComponent* &gt;* _components;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> _threadNo;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  <span class="keywordtype">bool</span> _stop;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordtype">bool</span> _stopped;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordtype">bool</span> _gotResume, _gotSync;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <a class="code" href="class_dsp_mutex.html" title="Cross-platform, object-oriented mutex.">DspMutex</a> _resumeMutex;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  <a class="code" href="class_dsp_wait_condition.html" title="Cross-platform, object-oriented conditional wait.">DspWaitCondition</a> _resumeCondt, _syncCondt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordtype">void</span> _Run();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif // DSPCIRCUITTHREAD_H</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//=================================================================================================</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif // DSPCIRCUITTHREAD_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 1 2013 21:58:13 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 4 2013 16:55:16 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.1
 </small></address>

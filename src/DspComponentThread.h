@@ -46,8 +46,11 @@ to wait until instructed to Resume() again.
 class DLLEXPORT DspComponentThread : public DspThread
 {
 public:
-  DspComponentThread( DspComponent& component );
+  DspComponentThread();
   ~DspComponentThread();
+
+  void Initialise( DspComponent* component );
+  bool IsStopped();
 
   void Start( Priority priority = TimeCriticalPriority );
   void Stop();
@@ -55,7 +58,7 @@ public:
   void Resume();
 
 private:
-  DspComponent& _component;
+  DspComponent* _component;
   bool _stop, _pause;
   bool _stopped;
   DspMutex _resumeMutex;

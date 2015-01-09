@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.33</span>
+   &#160;<span id="projectnumber">v.2.40</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -119,8 +119,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">//-------------------------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;DspComponent.h&quot;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">class </span><a class="code" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;DspWireBus.h&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;DspCircuitThread.h&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//=================================================================================================</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"></span></div>
@@ -187,11 +187,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  std::vector&lt; DspComponent* &gt; _components;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  std::vector&lt; DspCircuitThread* &gt; _circuitThreads;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  std::vector&lt; DspCircuitThread &gt; _circuitThreads;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> _currentThreadIndex;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <a class="code" href="class_dsp_wire_bus.html" title="DspWire container.">DspWireBus</a>* _inToInWires;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <a class="code" href="class_dsp_wire_bus.html" title="DspWire container.">DspWireBus</a>* _outToOutWires;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <a class="code" href="class_dsp_wire_bus.html" title="DspWire container.">DspWireBus</a> _inToInWires;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <a class="code" href="class_dsp_wire_bus.html" title="DspWire container.">DspWireBus</a> _outToOutWires;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>* component, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex );</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordtype">bool</span> _FindComponent( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>&amp; component, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>&amp; returnIndex );</div>
@@ -262,7 +262,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  PauseAutoTick();</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <span class="keywordtype">bool</span> result = _inToInWires-&gt;AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;  <span class="keywordtype">bool</span> result = _inToInWires.AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  ResumeAutoTick();</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
@@ -288,7 +288,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  PauseAutoTick();</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <span class="keywordtype">bool</span> result = _outToOutWires-&gt;AddWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  <span class="keywordtype">bool</span> result = _outToOutWires.AddWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  ResumeAutoTick();</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
@@ -336,7 +336,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  PauseAutoTick();</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="keywordtype">bool</span> result = _inToInWires-&gt;RemoveWire( _components[toComponentIndex], fromInputIndex, toInputIndex );</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;  <span class="keywordtype">bool</span> result = _inToInWires.RemoveWire( _components[toComponentIndex], fromInputIndex, toInputIndex );</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;  ResumeAutoTick();</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
@@ -362,7 +362,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;  PauseAutoTick();</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  <span class="keywordtype">bool</span> result = _outToOutWires-&gt;RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  <span class="keywordtype">bool</span> result = _outToOutWires.RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;  ResumeAutoTick();</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;</div>
@@ -375,7 +375,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 1 2013 21:58:13 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 4 2013 16:55:16 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.1
 </small></address>

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.33</span>
+   &#160;<span id="projectnumber">v.2.40</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -120,9 +120,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;DspSignalBus.h&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;DspWireBus.h&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span><a class="code" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span><a class="code" href="class_dsp_component_thread.html" title="Thread class for ticking and reseting a single component.">DspComponentThread</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;DspComponentThread.h&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span><a class="code" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//=================================================================================================</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span></div>
@@ -213,7 +213,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keywordtype">bool</span> _hasTicked;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <a class="code" href="class_dsp_component_thread.html" title="Thread class for ticking and reseting a single component.">DspComponentThread</a>* _componentThread;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <a class="code" href="class_dsp_component_thread.html" title="Thread class for ticking and reseting a single component.">DspComponentThread</a> _componentThread;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  std::vector&lt; bool* &gt; _hasTickeds; <span class="comment">// bool pointers ensure that parallel threads will only read from this vector</span></div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;  std::vector&lt; bool &gt; _gotReleases; <span class="comment">// bool pointers not used here as only 1 thread writes to this vector at a time</span></div>
@@ -250,7 +250,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keyword">template</span>&lt; <span class="keyword">class</span> FromOutputType, <span class="keyword">class</span> ToInputType &gt;</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="keywordtype">bool</span> DspComponent::ConnectInput( <a class="code" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>&amp; fromComponent, FromOutputType fromOutput, ToInputType toInput )</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;{</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  ConnectInput( &amp;fromComponent, fromOutput, toInput );</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;  <span class="keywordflow">return</span> ConnectInput( &amp;fromComponent, fromOutput, toInput );</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;}</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">//-------------------------------------------------------------------------------------------------</span></div>
@@ -286,7 +286,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Feb 1 2013 21:58:13 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 4 2013 16:55:16 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.1
 </small></address>

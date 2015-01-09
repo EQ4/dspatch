@@ -39,7 +39,7 @@ public:
 
   virtual ~DspThread()
   {
-    pthread_detach( _thread );
+    Stop();
   }
 
   enum Priority
@@ -60,6 +60,11 @@ public:
     pthread_create( &_thread, NULL, _ThreadFunc, this );
 
     _SetPriority( _thread, priority );
+  }
+
+  virtual void Stop()
+  {
+    pthread_detach( _thread );
   }
 
   static void SetPriority( Priority priority )

@@ -372,6 +372,11 @@ void main()
 
 \section release_notes Release Notes
 
+\subsection v240 v.2.40 (04 February 2013)
+  - Optimized DspRunType.
+  - Added Stop() method to DspThread.
+  - Reduced pointer dereferencing and temporaries.
+
 \subsection v233 v.2.33 (01 February 2013)
   - Signal reading / writing optimized.
   - Code cleaned up and re-formatted.

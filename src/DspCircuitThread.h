@@ -62,8 +62,10 @@ return immediately.
 class DLLEXPORT DspCircuitThread : public DspThread
 {
 public:
-  DspCircuitThread( std::vector< DspComponent* >& components, unsigned short threadNo );
+  DspCircuitThread();
   ~DspCircuitThread();
+
+  void Initialise(  std::vector< DspComponent* >* components, unsigned short threadNo );
 
   void Start( Priority priority = TimeCriticalPriority );
   void Stop();
@@ -71,7 +73,7 @@ public:
   void Resume();
 
 private:
-  std::vector< DspComponent* >& _components;
+  std::vector< DspComponent* >* _components;
   unsigned short _threadNo;
   bool _stop;
   bool _stopped;

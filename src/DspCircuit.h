@@ -28,8 +28,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //-------------------------------------------------------------------------------------------------
 
 #include "DspComponent.h"
-
-class DspCircuitThread;
+#include "DspWireBus.h"
+#include "DspCircuitThread.h"
 
 //=================================================================================================
 /// Workspace for adding and routing components
@@ -122,11 +122,11 @@ protected:
 private:
   std::vector< DspComponent* > _components;
 
-  std::vector< DspCircuitThread* > _circuitThreads;
+  std::vector< DspCircuitThread > _circuitThreads;
   unsigned short _currentThreadIndex;
 
-  DspWireBus* _inToInWires;
-  DspWireBus* _outToOutWires;
+  DspWireBus _inToInWires;
+  DspWireBus _outToOutWires;
 
   bool _FindComponent( DspComponent* component, unsigned short& returnIndex );
   bool _FindComponent( DspComponent& component, unsigned short& returnIndex );
@@ -197,7 +197,7 @@ bool DspCircuit::ConnectInToIn( FromInputType fromInput, ToComponentType& toComp
 
   PauseAutoTick();
 
-  bool result = _inToInWires->AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
+  bool result = _inToInWires.AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
 
   ResumeAutoTick();
 
@@ -223,7 +223,7 @@ bool DspCircuit::ConnectOutToOut( FromComponentType& fromComponent, FromOutputTy
 
   PauseAutoTick();
 
-  bool result = _outToOutWires->AddWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
+  bool result = _outToOutWires.AddWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
 
   ResumeAutoTick();
 
@@ -271,7 +271,7 @@ bool DspCircuit::DisconnectInToIn( FromInputType fromInput, ToComponentType& toC
 
   PauseAutoTick();
 
-  bool result = _inToInWires->RemoveWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
+  bool result = _inToInWires.RemoveWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
 
   ResumeAutoTick();
 
@@ -297,7 +297,7 @@ bool DspCircuit::DisconnectOutToOut( FromComponentType& fromComponent, FromOutpu
 
   PauseAutoTick();
 
-  bool result = _outToOutWires->RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
+  bool result = _outToOutWires.RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
 
   ResumeAutoTick();
 

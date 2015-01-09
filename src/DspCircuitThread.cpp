@@ -27,12 +27,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 //=================================================================================================
 
-DspCircuitThread::DspCircuitThread( std::vector< DspComponent* >& components, unsigned short threadNo )
-: _components( components ),
-  _threadNo( threadNo )
-{
-  Start();
-}
+DspCircuitThread::DspCircuitThread()
+: _components( NULL ),
+  _threadNo( 0 ),
+  _stop( false ),
+  _stopped( true ),
+  _gotResume( false ),
+  _gotSync( false ) {}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -43,13 +44,24 @@ DspCircuitThread::~DspCircuitThread()
 
 //=================================================================================================
 
+void DspCircuitThread::Initialise(  std::vector< DspComponent* >* components, unsigned short threadNo )
+{
+  _components = components;
+  _threadNo = threadNo;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void DspCircuitThread::Start( Priority priority )
 {
-  _stop = false;
-  _stopped = false;
-  _gotResume = false;
-  _gotSync = true;
-  DspThread::Start( priority );
+  if( _stopped )
+  {
+    _stop = false;
+    _stopped = false;
+    _gotResume = false;
+    _gotSync = true;
+    DspThread::Start( priority );
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -64,6 +76,8 @@ void DspCircuitThread::Stop()
     _resumeCondt.WakeAll();
     MsSleep( 1 );
   }
+
+  DspThread::Stop();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -72,9 +86,9 @@ void DspCircuitThread::Sync()
 {
   _resumeMutex.Lock();
 
-  if( !_gotSync ) // if haven't already got resume
+  if( !_gotSync ) // if haven't already got sync
   {
-    _syncCondt.Wait( _resumeMutex ); // wait for resume
+    _syncCondt.Wait( _resumeMutex ); // wait for sync
   }
 
   _resumeMutex.Unlock();
@@ -86,9 +100,9 @@ void DspCircuitThread::Resume()
 {
   _resumeMutex.Lock();
 
-  _gotSync = false; // reset the release flag
+  _gotSync = false; // reset the sync flag
 
-  _gotResume = true;
+  _gotResume = true; // set the resume flag
   _resumeCondt.WakeAll();
 
   _resumeMutex.Unlock();
@@ -98,32 +112,36 @@ void DspCircuitThread::Resume()
 
 void DspCircuitThread::_Run()
 {
-  while( !_stop )
+  if( _components != NULL )
   {
-    _resumeMutex.Lock();
-
-    _gotSync = true;
-    _syncCondt.WakeAll();
-
-    if( !_gotResume ) // if haven't already got resume
+    while( !_stop )
     {
-      _resumeCondt.Wait( _resumeMutex ); // wait for resume
-    }
-    _gotResume = false; // reset the release flag
+      _resumeMutex.Lock();
 
-    if( !_stop )
-    {
-      for( unsigned short i = 0; i < _components.size(); i++ )
+      _gotSync = true; // set the sync flag
+
+      _syncCondt.WakeAll();
+
+      if( !_gotResume ) // if haven't already got resume
       {
-        _components[i]->ThreadTick( _threadNo );
+        _resumeCondt.Wait( _resumeMutex ); // wait for resume
       }
-      for( unsigned short i = 0; i < _components.size(); i++ )
+      _gotResume = false; // reset the resume flag
+
+      _resumeMutex.Unlock();
+
+      if( !_stop )
       {
-        _components[i]->ThreadReset( _threadNo );
+        for( unsigned short i = 0; i < _components->size(); i++ )
+        {
+          ( *_components )[i]->ThreadTick( _threadNo );
+        }
+        for( unsigned short i = 0; i < _components->size(); i++ )
+        {
+          ( *_components )[i]->ThreadReset( _threadNo );
+        }
       }
     }
-
-    _resumeMutex.Unlock();
   }
 
   _stopped = true;

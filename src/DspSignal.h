@@ -57,7 +57,7 @@ public:
   bool SetValue( const ValueType& newValue );
 
   template< class ValueType >
-  bool GetValue( ValueType& returnValue );
+  bool GetValue( ValueType& returnValue ) const;
 
   bool SetSignal( const DspSignal* newSignal );
 
@@ -86,11 +86,11 @@ bool DspSignal::SetValue( const ValueType& newValue )
 //-------------------------------------------------------------------------------------------------
 
 template< class ValueType >
-bool DspSignal::GetValue( ValueType& returnValue )
+bool DspSignal::GetValue( ValueType& returnValue ) const
 {
   if( _valueAvailable )
   {
-    ValueType* returnValuePtr = DspRunType::RunTypeCast< ValueType >( &_signalValue );
+    const ValueType* returnValuePtr = DspRunType::RunTypeCast< ValueType >( &_signalValue );
     if( returnValuePtr != NULL )
     {
       returnValue = *returnValuePtr;

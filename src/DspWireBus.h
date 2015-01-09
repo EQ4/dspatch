@@ -63,7 +63,7 @@ public:
 
 private:
   bool _isLinkedComponentReceivingSignals;
-  std::vector< DspWire* > _wires;
+  std::vector< DspWire > _wires;
 };
 
 //=================================================================================================

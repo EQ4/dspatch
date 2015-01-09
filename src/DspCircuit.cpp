@@ -29,10 +29,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //=================================================================================================
 
 DspCircuit::DspCircuit( unsigned short threadCount )
-: _currentThreadIndex( 0 )
+: _currentThreadIndex( 0 ),
+  _inToInWires( true ),
+  _outToOutWires( false )
 {
-  _inToInWires = new DspWireBus( true );
-  _outToOutWires = new DspWireBus( false );
   SetThreadCount( threadCount );
 }
 
@@ -43,8 +43,6 @@ DspCircuit::~DspCircuit()
   StopAutoTick();
   RemoveAllComponents();
   SetThreadCount( 0 );
-  delete _inToInWires;
-  delete _outToOutWires;
 }
 
 //=================================================================================================
@@ -64,7 +62,7 @@ void DspCircuit::PauseAutoTick()
   // sync all threads
   for( unsigned short i = 0; i < _circuitThreads.size(); i++ )
   {
-    _circuitThreads[i]->Sync();
+    _circuitThreads[i].Sync();
   }
 }
 
@@ -76,27 +74,26 @@ void DspCircuit::SetThreadCount( unsigned short threadCount )
   {
     PauseAutoTick();
 
-    unsigned short currentThreadCount = _circuitThreads.size();
+    // stop all threads
+    for( unsigned short i = 0; i < _circuitThreads.size(); i++ )
+    {
+      _circuitThreads[i].Stop();
+    }
+
+    // resize thread array
+    _circuitThreads.resize( threadCount );
+
+    // initialise and start all threads
+    for( unsigned short i = 0; i < _circuitThreads.size(); i++ )
+    {
+      _circuitThreads[i].Initialise( &_components, i );
+      _circuitThreads[i].Start();
+    }
 
     // set all components to the new thread count
     for( unsigned short i = 0; i < _components.size(); i++ )
     {
       _components[i]->SetBufferCount( threadCount );
-    }
-
-    // delete excess threads (if new thread count is less than current)
-    for( long i = currentThreadCount - 1; i >= ( long ) threadCount; i-- )
-    {
-      delete _circuitThreads[i];
-    }
-
-    // resize local thread array
-    _circuitThreads.resize( threadCount );
-
-    // create excess threads (if new thread count is more than current)
-    for( unsigned short i = currentThreadCount; i < threadCount; i++ )
-    {
-      _circuitThreads[i] = new DspCircuitThread( _components, i );
     }
 
     ResumeAutoTick();
@@ -273,9 +270,9 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
   if( _circuitThreads.size() == 0 )
   {
     // set all internal component inputs from connected circuit inputs
-    for( unsigned short i = 0; i < _inToInWires->GetWireCount(); i++ )
+    for( unsigned short i = 0; i < _inToInWires.GetWireCount(); i++ )
     {
-      wire = _inToInWires->GetWire( i );
+      wire = _inToInWires.GetWire( i );
       signal = inputs.GetSignal( wire->fromSignalIndex );
       wire->linkedComponent->SetInputSignal( wire->toSignalIndex, signal );
     }
@@ -293,9 +290,9 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
     }
 
     // set all circuit outputs from connected internal component outputs
-    for( unsigned short i = 0; i < _outToOutWires->GetWireCount(); i++ )
+    for( unsigned short i = 0; i < _outToOutWires.GetWireCount(); i++ )
     {
-      wire = _outToOutWires->GetWire( i );
+      wire = _outToOutWires.GetWire( i );
       signal = wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex );
       outputs.SetSignal( wire->toSignalIndex, signal );
     }
@@ -304,25 +301,25 @@ void DspCircuit::Process_( DspSignalBus& inputs, DspSignalBus& outputs )
   // ======================================================
   else
   {
-    _circuitThreads[_currentThreadIndex]->Sync(); // sync with thread x
+    _circuitThreads[_currentThreadIndex].Sync(); // sync with thread x
 
     // set all circuit outputs from connected internal component outputs
-    for( unsigned short i = 0; i < _outToOutWires->GetWireCount(); i++ )
+    for( unsigned short i = 0; i < _outToOutWires.GetWireCount(); i++ )
     {
-      wire = _outToOutWires->GetWire( i );
+      wire = _outToOutWires.GetWire( i );
       signal = wire->linkedComponent->GetOutputSignal( wire->fromSignalIndex, _currentThreadIndex );
       outputs.SetSignal( wire->toSignalIndex, signal );
     }
 
     // set all internal component inputs from connected circuit inputs
-    for( unsigned short i = 0; i < _inToInWires->GetWireCount(); i++ )
+    for( unsigned short i = 0; i < _inToInWires.GetWireCount(); i++ )
     {
-      wire = _inToInWires->GetWire( i );
+      wire = _inToInWires.GetWire( i );
       signal = inputs.GetSignal( wire->fromSignalIndex );
       wire->linkedComponent->SetInputSignal( wire->toSignalIndex, _currentThreadIndex, signal );
     }
 
-    _circuitThreads[_currentThreadIndex]->Resume(); // resume thread x
+    _circuitThreads[_currentThreadIndex].Resume(); // resume thread x
 
     if( ++_currentThreadIndex >= _circuitThreads.size() ) // shift to thread x+1
     {
@@ -392,22 +389,22 @@ void DspCircuit::_DisconnectComponent( unsigned short componentIndex )
 
   // remove component from _inToInWires
   DspWire* wire;
-  for( unsigned short i = 0; i < _inToInWires->GetWireCount(); i++ )
+  for( unsigned short i = 0; i < _inToInWires.GetWireCount(); i++ )
   {
-    wire = _inToInWires->GetWire( i );
+    wire = _inToInWires.GetWire( i );
     if( wire->linkedComponent == _components[ componentIndex ] )
     {
-      _inToInWires->RemoveWire( i );
+      _inToInWires.RemoveWire( i );
     }
   }
 
   // remove component from _outToOutWires
-  for( unsigned short i = 0; i < _outToOutWires->GetWireCount(); i++ )
+  for( unsigned short i = 0; i < _outToOutWires.GetWireCount(); i++ )
   {
-    wire = _outToOutWires->GetWire( i );
+    wire = _outToOutWires.GetWire( i );
     if( wire->linkedComponent == _components[ componentIndex ] )
     {
-      _outToOutWires->RemoveWire( i );
+      _outToOutWires.RemoveWire( i );
     }
   }
 }

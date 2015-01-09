@@ -37,8 +37,10 @@ DspComponent::DspComponent()
   _isAutoTickRunning( false ),
   _isAutoTickPaused( false ),
   _hasTicked( false ),
-  _bufferCount( 0 ),
-  _componentThread( NULL ) {}
+  _bufferCount( 0 )
+{
+  _componentThread.Initialise( this );
+}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -229,9 +231,9 @@ void DspComponent::Tick()
     for( unsigned short i = 0; i < _inputWires.GetWireCount(); i++ )
     {
       wire = _inputWires.GetWire( i );
-      signal = wire->linkedComponent->_outputBus.GetSignal( wire->fromSignalIndex );
-
       wire->linkedComponent->Tick();
+
+      signal = wire->linkedComponent->_outputBus.GetSignal( wire->fromSignalIndex );
       _inputBus.SetSignal( wire->toSignalIndex, signal );
     }
 
@@ -265,9 +267,9 @@ void DspComponent::StartAutoTick()
   // if this is the global circuit
   if( DSPatch::IsThisGlobalCircuit( this ) )
   {
-    if( _componentThread == NULL )
+    if( _componentThread.IsStopped() )
     {
-      _componentThread = new DspComponentThread( *this );
+      _componentThread.Start();
 
       _isAutoTickRunning = true;
       _isAutoTickPaused = false;
@@ -294,11 +296,9 @@ void DspComponent::StopAutoTick()
   // global circuit auto-ticking is stopped.
 
   // if this is the global circuit
-  if( DSPatch::IsThisGlobalCircuit( this ) && _componentThread != NULL )
+  if( DSPatch::IsThisGlobalCircuit( this ) && !_componentThread.IsStopped() )
   {
-    _componentThread->Stop();
-    delete _componentThread;
-    _componentThread = NULL;
+    _componentThread.Stop();
 
     _isAutoTickRunning = false;
     _isAutoTickPaused = false;
@@ -323,11 +323,11 @@ void DspComponent::PauseAutoTick()
   // global circuit. When the global circuit is reached, it's auto-tick is paused.
 
   // if this is the global circuit
-  if( DSPatch::IsThisGlobalCircuit( this ) && _componentThread != NULL )
+  if( DSPatch::IsThisGlobalCircuit( this ) && !_componentThread.IsStopped() )
   {
     if( _isAutoTickRunning )
     {
-      _componentThread->Pause();
+      _componentThread.Pause();
       _isAutoTickPaused = true;
       _isAutoTickRunning = false;
     }
@@ -348,7 +348,7 @@ void DspComponent::ResumeAutoTick()
   // if this is the global circuit
   if( DSPatch::IsThisGlobalCircuit( this ) && _isAutoTickPaused )
   {
-    _componentThread->Resume();
+    _componentThread.Resume();
     _isAutoTickPaused = false;
     _isAutoTickRunning = true;
   }
@@ -393,16 +393,12 @@ void DspComponent::SetBufferCount( unsigned short bufferCount )
 
     for( unsigned short j = 0; j < _inputBus.GetSignalCount(); j++ )
     {
-      DspSignal* variable;
-      variable = _inputBus.GetSignal( j );
-      _inputBuses[i].AddSignal( variable );
+      _inputBuses[i].AddSignal( _inputBus.GetSignal( j )->GetSignalName() );
     }
 
     for( unsigned short j = 0; j < _outputBus.GetSignalCount(); j++ )
     {
-      DspSignal* variable;
-      variable = _outputBus.GetSignal( j );
-      _outputBuses[i].AddSignal( variable );
+      _outputBuses[i].AddSignal( _outputBus.GetSignal( j )->GetSignalName() );
     }
   }
 
@@ -438,9 +434,9 @@ void DspComponent::ThreadTick( unsigned short threadNo )
     for( unsigned short i = 0; i < _inputWires.GetWireCount(); i++ )
     {
       wire = _inputWires.GetWire( i );
-      signal = wire->linkedComponent->_outputBuses[threadNo].GetSignal( wire->fromSignalIndex );
-
       wire->linkedComponent->ThreadTick( threadNo );
+
+      signal = wire->linkedComponent->_outputBuses[threadNo].GetSignal( wire->fromSignalIndex );
       _inputBuses[threadNo].SetSignal( wire->toSignalIndex, signal );
     }
 

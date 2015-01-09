@@ -27,11 +27,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 //=================================================================================================
 
-DspComponentThread::DspComponentThread( DspComponent& component )
-: _component( component )
-{
-  Start();
-}
+DspComponentThread::DspComponentThread()
+: _component( NULL ),
+  _stop( false ),
+  _pause( false ),
+  _stopped( true ) {}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -42,12 +42,29 @@ DspComponentThread::~DspComponentThread()
 
 //=================================================================================================
 
+void DspComponentThread::Initialise( DspComponent* component )
+{
+  _component = component;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponentThread::IsStopped()
+{
+  return _stopped;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 void DspComponentThread::Start( Priority priority )
 {
-  _stop = false;
-  _stopped = false;
-  _pause = false;
-  DspThread::Start( priority );
+  if( _stopped )
+  {
+    _stop = false;
+    _stopped = false;
+    _pause = false;
+    DspThread::Start( priority );
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -62,6 +79,8 @@ void DspComponentThread::Stop()
     _resumeCondt.WakeAll();
     MsSleep( 1 );
   }
+
+  DspThread::Stop();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -90,20 +109,23 @@ void DspComponentThread::Resume()
 
 void DspComponentThread::_Run()
 {
-  while( !_stop )
+  if( _component != NULL )
   {
-    _component.Tick();
-    _component.Reset();
-
-    if( _pause )
+    while( !_stop )
     {
-      _resumeMutex.Lock();
+      _component->Tick();
+      _component->Reset();
 
-      _pauseCondt.WakeAll();
+      if( _pause )
+      {
+        _resumeMutex.Lock();
 
-      _resumeCondt.Wait( _resumeMutex ); // wait for resume
+        _pauseCondt.WakeAll();
 
-      _resumeMutex.Unlock();
+        _resumeCondt.Wait( _resumeMutex ); // wait for resume
+
+        _resumeMutex.Unlock();
+      }
     }
   }
 

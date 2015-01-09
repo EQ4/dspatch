@@ -59,6 +59,7 @@ public:
   };
 
   virtual void Start( Priority priority ) {}
+  virtual void Stop();
   static void SetPriority( Priority priority ) {}
   static void MsSleep( unsigned short milliseconds ) {}
 };

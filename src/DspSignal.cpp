@@ -46,7 +46,7 @@ bool DspSignal::SetSignal( const DspSignal* newSignal )
     }
     else
     {
-      _signalValue = newSignal->_signalValue;
+      _signalValue.CopyFrom( newSignal->_signalValue );
       _valueAvailable = true;
       return true;
     }

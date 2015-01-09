@@ -47,7 +47,6 @@ public:
   virtual ~DspSignalBus();
 
   bool AddSignal( std::string signalName = "" );
-  bool AddSignal( const DspSignal* signal );
 
   bool SetSignal( unsigned short signalIndex, const DspSignal* newSignal );
   bool SetSignal( std::string signalName, const DspSignal* newSignal );
@@ -80,7 +79,7 @@ public:
   void ClearAllValues();
 
 private:
-  std::vector< DspSignal* > _signals;
+  std::vector< DspSignal > _signals;
 };
 
 //=================================================================================================
@@ -90,7 +89,7 @@ bool DspSignalBus::SetValue( unsigned short signalIndex, const ValueType& newVal
 {
   if( signalIndex < _signals.size() )
   {
-    return _signals[signalIndex]->SetValue( newValue );
+    return _signals[signalIndex].SetValue( newValue );
   }
   else
   {
@@ -107,7 +106,7 @@ bool DspSignalBus::SetValue( std::string signalName, const ValueType& newValue )
 
   if( FindSignal( signalName, signalIndex ) )
   {
-    return _signals[signalIndex]->SetValue( newValue );
+    return _signals[signalIndex].SetValue( newValue );
   }
   else
   {
@@ -122,7 +121,7 @@ bool DspSignalBus::GetValue( unsigned short signalIndex, ValueType& returnValue 
 {
   if( signalIndex < _signals.size() )
   {
-    return _signals[signalIndex]->GetValue( returnValue );
+    return _signals[signalIndex].GetValue( returnValue );
   }
   else
   {
@@ -139,7 +138,7 @@ bool DspSignalBus::GetValue( std::string signalName, ValueType& returnValue ) co
 
   if( FindSignal( signalName, signalIndex ) )
   {
-    return _signals[signalIndex]->GetValue( returnValue );
+    return _signals[signalIndex].GetValue( returnValue );
   }
   else
   {

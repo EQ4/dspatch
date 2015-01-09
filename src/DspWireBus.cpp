@@ -44,9 +44,9 @@ bool DspWireBus::AddWire( DspComponent* linkedComponent, unsigned short fromSign
 {
   for( unsigned short i = 0; i < _wires.size(); i++ )
   {
-    if( _wires[i]->linkedComponent == linkedComponent &&
-        _wires[i]->fromSignalIndex == fromSignalIndex &&
-        _wires[i]->toSignalIndex == toSignalIndex )
+    if( _wires[i].linkedComponent == linkedComponent &&
+        _wires[i].fromSignalIndex == fromSignalIndex &&
+        _wires[i].toSignalIndex == toSignalIndex )
     {
       return false; // wire already exists
     }
@@ -55,26 +55,21 @@ bool DspWireBus::AddWire( DspComponent* linkedComponent, unsigned short fromSign
   for( unsigned short i = 0; i < _wires.size(); i++ )
   {
     if( _isLinkedComponentReceivingSignals &&
-        _wires[i]->linkedComponent == linkedComponent &&
-        _wires[i]->toSignalIndex == toSignalIndex ) // if there's a wire to the receiving component's input already
+        _wires[i].linkedComponent == linkedComponent &&
+        _wires[i].toSignalIndex == toSignalIndex ) // if there's a wire to the receiving component's input already
     {
       RemoveWire( i ); // remove the wire (only one wire can connect to an input at a time)
       break;
     }
     else if( !_isLinkedComponentReceivingSignals &&
-             _wires[i]->toSignalIndex == toSignalIndex )
+             _wires[i].toSignalIndex == toSignalIndex )
     {
       RemoveWire( i ); // remove the wire (only one wire can connect to an input at a time)
       break;
     }
   }
 
-  DspWire* newWire = new DspWire();
-
-  newWire->linkedComponent = linkedComponent;
-  newWire->fromSignalIndex = fromSignalIndex;
-  newWire->toSignalIndex = toSignalIndex;
-  _wires.push_back( newWire );
+  _wires.push_back( DspWire( linkedComponent, fromSignalIndex, toSignalIndex ) );
 
   return true;
 }
@@ -85,9 +80,9 @@ bool DspWireBus::RemoveWire( DspComponent* linkedComponent, unsigned short fromS
 {
   for( unsigned short i = 0; i < _wires.size(); i++ )
   {
-    if( _wires[i]->linkedComponent == linkedComponent &&
-        _wires[i]->fromSignalIndex == fromSignalIndex &&
-        _wires[i]->toSignalIndex == toSignalIndex )
+    if( _wires[i].linkedComponent == linkedComponent &&
+        _wires[i].fromSignalIndex == fromSignalIndex &&
+        _wires[i].toSignalIndex == toSignalIndex )
     {
       RemoveWire( i );
       return true;
@@ -105,8 +100,6 @@ bool DspWireBus::RemoveWire( unsigned short wireIndex )
   {
     return false;
   }
-
-  delete _wires[wireIndex];
 
   for( unsigned short j = wireIndex; j < ( _wires.size() - 1 ); j++ )
   {
@@ -133,7 +126,7 @@ DspWire* DspWireBus::GetWire( unsigned short wireIndex )
 {
   if( wireIndex < _wires.size() )
   {
-    return _wires[wireIndex];
+    return &_wires[wireIndex];
   }
   else
   {
