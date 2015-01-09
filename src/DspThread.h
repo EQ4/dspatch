@@ -22,10 +22,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ************************************************************************/
 
-#ifdef DSP_UNIX
+#ifdef _WIN32
 
-  #define DLLEXPORT
-  #include "DspThreadUnix.h"
+  #define DLLEXPORT __declspec(dllexport)
+  #include "DspThreadWin.h"
+
+  #pragma warning(disable:4251) // disable class needs to have dll-interface warning
+  #pragma warning(disable:4275) // disable non dll-interface class used as base warning
 
 #elif DSP_NOTHREADS
 
@@ -34,10 +37,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 #else
 
-  #define DLLEXPORT __declspec(dllexport)
-  #include "DspThreadWin.h"
-
-  #pragma warning(disable:4251) // disable class needs to have dll-interface warning
-  #pragma warning(disable:4275) // disable non dll-interface class used as base warning
+  #define DLLEXPORT
+  #include "DspThreadUnix.h"
 
 #endif

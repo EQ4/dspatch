@@ -9,7 +9,7 @@ initially written by Michael Hipp
 
 #include "DSPatch.h"
 
-#ifndef DSP_UNIX
+#ifdef _WIN32
   #ifndef __ssize_t_defined
     typedef unsigned long ssize_t;
     #define __ssize_t_defined
