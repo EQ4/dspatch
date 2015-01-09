@@ -216,7 +216,11 @@
 				>
 			</File>
 			<File
-				RelativePath="E:\Projects\DSP\DSPatch\DSPatch\Source\DspThreadUnix.h"
+				RelativePath=".\Source\DspThreadNull.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Source\DspThreadUnix.h"
 				>
 			</File>
 			<File

@@ -1,23 +1,29 @@
-/********************************************************************
-Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
+/************************************************************************
+DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
+Copyright (c) 2012 Marcus Tomlinson
 
 This file is part of DSPatch.
 
-DSPatch is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+GNU Lesser General Public License Usage
+This file may be used under the terms of the GNU Lesser General Public
+License version 3.0 as published by the Free Software Foundation and
+appearing in the file LGPLv3.txt included in the packaging of this
+file. Please review the following information to ensure the GNU Lesser
+General Public License version 3.0 requirements will be met:
+http://www.gnu.org/copyleft/lgpl.html.
+
+Other Usage
+Alternatively, this file may be used in accordance with the terms and
+conditions contained in a signed written agreement between you and
+Marcus Tomlinson.
 
 DSPatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************/
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+************************************************************************/
 
 #include "DSPatch.h"
+
 #include "DspMp3Decoder.h"
 #include "DspGain.h"
 #include "DspAudioDevice.h"
@@ -26,15 +32,17 @@ along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
 
+// The following unique ID strings are used to identify components within the circuit
+
 #define MP3DECODER "Mp3 Decoder"
 #define AUDIODEVICE "Audio Device"
-#define GAINCH1 "Gain Channel 1"
-#define GAINCH2 "Gain Channel 2"
-#define ADDERCH1 "Adder Channel 1"
-#define ADDERCH2 "Adder Channel 2"
+#define GAIN1 "Gain Channel 1"
+#define GAIN2 "Gain Channel 2"
+#define ADDER1 "Adder Channel 1"
+#define ADDER2 "Adder Channel 2"
 #define OSCILLATOR "Oscillator"
 
-/*-----------------------------------------------------------------------------------------------------*/
+//=================================================================================================
 // This is a simple program that streams an mp3 out of an audio device,
 // then overlays a 1KHz oscillator when a key is pressed.
 
@@ -43,62 +51,76 @@ int main()
 	// 1. Stream MP3
 	// =============
 
+	// create a circuit 
 	DspCircuit circuit;
 
+	// declare pointers for components to be added to the circuit
 	DspSafePointer< DspMp3Decoder > mp3Decoder;
 	DspSafePointer< DspAudioDevice > audioDevice;
-	DspSafePointer< DspGain > gainCh1;
-	DspSafePointer< DspGain > gainCh2;
+	DspSafePointer< DspGain > gainLeft;
+	DspSafePointer< DspGain > gainRight;
 
-	circuit.StartAutoTick();	// start separate thread to tick the circuit continuously
+	// set circuit thread count to 2 then start separate thread to tick the circuit continuously
+	circuit.SetThreadCount( 2 );
+	circuit.StartAutoTick();
 
+	// add new components to the circuit (these methods return pointers to the new components)
 	mp3Decoder = circuit.AddComponent< DspMp3Decoder >( MP3DECODER );
 	audioDevice = circuit.AddComponent< DspAudioDevice >( AUDIODEVICE );
-	gainCh1 = circuit.AddComponent< DspGain >( GAINCH1 );
-	gainCh2 = circuit.AddComponent< DspGain >( GAINCH2 );
+	gainLeft = circuit.AddComponent< DspGain >( GAIN1 );
+	gainRight = circuit.AddComponent< DspGain >( GAIN2 );
 
-	circuit.ConnectOutToIn( MP3DECODER, "Sample Rate", AUDIODEVICE, "Sample Rate" );	// sample rate sync
+	// connect component output signals to respective component input signals
+	circuit.ConnectOutToIn( MP3DECODER, 0, GAIN1, 0 );	// mp3 left channel into gain1
+	circuit.ConnectOutToIn( MP3DECODER, 1, GAIN2, 0 );	// mp3 right channel into gain2
+	circuit.ConnectOutToIn( GAIN1, 0, AUDIODEVICE, 0 );	// gain1 into audio device left channel
+	circuit.ConnectOutToIn( GAIN2, 0, AUDIODEVICE, 1 );	// gain2 into audio device right channel
 
-	circuit.ConnectOutToIn( MP3DECODER, 0, GAINCH1, 0 );
-	circuit.ConnectOutToIn( MP3DECODER, 1, GAINCH2, 0 );
-	circuit.ConnectOutToIn( GAINCH1, 0, AUDIODEVICE, 0 );
-	circuit.ConnectOutToIn( GAINCH2, 0, AUDIODEVICE, 1 );
+	// set the gain of components gainLeft and gainRight (mp3 left and right channels)
+	gainLeft->SetGain( 0.75 );
+	gainRight->SetGain( 0.75 );
 
-	gainCh1->SetGain( 0.75 );
-	gainCh2->SetGain( 0.75 );
-
+	// load an mp3 into the mp3 decoder and start playing the track
 	mp3Decoder->LoadFile( "../05 Tchaikovski-Swan Lake-Scene.mp3" );
 	mp3Decoder->Play();
 
-	getchar();	//wait for key press
+	//wait for key press
+	getchar();
 
 	// 2. Overlay oscillator
 	// =====================
 
-	// A component input pin can only receive one signal at a time so an adders are required to combine the signals
-
+	// declare pointer for a new oscillator component
 	DspSafePointer< DspOscillator > oscillator;
-	float oscFreq = 1000.0f;
-	float oscAmpl = 0.1f;
+
+	// New() the oscillator pointer with the desired constructor parametres
+	float oscFreq = 1000.0f;						// 1Khz frequency
+	float oscAmpl = 0.1f;								// 10% amplitude
 	oscillator.New( oscFreq, oscAmpl );
 
-	circuit.AddComponent( oscillator, OSCILLATOR );
-	circuit.AddComponent< DspAdder >( ADDERCH1 );
-	circuit.AddComponent< DspAdder >( ADDERCH2 );
+	// A component input pin can only receive one signal at a time so an adders are required to combine the signals
+	// add new components to the circuit
+	circuit.AddComponent( oscillator, OSCILLATOR );	// add pre-constructed oscillator component
+	circuit.AddComponent< DspAdder >( ADDER1 );
+	circuit.AddComponent< DspAdder >( ADDER2 );
 
+	// DspMp3Decoder has an output signal named "Sample Rate" that streams the current mp3's sample rate
+	// DspOscillator's "Sample Rate" input receives a sample rate value and re-builds its wave table accordingly 
 	circuit.ConnectOutToIn( MP3DECODER, "Sample Rate", OSCILLATOR, "Sample Rate" );	// sample rate sync
 
-	circuit.ConnectOutToIn( MP3DECODER, 0, ADDERCH1, 0 );
-	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDERCH1, 1 );
-	circuit.ConnectOutToIn( ADDERCH1, 0, AUDIODEVICE, 0 );
+	// connect component output signals to respective component input signals
+	circuit.ConnectOutToIn( MP3DECODER, 0, ADDER1, 0 );		// mp3 left channel into adder1 ch0
+	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDER1, 1 );		// oscillator output into adder1 ch1
+	circuit.ConnectOutToIn( ADDER1, 0, AUDIODEVICE, 0 );	// adder1 output into audio device left channel
 
-	circuit.ConnectOutToIn( MP3DECODER, 1, ADDERCH2, 0 );
-	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDERCH2, 1 );
-	circuit.ConnectOutToIn( ADDERCH2, 0, AUDIODEVICE, 1 );
+	circuit.ConnectOutToIn( MP3DECODER, 1, ADDER2, 0 );		// mp3 right channel into adder2 ch0
+	circuit.ConnectOutToIn( OSCILLATOR, 0, ADDER2, 1 );		// oscillator output into adder2 ch1
+	circuit.ConnectOutToIn( ADDER2, 0, AUDIODEVICE, 1 );	// adder2 output into audio device right channel
 
-	getchar();	//wait for key press
-    
-    return 0;
+	//wait for key press
+	getchar();
+
+	return 0;
 }
 
-/*-----------------------------------------------------------------------------------------------------*/
+//=================================================================================================

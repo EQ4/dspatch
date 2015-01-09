@@ -1,22 +1,26 @@
-/********************************************************************
-DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
-Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
+/************************************************************************
+DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
+Copyright (c) 2012 Marcus Tomlinson
 
 This file is part of DSPatch.
 
-DSPatch is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+GNU Lesser General Public License Usage
+This file may be used under the terms of the GNU Lesser General Public
+License version 3.0 as published by the Free Software Foundation and
+appearing in the file LGPLv3.txt included in the packaging of this
+file. Please review the following information to ensure the GNU Lesser
+General Public License version 3.0 requirements will be met:
+http://www.gnu.org/copyleft/lgpl.html.
+
+Other Usage
+Alternatively, this file may be used in accordance with the terms and
+conditions contained in a signed written agreement between you and
+Marcus Tomlinson.
 
 DSPatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************/
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+************************************************************************/
 
 #include "DspSignalBus.h"
 
@@ -48,13 +52,13 @@ bool DspSignalBus::AddSignal( std::string signalName )
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::AddSignal( const DspSafePointer< DspSignal >& signal )
+bool DspSignalBus::AddSignal( const DspSafePointer< DspSignal > signal )
 {
 	if( signal.IsPointerValid() )
 	{
 		DspSafePointer< DspSignal > newSignal;
-        std::string signalName = signal->GetSignalName();
-        
+		std::string signalName = signal->GetSignalName();
+
 		newSignal.New( signalName );
 		newSignal.LockPointer();
 
@@ -70,10 +74,9 @@ bool DspSignalBus::AddSignal( const DspSafePointer< DspSignal >& signal )
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::SetSignal( unsigned long signalIndex, const DspSafePointer< DspSignal >& newSignal )
+bool DspSignalBus::SetSignal( unsigned long signalIndex, const DspSafePointer< DspSignal > newSignal )
 {
-	DspSafePointer< DspSignal > signal;
-	GetSignal( signalIndex, signal );
+	DspSafePointer< DspSignal > signal = GetSignal( signalIndex );
 
 	if( signal.IsPointerValid() && newSignal.IsPointerValid() )
 	{
@@ -87,10 +90,9 @@ bool DspSignalBus::SetSignal( unsigned long signalIndex, const DspSafePointer< D
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::SetSignal( std::string signalName, const DspSafePointer< DspSignal >& newSignal )
+bool DspSignalBus::SetSignal( std::string signalName, const DspSafePointer< DspSignal > newSignal )
 {
-	DspSafePointer< DspSignal > signal;
-	GetSignal( signalName, signal );
+	DspSafePointer< DspSignal > signal = GetSignal( signalName );
 
 	if( signal.IsPointerValid() && newSignal.IsPointerValid() )
 	{
@@ -104,32 +106,30 @@ bool DspSignalBus::SetSignal( std::string signalName, const DspSafePointer< DspS
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::GetSignal( unsigned long signalIndex, DspSafePointer< DspSignal >& returnSignal )
+DspSafePointer< DspSignal > DspSignalBus::GetSignal( unsigned long signalIndex )
 {
 	if( signalIndex < _signals.size() )
 	{
-		returnSignal = _signals[signalIndex];
-		return true;
+		return _signals[signalIndex];
 	}
 	else
 	{
-		return false;
+		return DspSafePointer< DspSignal >();
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspSignalBus::GetSignal( std::string signalName, DspSafePointer< DspSignal >& returnSignal )
+DspSafePointer< DspSignal > DspSignalBus::GetSignal( std::string signalName )
 {
 	unsigned long signalIndex;
 	if( FindSignal( signalName, signalIndex ) )
 	{
-		returnSignal = _signals[signalIndex];
-		return true;
+		return _signals[signalIndex];
 	}
 	else
 	{
-		return false;
+		return DspSafePointer< DspSignal >();
 	}
 }
 
@@ -167,8 +167,7 @@ void DspSignalBus::RemoveAllSignals()
 
 void DspSignalBus::ClearValue( unsigned long signalIndex )
 {
-	DspSafePointer< DspSignal > signal;
-	GetSignal( signalIndex, signal );
+	DspSafePointer< DspSignal > signal = GetSignal( signalIndex );
 
 	if( signal.IsPointerValid() )
 	{
@@ -180,8 +179,7 @@ void DspSignalBus::ClearValue( unsigned long signalIndex )
 
 void DspSignalBus::ClearValue( std::string signalName )
 {
-	DspSafePointer< DspSignal > signal;
-	GetSignal( signalName, signal );
+	DspSafePointer< DspSignal > signal = GetSignal( signalName );
 
 	if( signal.IsPointerValid() )
 	{

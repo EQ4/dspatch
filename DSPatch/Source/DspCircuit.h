@@ -1,22 +1,26 @@
-/********************************************************************
-DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
-Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
+/************************************************************************
+DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
+Copyright (c) 2012 Marcus Tomlinson
 
 This file is part of DSPatch.
 
-DSPatch is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+GNU Lesser General Public License Usage
+This file may be used under the terms of the GNU Lesser General Public
+License version 3.0 as published by the Free Software Foundation and
+appearing in the file LGPLv3.txt included in the packaging of this
+file. Please review the following information to ensure the GNU Lesser
+General Public License version 3.0 requirements will be met:
+http://www.gnu.org/copyleft/lgpl.html.
+
+Other Usage
+Alternatively, this file may be used in accordance with the terms and
+conditions contained in a signed written agreement between you and
+Marcus Tomlinson.
 
 DSPatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************/
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+************************************************************************/
 
 #ifndef DSPCIRCUIT_H
 #define DSPCIRCUIT_H
@@ -43,49 +47,37 @@ public:
 	DspSafePointer< ComponentType > AddComponent( std::string componentName );
 
 	template< class ComponentType >
-	bool AddComponent( DspSafePointer< ComponentType >& component, std::string componentName = "" );
+	bool AddComponent( DspSafePointer< ComponentType > component, std::string componentName = "" );
 
 	template< class ComponentType >
-	bool GetComponent( std::string componentName, DspSafePointer< ComponentType >& returnComponent );
+	DspSafePointer< ComponentType > GetComponent( std::string componentName );
 
 	void RemoveComponent( std::string componentName );
 	void RemoveAllComponents();
 
 	// component output to component input
-	bool ConnectOutToIn( std::string fromComponent, unsigned long fromOutput, std::string toComponent, unsigned long toInput );
-	bool ConnectOutToIn( std::string fromComponent, unsigned long fromOutput, std::string toComponent, std::string toInput );
-	bool ConnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, unsigned long toInput );
-	bool ConnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, std::string toInput );
+	template< class FromComponentType, class FromOutputType, class ToComponentType, class ToInputType >
+	bool ConnectOutToIn( FromComponentType fromComponent, FromOutputType fromOutput, ToComponentType toComponent, ToInputType toInput );
 
 	// circuit input to component input
-	bool ConnectInToIn( unsigned long fromInput, std::string toComponent, unsigned long toInput );
-	bool ConnectInToIn( unsigned long fromInput, std::string toComponent, std::string toInput );
-	bool ConnectInToIn( std::string fromInput, std::string toComponent, unsigned long toInput );
-	bool ConnectInToIn( std::string fromInput, std::string toComponent, std::string toInput );
+	template< class FromInputType, class ToComponentType, class ToInputType >
+	bool ConnectInToIn( FromInputType fromInput, ToComponentType toComponent, ToInputType toInput );
 
 	// component output to circuit output
-	bool ConnectOutToOut( std::string fromComponent, unsigned long fromOutput, unsigned long toOutput );
-	bool ConnectOutToOut( std::string fromComponent, unsigned long fromOutput, std::string toOutput );
-	bool ConnectOutToOut( std::string fromComponent, std::string fromOutput, unsigned long toOutput );
-	bool ConnectOutToOut( std::string fromComponent, std::string fromOutput, std::string toOutput );
+	template< class FromComponentType, class FromOutputType, class ToOutputType >
+	bool ConnectOutToOut( FromComponentType fromComponent, FromOutputType fromOutput, ToOutputType toOutput );
 
 	// component output to component input
-	void DisconnectOutToIn( std::string fromComponent, unsigned long fromOutput, std::string toComponent, unsigned long toInput );
-	void DisconnectOutToIn( std::string fromComponent, unsigned long fromOutput, std::string toComponent, std::string toInput );
-	void DisconnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, unsigned long toInput );
-	void DisconnectOutToIn( std::string fromComponent, std::string fromOutput, std::string toComponent, std::string toInput );
+	template< class FromComponentType, class FromOutputType, class ToComponentType, class ToInputType >
+	void DisconnectOutToIn( FromComponentType fromComponent, FromOutputType fromOutput, ToComponentType toComponent, ToInputType toInput );
 
 	// circuit input to component input
-	void DisconnectInToIn( unsigned long fromInput, std::string toComponent, unsigned long toInput );
-	void DisconnectInToIn( unsigned long fromInput, std::string toComponent, std::string toInput );
-	void DisconnectInToIn( std::string fromInput, std::string toComponent, unsigned long toInput );
-	void DisconnectInToIn( std::string fromInput, std::string toComponent, std::string toInput );
+	template< class FromInputType, class ToComponentType, class ToInputType >
+	bool DisconnectInToIn( FromInputType fromInput, ToComponentType toComponent, ToInputType toInput );
 
 	// component output to circuit output
-	void DisconnectOutToOut( std::string fromComponent, unsigned long fromOutput, unsigned long toOutput );
-	void DisconnectOutToOut( std::string fromComponent, unsigned long fromOutput, std::string toOutput );
-	void DisconnectOutToOut( std::string fromComponent, std::string fromOutput, unsigned long toOutput );
-	void DisconnectOutToOut( std::string fromComponent, std::string fromOutput, std::string toOutput );
+	template< class FromComponentType, class FromOutputType, class ToOutputType >
+	bool DisconnectOutToOut( FromComponentType fromComponent, FromOutputType fromOutput, ToOutputType toOutput );
 
 	void DisconnectComponent( std::string component );
 
@@ -109,6 +101,7 @@ private:
 
 	bool _FindComponent( DspSafePointer< DspComponent > component, unsigned long& returnIndex );
 	bool _FindComponent( std::string componentName, unsigned long& returnIndex );
+
 	void _DisconnectComponent( unsigned long componentIndex );
 	void _RemoveComponent( unsigned long componentIndex );
 };
@@ -122,7 +115,7 @@ DspSafePointer< ComponentType > DspCircuit::AddComponent( std::string componentN
 
 	if( _FindComponent( componentName, componentIndex ) )
 	{
-		return ( DspSafePointer< ComponentType > ) _components[componentIndex];	// if the component is already in the array
+		return DspSafePointer< ComponentType >();	// if the component is already in the array
 	}
 
 	DspSafePointer< ComponentType > newComponent;
@@ -144,7 +137,7 @@ DspSafePointer< ComponentType > DspCircuit::AddComponent( std::string componentN
 //-------------------------------------------------------------------------------------------------
 
 template< class ComponentType >
-bool DspCircuit::AddComponent( DspSafePointer< ComponentType >& component, std::string componentName )
+bool DspCircuit::AddComponent( DspSafePointer< ComponentType > component, std::string componentName )
 {
 	if( componentName == "" && component->GetComponentName() == "" )
 	{
@@ -179,19 +172,168 @@ bool DspCircuit::AddComponent( DspSafePointer< ComponentType >& component, std::
 //-------------------------------------------------------------------------------------------------
 
 template< class ComponentType >
-bool DspCircuit::GetComponent( std::string componentName, DspSafePointer< ComponentType >& returnComponent )
+DspSafePointer< ComponentType > DspCircuit::GetComponent( std::string componentName )
 {
 	unsigned long componentIndex;
 
 	if( _FindComponent( componentName, componentIndex ) )
 	{
-		returnComponent = _components[componentIndex];
-		return true;
+		return _components[componentIndex];
 	}
 	else
 	{
+		return DspSafePointer< ComponentType >();
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromComponentType, class FromOutputType, class ToComponentType, class ToInputType >
+bool DspCircuit::ConnectOutToIn( FromComponentType fromComponent, FromOutputType fromOutput, ToComponentType toComponent, ToInputType toInput )
+{
+	unsigned long fromComponentIndex;
+	unsigned long toComponentIndex;
+
+	//only interconnect components that have been added to this system
+	if( !_FindComponent( fromComponent, fromComponentIndex ) ||
+			!_FindComponent( toComponent, toComponentIndex ) )
+	{
 		return false;
 	}
+
+	PauseAutoTick();
+
+	bool result = _components[toComponentIndex]->ConnectInput( _components[fromComponentIndex], fromOutput, toInput );
+
+	ResumeAutoTick();
+
+	return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromInputType, class ToComponentType, class ToInputType >
+bool DspCircuit::ConnectInToIn( FromInputType fromInput, ToComponentType toComponent, ToInputType toInput )
+{
+	unsigned long fromInputIndex;
+	unsigned long toComponentIndex;
+	unsigned long toInputIndex;
+
+	//only interconnect components that have been added to this system
+	if( !FindInput( fromInput, fromInputIndex ) ||
+			!_FindComponent( toComponent, toComponentIndex ) ||
+			!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )
+	{
+		return false;
+	}
+
+	PauseAutoTick();
+
+	bool result = _inToInWires->AddWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
+
+	ResumeAutoTick();
+
+	return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromComponentType, class FromOutputType, class ToOutputType >
+bool DspCircuit::ConnectOutToOut( FromComponentType fromComponent, FromOutputType fromOutput, ToOutputType toOutput )
+{
+	unsigned long fromComponentIndex;
+	unsigned long fromOutputIndex;
+	unsigned long toOutputIndex;
+
+	//only interconnect components that have been added to this system
+	if( !_FindComponent( fromComponent, fromComponentIndex ) ||
+			!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||
+			!FindOutput( toOutput, toOutputIndex ) )
+	{
+		return false;
+	}
+
+	PauseAutoTick();
+
+	bool result = _outToOutWires->AddWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
+
+	ResumeAutoTick();
+
+	return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromComponentType, class FromOutputType, class ToComponentType, class ToInputType >
+void DspCircuit::DisconnectOutToIn( FromComponentType fromComponent, FromOutputType fromOutput, ToComponentType toComponent, ToInputType toInput )
+{
+	unsigned long fromComponentIndex;
+	unsigned long toComponentIndex;
+
+	//only interconnect components that have been added to this system
+	if( !_FindComponent( fromComponent, fromComponentIndex ) ||
+			!_FindComponent( toComponent, toComponentIndex ) )
+	{
+		return;
+	}
+
+	PauseAutoTick();
+
+	_components[toComponentIndex]->DisconnectInput( _components[fromComponentIndex], fromOutput, toInput );
+
+	ResumeAutoTick();
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromInputType, class ToComponentType, class ToInputType >
+bool DspCircuit::DisconnectInToIn( FromInputType fromInput, ToComponentType toComponent, ToInputType toInput )
+{
+	unsigned long fromInputIndex;
+	unsigned long toComponentIndex;
+	unsigned long toInputIndex;
+
+	//only interconnect components that have been added to this system
+	if( !FindInput( fromInput, fromInputIndex ) ||
+			!_FindComponent( toComponent, toComponentIndex ) ||
+			!_components[toComponentIndex]->FindInput( toInput, toInputIndex ) )
+	{
+		return false;
+	}
+
+	PauseAutoTick();
+
+	bool result = _inToInWires->RemoveWire( _components[toComponentIndex], fromInputIndex, toInputIndex );
+
+	ResumeAutoTick();
+
+	return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+template< class FromComponentType, class FromOutputType, class ToOutputType >
+bool DspCircuit::DisconnectOutToOut( FromComponentType fromComponent, FromOutputType fromOutput, ToOutputType toOutput )
+{
+	unsigned long fromComponentIndex;
+	unsigned long fromOutputIndex;
+	unsigned long toOutputIndex;
+
+	//only interconnect components that have been added to this system
+	if( !_FindComponent( fromComponent, fromComponentIndex ) ||
+			!_components[fromComponentIndex]->FindOutput( fromOutput, fromOutputIndex ) ||
+			!FindOutput( toOutput, toOutputIndex ) )
+	{
+		return false;
+	}
+
+	PauseAutoTick();
+
+	bool result = _outToOutWires->RemoveWire( _components[fromComponentIndex], fromOutputIndex, toOutputIndex );
+
+	ResumeAutoTick();
+
+	return result;
 }
 
 //=================================================================================================

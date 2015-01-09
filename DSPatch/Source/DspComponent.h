@@ -1,22 +1,26 @@
-/********************************************************************
-DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
-Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
+/************************************************************************
+DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
+Copyright (c) 2012 Marcus Tomlinson
 
 This file is part of DSPatch.
 
-DSPatch is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+GNU Lesser General Public License Usage
+This file may be used under the terms of the GNU Lesser General Public
+License version 3.0 as published by the Free Software Foundation and
+appearing in the file LGPLv3.txt included in the packaging of this
+file. Please review the following information to ensure the GNU Lesser
+General Public License version 3.0 requirements will be met:
+http://www.gnu.org/copyleft/lgpl.html.
+
+Other Usage
+Alternatively, this file may be used in accordance with the terms and
+conditions contained in a signed written agreement between you and
+Marcus Tomlinson.
 
 DSPatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************/
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+************************************************************************/
 
 #ifndef DSPCOMPONENT_H
 #define DSPCOMPONENT_H
@@ -81,10 +85,10 @@ public:
 	template< class ValueType >
 	bool GetOutputValue( std::string outputName, ValueType& returnValue );
 
-	bool SetInputSignal( unsigned long inputIndex, const DspSafePointer< DspSignal >& newSignal );
-	bool SetInputSignal( std::string inputName, const DspSafePointer< DspSignal >& newSignal );
-	bool GetOutputSignal( unsigned long outputIndex, DspSafePointer< DspSignal >& returnSignal );
-	bool GetOutputSignal( std::string outputName, DspSafePointer< DspSignal >& returnSignal );
+	bool SetInputSignal( unsigned long inputIndex, const DspSafePointer< DspSignal > newSignal );
+	bool SetInputSignal( std::string inputName, const DspSafePointer< DspSignal > newSignal );
+	DspSafePointer< DspSignal > GetOutputSignal( unsigned long outputIndex );
+	DspSafePointer< DspSignal > GetOutputSignal( std::string outputName );
 
 	// Only works with non-threaded ticking (_threadCount = 0)
 	// =======================================================
@@ -96,7 +100,9 @@ public:
 	std::string GetComponentName();
 
 	bool FindInput( std::string signalName, unsigned long& returnIndex ) const;
+	bool FindInput( unsigned long signalIndex, unsigned long& returnIndex ) const;
 	bool FindOutput( std::string signalName, unsigned long& returnIndex ) const;
+	bool FindOutput( unsigned long signalIndex, unsigned long& returnIndex ) const;
 
 protected:
 	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs ) = 0;

@@ -1,22 +1,26 @@
-/********************************************************************
-DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
-Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
+/************************************************************************
+DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
+Copyright (c) 2012 Marcus Tomlinson
 
 This file is part of DSPatch.
 
-DSPatch is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+GNU Lesser General Public License Usage
+This file may be used under the terms of the GNU Lesser General Public
+License version 3.0 as published by the Free Software Foundation and
+appearing in the file LGPLv3.txt included in the packaging of this
+file. Please review the following information to ensure the GNU Lesser
+General Public License version 3.0 requirements will be met:
+http://www.gnu.org/copyleft/lgpl.html.
+
+Other Usage
+Alternatively, this file may be used in accordance with the terms and
+conditions contained in a signed written agreement between you and
+Marcus Tomlinson.
 
 DSPatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************/
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+************************************************************************/
 
 #include "DspWireBus.h"
 #include "DspComponent.h"
@@ -36,7 +40,7 @@ DspWireBus::~DspWireBus()
 
 //=================================================================================================
 
-void DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
+bool DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
 {
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
@@ -44,7 +48,7 @@ void DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsign
 				_wires[i]->fromSignalIndex == fromSignalIndex &&
 				_wires[i]->toSignalIndex == toSignalIndex )
 		{
-			return;	// wire already exists
+			return false;	// wire already exists
 		}
 	}
 
@@ -73,29 +77,13 @@ void DspWireBus::AddWire( DspSafePointer< DspComponent > linkedComponent, unsign
 	newWire->fromSignalIndex = fromSignalIndex;
 	newWire->toSignalIndex = toSignalIndex;
 	_wires.push_back( newWire );
+
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void DspWireBus::RemoveWire( unsigned long wireIndex )
-{
-	if( wireIndex > _wires.size() )
-	{
-		return;
-	}
-	else
-	{
-		for( unsigned long j = wireIndex; j < ( _wires.size() - 1 ); j++ )
-		{
-			_wires[j] = _wires[j + 1];	// shift all other elements up
-		}
-		_wires.pop_back();	// remove end item
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-
-void DspWireBus::RemoveWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
+bool DspWireBus::RemoveWire( DspSafePointer< DspComponent > linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex )
 {
 	for( unsigned long i = 0; i < _wires.size(); i++ )
 	{
@@ -104,9 +92,29 @@ void DspWireBus::RemoveWire( DspSafePointer< DspComponent > linkedComponent, uns
 				_wires[i]->toSignalIndex == toSignalIndex )
 		{
 			RemoveWire( i );
-			break;
+			return true;
 		}
 	}
+
+	return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspWireBus::RemoveWire( unsigned long wireIndex )
+{
+	if( wireIndex > _wires.size() )
+	{
+		return false;
+	}
+
+	for( unsigned long j = wireIndex; j < ( _wires.size() - 1 ); j++ )
+	{
+		_wires[j] = _wires[j + 1];	// shift all other elements up
+	}
+	_wires.pop_back();	// remove end item
+
+	return true;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -118,16 +126,15 @@ void DspWireBus::RemoveAllWires()
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspWireBus::GetWire( unsigned long wireIndex, DspSafePointer< DspWire >& returnWire )
+DspSafePointer< DspWire > DspWireBus::GetWire( unsigned long wireIndex )
 {
 	if( wireIndex > _wires.size() )
 	{
-		return false;
+		return DspSafePointer< DspWire >();
 	}
 	else
 	{
-		returnWire = _wires[wireIndex];
-		return true;
+		return _wires[wireIndex];
 	}
 }
 

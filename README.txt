@@ -1,6 +1,6 @@
-DSPatch Circuit Builder / Simulator
-===================================
-_____________________________________________________________________________
+DSPatch - Design Specification
+==============================
+________________________________________________________________________
 
 1. The Circuit Concept:
 -----------------------
@@ -13,7 +13,7 @@ wire carries a signal from one component’s output pin to another component’s
 input pin. A circuit can also comprise of interconnected circuits (E.g. ICs).
 In this case a circuit acts as a component within another circuit.
 
-_____________________________________________________________________________
+________________________________________________________________________
 
 2. The DSPatch Circuit System:
 ------------------------------
@@ -71,9 +71,9 @@ input and output buses. Circuit IO-to-component wires, and
 component-to-component wires, will be publicly routable via circuit class
 methods. The circuit class’ virtual Process() method is implemented as such:
 
+* All internal components are Reset()ed.
 * Inputs from the circuit's input bus are copied into their respective
   internal component input buses.
-* All internal components are Reset()ed.
 * All internal components are Tick()ed.
 * The circuit output bus is populated with the respective internal component
   outputs.
@@ -99,18 +99,18 @@ bus.
 The signal class will hold a variable that can be dynamically typed at
 run-time, which I've named “run-type”. The run-type and signal classes make
 use of template methods to allow object users to set and get the contained
-variable as any type they want. The run-type (and hence, a signal) has the
-ability to change type at any point during program execution.
+variable as any type they wish. The run-type (and hence, a signal) has the
+ability to change type at any point during program execution -this can be
+useful for inputs that can accept a number of different types of data (E.g.
+Varying sample size in an audio buffer: array of byte / int / float)
 
-From the Process() method, a derived component can get and set the signals it
-requires of the provided signal buses via public methods. As the component
-creator is responsible for configuring the component’s IO buses, the types
+From the Process() method, a derived component can get and set the signals
+it requires of the provided signal buses via public methods. As the componen
+ creator is responsible for configuring the component’s IO buses, the types
 held within those buses can be assumed, and hence, read and written to
-accordingly. Built-in error checking prevents critical run-time errors from
-occurring when signal types are mismatched.
+accordingly. Built-in typecasting and error checking prevents critical
+run-time errors from occurring when signal types are mismatched.
 
 When a signal is instantiated, an optional unique string ID can be assigned.
 This name can be used to identify the signal in collections (E.g. a signal
 bus). Alternatively, signals are referred to via index.
-
-_____________________________________________________________________________

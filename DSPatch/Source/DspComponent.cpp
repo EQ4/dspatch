@@ -1,22 +1,26 @@
-/********************************************************************
-DSPatch - Real-Time, Multi-Purpose Circuit Builder / Simulator Engine
-Copyright (c) 2012 Marcus Tomlinson / Adapt Audio
+/************************************************************************
+DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
+Copyright (c) 2012 Marcus Tomlinson
 
 This file is part of DSPatch.
 
-DSPatch is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+GNU Lesser General Public License Usage
+This file may be used under the terms of the GNU Lesser General Public
+License version 3.0 as published by the Free Software Foundation and
+appearing in the file LGPLv3.txt included in the packaging of this
+file. Please review the following information to ensure the GNU Lesser
+General Public License version 3.0 requirements will be met:
+http://www.gnu.org/copyleft/lgpl.html.
+
+Other Usage
+Alternatively, this file may be used in accordance with the terms and
+conditions contained in a signed written agreement between you and
+Marcus Tomlinson.
 
 DSPatch is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with DSPatch.  If not, see <http://www.gnu.org/licenses/>.
-********************************************************************/
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+************************************************************************/
 
 #include "DspComponent.h"
 #include "DspComponentThread.h"
@@ -159,7 +163,7 @@ void DspComponent::DisconnectInput( unsigned long inputIndex )
 	DspSafePointer< DspWire > wire;
 	for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 	{
-		_inputWires.GetWire( i, wire );
+		wire = _inputWires.GetWire( i );
 		if( wire->toSignalIndex == inputIndex )
 		{
 			_inputWires.RemoveWire( i );
@@ -192,7 +196,7 @@ void DspComponent::DisconnectInput( DspSafePointer< DspComponent > inputComponen
 	DspSafePointer< DspWire > wire;
 	for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 	{
-		_inputWires.GetWire( i, wire );
+		wire = _inputWires.GetWire( i );
 		if( wire->linkedComponent == inputComponent )
 		{
 			_inputWires.RemoveWire( i );
@@ -225,7 +229,7 @@ void DspComponent::Tick()
 		DspSafePointer< DspWire > wire;
 		for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 		{
-			_inputWires.GetWire( i, wire );
+			wire = _inputWires.GetWire( i );
 			wire->linkedComponent->Tick();
 			_ProcessInputWire( wire );
 		}
@@ -243,6 +247,12 @@ void DspComponent::Reset()
 	for( unsigned long i = 0; i < _inputBus.GetSignalCount(); i++ )
 	{
 		_inputBus.ClearValue( i );
+	}
+
+	// clear all outputs
+	for( unsigned long i = 0; i < _outputBus.GetSignalCount(); i++ )
+	{
+		_outputBus.ClearValue( i );
 	}
 
 	// reset _hasTicked flag
@@ -327,14 +337,14 @@ void DspComponent::SetThreadCount( unsigned long threadCount )
 		for( unsigned long j = 0; j < _inputBus.GetSignalCount(); j++ )
 		{
 			DspSafePointer< DspSignal > variable;
-			_inputBus.GetSignal( j, variable );
+			variable = _inputBus.GetSignal( j );
 			_inputBuses[i].AddSignal( variable );
 		}
 
 		for( unsigned long j = 0; j < _outputBus.GetSignalCount(); j++ )
 		{
 			DspSafePointer< DspSignal > variable;
-			_outputBus.GetSignal( j, variable );
+			variable = _outputBus.GetSignal( j );
 			_outputBuses[i].AddSignal( variable );
 		}
 	}
@@ -368,7 +378,7 @@ void DspComponent::ThreadTick( unsigned long threadNo )
 		DspSafePointer< DspWire > wire;
 		for( unsigned long i = 0; i < _inputWires.GetWireCount(); i++ )
 		{
-			_inputWires.GetWire( i, wire );
+			wire = _inputWires.GetWire( i );
 			wire->linkedComponent->ThreadTick( threadNo );
 			_ProcessInputWire( wire, threadNo );
 		}
@@ -394,36 +404,42 @@ void DspComponent::ThreadReset( unsigned long threadNo )
 		_inputBuses[threadNo].ClearValue( i );
 	}
 
+	// clear all outputs
+	for( unsigned long i = 0; i < _outputBuses[threadNo].GetSignalCount(); i++ )
+	{
+		_outputBuses[threadNo].ClearValue( i );
+	}
+
 	// reset _hasTicked flag
 	_hasTickeds[threadNo] = false;
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::SetInputSignal( unsigned long inputIndex, const DspSafePointer< DspSignal >& newSignal )
+bool DspComponent::SetInputSignal( unsigned long inputIndex, const DspSafePointer< DspSignal > newSignal )
 {
 	return _inputBus.SetSignal( inputIndex, newSignal );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::SetInputSignal( std::string inputName, const DspSafePointer< DspSignal >& newSignal )
+bool DspComponent::SetInputSignal( std::string inputName, const DspSafePointer< DspSignal > newSignal )
 {
 	return _inputBus.SetSignal( inputName, newSignal );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::GetOutputSignal( unsigned long outputIndex, DspSafePointer< DspSignal >& returnSignal )
+DspSafePointer< DspSignal > DspComponent::GetOutputSignal( unsigned long outputIndex )
 {
-	return _outputBus.GetSignal( outputIndex, returnSignal );
+	return _outputBus.GetSignal( outputIndex );
 }
 
 //-------------------------------------------------------------------------------------------------
 
-bool DspComponent::GetOutputSignal( std::string outputName, DspSafePointer< DspSignal >& returnSignal )
+DspSafePointer< DspSignal > DspComponent::GetOutputSignal( std::string outputName )
 {
-	return _outputBus.GetSignal( outputName, returnSignal );
+	return _outputBus.GetSignal( outputName );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -468,9 +484,35 @@ bool DspComponent::FindInput( std::string signalName, unsigned long& returnIndex
 
 //-------------------------------------------------------------------------------------------------
 
+bool DspComponent::FindInput( unsigned long signalIndex, unsigned long& returnIndex ) const
+{
+	if( signalIndex < _inputBus.GetSignalCount() )
+	{
+		returnIndex = signalIndex;
+		return true;
+	}
+
+	return false;
+}
+
+//-------------------------------------------------------------------------------------------------
+
 bool DspComponent::FindOutput( std::string signalName, unsigned long& returnIndex ) const
 {
 	return _outputBus.FindSignal( signalName, returnIndex );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+bool DspComponent::FindOutput( unsigned long signalIndex, unsigned long& returnIndex ) const
+{
+	if( signalIndex < _outputBus.GetSignalCount() )
+	{
+		returnIndex = signalIndex;
+		return true;
+	}
+
+	return false;
 }
 
 //=================================================================================================
@@ -550,7 +592,7 @@ void DspComponent::_ReleaseThread( unsigned long threadNo )
 void DspComponent::_ProcessInputWire( DspSafePointer< DspWire > inputWire )
 {
 	DspSafePointer< DspSignal > signal;
-	inputWire->linkedComponent->_outputBus.GetSignal( inputWire->fromSignalIndex, signal );
+	signal = inputWire->linkedComponent->_outputBus.GetSignal( inputWire->fromSignalIndex );
 
 	if( !_inputBus.SetSignal( inputWire->toSignalIndex, signal ) )
 	{
@@ -563,7 +605,7 @@ void DspComponent::_ProcessInputWire( DspSafePointer< DspWire > inputWire )
 void DspComponent::_ProcessInputWire( DspSafePointer< DspWire > inputWire, unsigned long threadNo )
 {
 	DspSafePointer< DspSignal > signal;
-	inputWire->linkedComponent->_outputBuses[threadNo].GetSignal( inputWire->fromSignalIndex, signal );
+	signal = inputWire->linkedComponent->_outputBuses[threadNo].GetSignal( inputWire->fromSignalIndex );
 
 	if( !_inputBuses[threadNo].SetSignal( inputWire->toSignalIndex, signal ) )
 	{
