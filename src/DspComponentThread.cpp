@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -30,84 +30,84 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 DspComponentThread::DspComponentThread( DspComponent& component )
 : _component( component )
 {
-	Start();
+  Start();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 DspComponentThread::~DspComponentThread()
 {
-	Stop();
+  Stop();
 }
 
 //=================================================================================================
 
 void DspComponentThread::Start( Priority priority )
 {
-	_stop = false;
-	_stopped = false;
-	_pause = false;
-	DspThread::Start( priority );
+  _stop = false;
+  _stopped = false;
+  _pause = false;
+  DspThread::Start( priority );
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspComponentThread::Stop()
 {
-	_stop = true;
+  _stop = true;
 
-	while( _stopped != true )
-	{
-		_pauseCondt.WakeAll();
-		_resumeCondt.WakeAll();
-		MsSleep( 1 );
-	}
+  while( _stopped != true )
+  {
+    _pauseCondt.WakeAll();
+    _resumeCondt.WakeAll();
+    MsSleep( 1 );
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspComponentThread::Pause()
 {
-	_resumeMutex.Lock();
+  _resumeMutex.Lock();
 
-	_pause = true;
-	_pauseCondt.Wait( _resumeMutex );		//wait for resume
-	_pause = false;
+  _pause = true;
+  _pauseCondt.Wait( _resumeMutex ); // wait for resume
+  _pause = false;
 
-	_resumeMutex.Unlock();
+  _resumeMutex.Unlock();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspComponentThread::Resume()
 {
-	_resumeMutex.Lock();
-	_resumeCondt.WakeAll();
-	_resumeMutex.Unlock();
+  _resumeMutex.Lock();
+  _resumeCondt.WakeAll();
+  _resumeMutex.Unlock();
 }
 
 //=================================================================================================
 
 void DspComponentThread::_Run()
 {
-	while( !_stop )
-	{
-		_component.Reset();
-		_component.Tick();
+  while( !_stop )
+  {
+    _component.Tick();
+    _component.Reset();
 
-		if( _pause )
-		{
-			_resumeMutex.Lock();
+    if( _pause )
+    {
+      _resumeMutex.Lock();
 
-			_pauseCondt.WakeAll();
+      _pauseCondt.WakeAll();
 
-			_resumeCondt.Wait( _resumeMutex );		//wait for resume
+      _resumeCondt.Wait( _resumeMutex ); // wait for resume
 
-			_resumeMutex.Unlock();
-		}
-	}
+      _resumeMutex.Unlock();
+    }
+  }
 
-	_stopped = true;
+  _stopped = true;
 }
 
 //=================================================================================================

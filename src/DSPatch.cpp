@@ -8,84 +8,84 @@ DspCircuit* DSPatch::_globalCircuit = new DspCircuit();
 
 bool DSPatch::IsThisGlobalCircuit( DspComponent* thisComponent )
 {
-	if( _globalCircuit != NULL )
-	{
-		return _globalCircuit == thisComponent;
-	}
+  if( _globalCircuit != NULL )
+  {
+    return _globalCircuit == thisComponent;
+  }
 
-	return false;
+  return false;
 }
 
 //-------------------------------------------------------------------------------------------------
 
 bool DSPatch::AddGlobalComponent( DspComponent* component, std::string componentName )
 {
-	if( _globalCircuit != NULL )
-	{
-		return _globalCircuit->AddComponent( component, componentName );
-	}
+  if( _globalCircuit != NULL )
+  {
+    return _globalCircuit->AddComponent( component, componentName );
+  }
 
-	return false;
+  return false;
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DSPatch::RemoveGlobalComponent( DspComponent* component )
 {
-	if( _globalCircuit != NULL )
-	{
-		return _globalCircuit->RemoveComponent( component );
-	}
+  if( _globalCircuit != NULL )
+  {
+    return _globalCircuit->RemoveComponent( component );
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
 
-unsigned long DSPatch::GetGlobalComponentCount()
+unsigned short DSPatch::GetGlobalComponentCount()
 {
-	if( _globalCircuit != NULL )
-	{
-		return _globalCircuit->GetComponentCount();
-	}
+  if( _globalCircuit != NULL )
+  {
+    return _globalCircuit->GetComponentCount();
+  }
 
-	return 0;
+  return 0;
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DSPatch::StartGlobalAutoTick()
 {
-	if( _globalCircuit != NULL )
-	{
-		_globalCircuit->StartAutoTick();
-	}
+  if( _globalCircuit != NULL )
+  {
+    _globalCircuit->StartAutoTick();
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DSPatch::StopGlobalAutoTick()
 {
-	if( _globalCircuit != NULL )
-	{
-		_globalCircuit->StopAutoTick();
-	}
+  if( _globalCircuit != NULL )
+  {
+    _globalCircuit->StopAutoTick();
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void DSPatch::SetGlobalThreadCount( unsigned long threadCount )
+void DSPatch::SetGlobalThreadCount( unsigned short threadCount )
 {
-	if( _globalCircuit != NULL )
-	{
-		_globalCircuit->SetThreadCount( threadCount );
-	}
+  if( _globalCircuit != NULL )
+  {
+    _globalCircuit->SetThreadCount( threadCount );
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DSPatch::Finalize()
 {
-	delete _globalCircuit;
-	_globalCircuit = NULL;
+  delete _globalCircuit;
+  _globalCircuit = NULL;
 }
 
 //=================================================================================================

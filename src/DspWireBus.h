@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -47,23 +47,23 @@ wire buses use to connect the circuit's IO signals to and from it's internal com
 class DLLEXPORT DspWireBus
 {
 public:
-	DspWireBus( bool isLinkedComponentReceivingSignals = false );
-	virtual ~DspWireBus();
+  DspWireBus( bool isLinkedComponentReceivingSignals = false );
+  virtual ~DspWireBus();
 
-	bool AddWire( DspComponent* linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
+  bool AddWire( DspComponent* linkedComponent, unsigned short fromSignalIndex, unsigned short toSignalIndex );
 
-	bool RemoveWire( unsigned long wireIndex );
-	bool RemoveWire( DspComponent* linkedComponent, unsigned long fromSignalIndex, unsigned long toSignalIndex );
+  bool RemoveWire( unsigned short wireIndex );
+  bool RemoveWire( DspComponent* linkedComponent, unsigned short fromSignalIndex, unsigned short toSignalIndex );
 
-	void RemoveAllWires();
+  void RemoveAllWires();
 
-	DspWire* GetWire( unsigned long wireIndex );
+  DspWire* GetWire( unsigned short wireIndex );
 
-	unsigned long GetWireCount();
+  unsigned short GetWireCount();
 
 private:
-	bool _isLinkedComponentReceivingSignals;
-	std::vector< DspWire* > _wires;
+  bool _isLinkedComponentReceivingSignals;
+  std::vector< DspWire* > _wires;
 };
 
 //=================================================================================================

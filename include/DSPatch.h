@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -49,23 +49,23 @@ the necessary memory cleanup.
 
 class DLLEXPORT DSPatch
 {
-public:	
-	static bool IsThisGlobalCircuit( DspComponent* thisComponent );
+public:
+  static bool IsThisGlobalCircuit( DspComponent* thisComponent );
 
-	static bool AddGlobalComponent( DspComponent* component, std::string componentName = "" );
-	static void RemoveGlobalComponent( DspComponent* component );
+  static bool AddGlobalComponent( DspComponent* component, std::string componentName = "" );
+  static void RemoveGlobalComponent( DspComponent* component );
 
-	static unsigned long GetGlobalComponentCount();
+  static unsigned short GetGlobalComponentCount();
 
-	static void StartGlobalAutoTick();
-	static void StopGlobalAutoTick();
+  static void StartGlobalAutoTick();
+  static void StopGlobalAutoTick();
 
-	static void SetGlobalThreadCount( unsigned long threadCount );
+  static void SetGlobalThreadCount( unsigned short threadCount );
 
-	static void Finalize();
+  static void Finalize();
 
 private:
-	static DspCircuit* _globalCircuit;
+  static DspCircuit* _globalCircuit;
 };
 
 //=================================================================================================
@@ -76,7 +76,7 @@ private:
 
 /**
 
-\mainpage Welcome
+\mainpage Welcome!
 
 \section intro_sec Introduction
 	DSPatch, pronounced "dispatch", is a powerful C++ flow-based programming library that allows
@@ -337,7 +337,7 @@ void main()
   // ===================
 
   // Circuit tick method 1: Manual
-  for( int i = 0; i < 10; i++ )
+  for( unsigned short i = 0; i < 10; i++ )
   {
     circuit.Tick();
     circuit.Reset();
@@ -372,51 +372,55 @@ void main()
 
 \section release_notes Release Notes
 
+\subsection v233 v.2.33 (01 February 2013)
+  - Signal reading / writing optimized.
+  - Code cleaned up and re-formatted.
+
 \subsection v232 v.2.32 (24 January 2013)
-	- Reduced component thread mutex locking.
-	- Fixed DspCircuit AddInput() run-time error.
-	- Documentation updates.
+  - Reduced component thread mutex locking.
+  - Fixed DspCircuit AddInput() run-time error.
+  - Documentation updates.
 
 \subsection v231 v.2.31 (19 December 2012)
-	- Improved synchronization in AddComponent().
-	- Component routing upgraded to template methods.
+  - Improved synchronization in AddComponent().
+  - Component routing upgraded to template methods.
 
 \subsection v230 v.2.30 (15 December 2012)
-	- Circuit routing simplified.
-	- Completed "circuit-less" component processing.
-	- Component names now optional.
-	- DspCircuit no longer deletes external memory.
-	- Optimized circuit-in-circuit processing.
+  - Circuit routing simplified.
+  - Completed "circuit-less" component processing.
+  - Component names now optional.
+  - DspCircuit no longer deletes external memory.
+  - Optimized circuit-in-circuit processing.
 
 \subsection v22 v.2.2 (08 December 2012)
-	- A component can no longer exist in multiple circuits.
-	- Added coding tutorials
-	- Cleaned up project directory structure.
-	- Comments and documentation updates.
-	- Resolved component / circuit thread count clash.
+  - A component can no longer exist in multiple circuits.
+  - Added coding tutorials
+  - Cleaned up project directory structure.
+  - Comments and documentation updates.
+  - Resolved component / circuit thread count clash.
 
 \subsection v21 v.2.1 (06 November 2012)
-	- Removed DspSafePointer class.
-	- Greatly improved overall performance.
-	- Added commenting for doxygen.
+  - Removed DspSafePointer class.
+  - Greatly improved overall performance.
+  - Added commenting for doxygen.
 
 \subsection v20 v.2.0 (02 November 2012)
-	- Re-licensed DSPatch to LGPL.
-	- Added support for non-threaded platforms.
-	- Circuit routing upgraded to more flexible template methods.
+  - Re-licensed DSPatch to LGPL.
+  - Added support for non-threaded platforms.
+  - Circuit routing upgraded to more flexible template methods.
 
 \subsection v12 v.1.2 (20 October 2012)
-	- Ported to Unix-based OS's.
-	- Completed circuit-in-circuit logic.
+  - Ported to Unix-based OS's.
+  - Completed circuit-in-circuit logic.
 
 \subsection v11 v.1.1 (17 October 2012)
-	- Various bug fixes.
-	- Added 2 more components to the DspDemo project.
-	- Optimized threaded circuit processing.
-	- AddComponent() updated to accept pre-constructed DspComponents.
+  - Various bug fixes.
+  - Added 2 more components to the DspDemo project.
+  - Optimized threaded circuit processing.
+  - AddComponent() updated to accept pre-constructed DspComponents.
 
 \subsection v10 v.1.0 (14 October 2012)
-	- Extracted routing engine behind "Crosstalk" to form: "DSPatch".
+  - Extracted routing engine behind "Crosstalk" to form: "DSPatch".
 
 \page spec_page DSPatch Design Specification
 

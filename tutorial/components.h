@@ -13,35 +13,35 @@
 class DspAnd : public DspComponent
 {
 public:
-	// 2. Configure component IO buses
-	// ===============================
-	DspAnd()
-	{
-		// add 2 inputs
-		AddInput_( "input1" );
-		AddInput_( "input2" );
+  // 2. Configure component IO buses
+  // ===============================
+  DspAnd()
+  {
+    // add 2 inputs
+    AddInput_( "input1" );
+    AddInput_( "input2" );
 
-		// add 1 output
-		AddOutput_( "output" );
-	}
+    // add 1 output
+    AddOutput_( "output" );
+  }
 
 protected:
-	// 3. Implement virtual Process_() method
-	// ======================================
-	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
-	{
-		// create local stack variables to hold input values
-		bool bool1 = false;
-		bool bool2 = false;
+  // 3. Implement virtual Process_() method
+  // ======================================
+  virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
+  {
+    // create local stack variables to hold input values
+    bool bool1 = false;
+    bool bool2 = false;
 
-		// get values from inputs bus ( GetValue() returns true if successful )
-		if( inputs.GetValue( 0, bool1 ) && //OR inputs.GetValue( "input1", bool1 );
-				inputs.GetValue( 1, bool2 ) )  //OR inputs.GetValue( "input2", bool2 );
-		{
-			// set output as the result of bool1 AND bool2
-			outputs.SetValue( 0, bool1 && bool2 );	//OR outputs.SetValue( "output", bool1 && bool2 );
-		}
-	}
+    // get values from inputs bus ( GetValue() returns true if successful )
+    if( inputs.GetValue( 0, bool1 ) && //OR inputs.GetValue( "input1", bool1 );
+        inputs.GetValue( 1, bool2 ) )  //OR inputs.GetValue( "input2", bool2 );
+    {
+      // set output as the result of bool1 AND bool2
+      outputs.SetValue( 0, bool1 && bool2 );	//OR outputs.SetValue( "output", bool1 && bool2 );
+    }
+  }
 };
 
 //=================================================================================================
@@ -53,21 +53,21 @@ protected:
 class DspRandBool : public DspComponent
 {
 public:
-	DspRandBool()
-	{
-		// add 1 output
-		AddOutput_();
+  DspRandBool()
+  {
+    // add 1 output
+    AddOutput_();
 
-		// seed randomizer
-		srand( (unsigned int) time( NULL ) );
-	}
+    // seed randomizer
+    srand( ( unsigned int ) time( NULL ) );
+  }
 
 protected:
-	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
-	{
-		// set output as randomized true / false
-		outputs.SetValue( 0, rand() % 2 == 0 );
-	}
+  virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
+  {
+    // set output as randomized true / false
+    outputs.SetValue( 0, rand() % 2 == 0 );
+  }
 };
 
 //=================================================================================================
@@ -79,31 +79,31 @@ protected:
 class DspPrintBool : public DspComponent
 {
 public:
-	DspPrintBool()
-	{
-		// add 1 input
-		AddInput_();
-	}
+  DspPrintBool()
+  {
+    // add 1 input
+    AddInput_();
+  }
 
 protected:
-	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
-	{
-		// create a local stack variable to hold input value
-		bool inputBool;
+  virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
+  {
+    // create a local stack variable to hold input value
+    bool inputBool;
 
-		// get boolean value from inputs bus
-		if( inputs.GetValue( 0, inputBool ) )
-		{
-			// print "true" / "false" depending on boolean value received
-			switch( inputBool )
-			{
-				case true:
-					std::cout << "true" << '\n';
-				case false:
-					std::cout << "false" << '\n';
-			}
-		}
-	}
+    // get boolean value from inputs bus
+    if( inputs.GetValue( 0, inputBool ) )
+    {
+      // print "true" / "false" depending on boolean value received
+      switch( inputBool )
+      {
+        case true:
+          std::cout << "true" << '\n';
+        case false:
+          std::cout << "false" << '\n';
+      }
+    }
+  }
 };
 
 //=================================================================================================

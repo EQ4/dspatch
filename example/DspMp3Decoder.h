@@ -10,10 +10,10 @@ initially written by Michael Hipp
 #include "DSPatch.h"
 
 #ifndef DSP_UNIX
-	#ifndef __ssize_t_defined
-		typedef unsigned long ssize_t;
-		#define __ssize_t_defined
-	#endif
+  #ifndef __ssize_t_defined
+    typedef unsigned long ssize_t;
+    #define __ssize_t_defined
+  #endif
 #endif
 
 struct mpg123_handle_struct;
@@ -24,48 +24,48 @@ typedef struct mpg123_handle_struct mpg123_handle;
 class DspMp3Decoder : public DspComponent
 {
 public:
-	DspMp3Decoder();
-	~DspMp3Decoder();
+  DspMp3Decoder();
+  ~DspMp3Decoder();
 
-	void SetBufferSize( unsigned long bufferSize );
+  void SetBufferSize( unsigned long bufferSize );
 
-	bool LoadFile( const char* filePath );
-	short Play();
-	short Pause();
-	short Stop();
-	short Seek( long sampleIndex );
+  bool LoadFile( const char* filePath );
+  short Play();
+  short Pause();
+  short Stop();
+  short Seek( long sampleIndex );
 
-	unsigned long GetSampleIndex();
-	long GetSampleRate();
-	unsigned long GetFileSize();
-	const char* GetFilePath();
-	bool IsPlaying();
+  unsigned long GetSampleIndex();
+  long GetSampleRate();
+  unsigned long GetFileSize();
+  const char* GetFilePath();
+  bool IsPlaying();
 
 protected:
-	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs );
+  virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs );
 
 private:
-	std::vector< float > _leftChannel;
-	std::vector< float > _rightChannel;
+  std::vector< float > _leftChannel;
+  std::vector< float > _rightChannel;
 
-	char* _filePath;
-	unsigned long _fileSize;
-	float* _fileSig;
-	int _channelCount;
+  char* _filePath;
+  unsigned long _fileSize;
+  float* _fileSig;
+  int _channelCount;
 
-	mpg123_handle* _mpgHandle;
+  mpg123_handle* _mpgHandle;
 
-	long _sampleRate;
-	unsigned long _sampleIndex;
-	DspMutex _busyMutex;
+  long _sampleRate;
+  unsigned long _sampleIndex;
+  DspMutex _busyMutex;
 
-	unsigned long _outSize;
-	unsigned long _outMemSize;
+  unsigned long _outSize;
+  unsigned long _outMemSize;
 
-	unsigned long _bufferSize;
+  unsigned long _bufferSize;
 
-	bool _isPlaying;
-	void _ClearFile();
+  bool _isPlaying;
+  void _ClearFile();
 };
 
 //-------------------------------------------------------------------------------------------------

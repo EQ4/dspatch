@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -45,134 +45,134 @@ types are mismatched.
 class DspRunType
 {
 public:
-	DspRunType()
-	: _valueHolder( NULL ) {}
+  DspRunType()
+  : _valueHolder( NULL ) {}
 
-	template< typename ValueType >
-	DspRunType( const ValueType& value )
-	{
-		_valueHolder = new _DspRtValue< ValueType >( value );
-	}
+  template< typename ValueType >
+  DspRunType( const ValueType& value )
+  {
+    _valueHolder = new _DspRtValue< ValueType >( value );
+  }
 
-	DspRunType( const DspRunType& other )
-	{
-		if( other._valueHolder != NULL )
-		{
-			_valueHolder = other._valueHolder->Copy();
-		}
-		else
-		{
-			_valueHolder = NULL;
-		}
-	}
+  DspRunType( const DspRunType& other )
+  {
+    if( other._valueHolder != NULL )
+    {
+      _valueHolder = other._valueHolder->Copy();
+    }
+    else
+    {
+      _valueHolder = NULL;
+    }
+  }
 
-	virtual ~DspRunType()
-	{
-		delete _valueHolder;
-	}
-
-public:
-	DspRunType& Swap( DspRunType& rhs )
-	{
-		std::swap( _valueHolder, rhs._valueHolder );
-		return *this;
-	}
-
-	template< typename ValueType >
-	DspRunType& operator=( const ValueType& rhs )
-	{
-		if( typeid( rhs ) == GetType() )
-		{
-			( (_DspRtValue<ValueType>*)_valueHolder )->value = rhs;
-		}
-		else
-		{
-			DspRunType( rhs ).Swap( *this );
-		}
-		return *this;
-	}
-
-	DspRunType& operator=( DspRunType rhs )
-	{
-		rhs.Swap( *this );
-		return *this;
-	}
+  virtual ~DspRunType()
+  {
+    delete _valueHolder;
+  }
 
 public:
-	bool IsEmpty() const
-	{
-		return !_valueHolder;
-	}
+  DspRunType& Swap( DspRunType& rhs )
+  {
+    std::swap( _valueHolder, rhs._valueHolder );
+    return *this;
+  }
 
-	const std::type_info& GetType() const
-	{
-		if( _valueHolder != NULL )
-		{
-			return _valueHolder->GetType();
-		}
-		else
-		{
-			return typeid( void );
-		}
-	}
+  template< typename ValueType >
+  DspRunType& operator=( const ValueType& rhs )
+  {
+    if( typeid( rhs ) == GetType() )
+    {
+      ( ( _DspRtValue< ValueType >* ) _valueHolder )->value = rhs;
+    }
+    else
+    {
+      DspRunType( rhs ).Swap( *this );
+    }
+    return *this;
+  }
 
-	template< typename ValueType >
-	static ValueType* RunTypeCast( DspRunType* operand )
-	{
-		if( operand != NULL && operand->GetType() == typeid( ValueType ) )
-		{
-			return &static_cast< DspRunType::_DspRtValue< ValueType >* >( operand->_valueHolder )->value;
-		}
-		else
-		{
-			return NULL;
-		}
-	}
+  DspRunType& operator=( DspRunType rhs )
+  {
+    rhs.Swap( *this );
+    return *this;
+  }
 
-	template< typename ValueType >
-	static inline const ValueType* RunTypeCast( const DspRunType* operand )
-	{
-		return RunTypeCast< ValueType >( const_cast< DspRunType* >( operand ) );
-	}
+public:
+  bool IsEmpty() const
+  {
+    return !_valueHolder;
+  }
 
-private:
-	class _DspRtValueHolder
-	{
-	public:
-		virtual ~_DspRtValueHolder() {}
+  const std::type_info& GetType() const
+  {
+    if( _valueHolder != NULL )
+    {
+      return _valueHolder->GetType();
+    }
+    else
+    {
+      return typeid( void );
+    }
+  }
 
-	public:
-		virtual const std::type_info& GetType() const = 0;
-		virtual _DspRtValueHolder* Copy() const = 0;
-	};
+  template< typename ValueType >
+  static ValueType* RunTypeCast( DspRunType* operand )
+  {
+    if( operand != NULL && operand->GetType() == typeid( ValueType ) )
+    {
+      return &static_cast< DspRunType::_DspRtValue< ValueType >* >( operand->_valueHolder )->value;
+    }
+    else
+    {
+      return NULL;
+    }
+  }
 
-	template< typename ValueType >
-	class _DspRtValue : public _DspRtValueHolder
-	{
-	public:
-		_DspRtValue( const ValueType& value )
-		: value( value ) {}
-
-	public:
-		virtual const std::type_info& GetType() const
-		{
-			return typeid( ValueType );
-		}
-
-		virtual _DspRtValueHolder* Copy() const
-		{
-			return new _DspRtValue( value );
-		}
-
-	public:
-		ValueType value;
-
-	private:
-		_DspRtValue& operator=( const _DspRtValue& );	// disable copy-assignment
-	};
+  template< typename ValueType >
+  static inline const ValueType* RunTypeCast( const DspRunType* operand )
+  {
+    return RunTypeCast< ValueType >( const_cast< DspRunType* >( operand ) );
+  }
 
 private:
-	_DspRtValueHolder* _valueHolder;
+  class _DspRtValueHolder
+  {
+  public:
+    virtual ~_DspRtValueHolder() {}
+
+  public:
+    virtual const std::type_info& GetType() const = 0;
+    virtual _DspRtValueHolder* Copy() const = 0;
+  };
+
+  template< typename ValueType >
+  class _DspRtValue : public _DspRtValueHolder
+  {
+  public:
+    _DspRtValue( const ValueType& value )
+    : value( value ) {}
+
+  public:
+    virtual const std::type_info& GetType() const
+    {
+      return typeid( ValueType );
+    }
+
+    virtual _DspRtValueHolder* Copy() const
+    {
+      return new _DspRtValue( value );
+    }
+
+  public:
+    ValueType value;
+
+  private:
+    _DspRtValue& operator=( const _DspRtValue& ); // disable copy-assignment
+  };
+
+private:
+  _DspRtValueHolder* _valueHolder;
 };
 
 //=================================================================================================

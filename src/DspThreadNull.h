@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -41,26 +41,26 @@ from the public enumeration: Priority.
 class DspThread
 {
 public:
-	DspThread() {}
+  DspThread() {}
 
-	virtual ~DspThread() {}
+  virtual ~DspThread() {}
 
-	enum Priority
-	{
-		IdlePriority,
+  enum Priority
+  {
+    IdlePriority,
 
-		LowestPriority,
-		LowPriority,
-		NormalPriority,
-		HighPriority,
-		HighestPriority,
+    LowestPriority,
+    LowPriority,
+    NormalPriority,
+    HighPriority,
+    HighestPriority,
 
-		TimeCriticalPriority,
-	};
+    TimeCriticalPriority,
+  };
 
-	virtual void Start( Priority priority ) {}
-	static void SetPriority( Priority priority ) {}
-	static void MsSleep( unsigned long milliseconds ) {}
+  virtual void Start( Priority priority ) {}
+  static void SetPriority( Priority priority ) {}
+  static void MsSleep( unsigned short milliseconds ) {}
 };
 
 //=================================================================================================
@@ -75,12 +75,12 @@ will wait at the Lock() method call until the thread that owns the mutex calls U
 class DspMutex
 {
 public:
-	DspMutex() {}
+  DspMutex() {}
 
-	virtual ~DspMutex() {}
+  virtual ~DspMutex() {}
 
-	void Lock() {}
-	void Unlock() {}
+  void Lock() {}
+  void Unlock() {}
 };
 
 //=================================================================================================
@@ -95,12 +95,12 @@ This is used to synchronize actions between threads.
 class DspWaitCondition
 {
 public:
-	DspWaitCondition() {}
+  DspWaitCondition() {}
 
-	virtual ~DspWaitCondition() {}
+  virtual ~DspWaitCondition() {}
 
-	void Wait( DspMutex& mutex ) {}
-	void WakeAll() {}
+  void Wait( DspMutex& mutex ) {}
+  void WakeAll() {}
 };
 
 //=================================================================================================

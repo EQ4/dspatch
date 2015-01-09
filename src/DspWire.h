@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -41,9 +41,9 @@ in retrieving and providing signals across component connections.
 
 struct DspWire
 {
-	DspComponent* linkedComponent;
-	unsigned long fromSignalIndex;
-	unsigned long toSignalIndex;
+  DspComponent* linkedComponent;
+  unsigned short fromSignalIndex;
+  unsigned short toSignalIndex;
 };
 
 //=================================================================================================

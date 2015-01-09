@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -46,22 +46,22 @@ to wait until instructed to Resume() again.
 class DLLEXPORT DspComponentThread : public DspThread
 {
 public:
-	DspComponentThread( DspComponent& component );
-	~DspComponentThread();
+  DspComponentThread( DspComponent& component );
+  ~DspComponentThread();
 
-	void Start( Priority priority = TimeCriticalPriority );
-	void Stop();
-	void Pause();
-	void Resume();
+  void Start( Priority priority = TimeCriticalPriority );
+  void Stop();
+  void Pause();
+  void Resume();
 
 private:
-	DspComponent& _component;
-	bool _stop, _pause;
-	bool _stopped;
-	DspMutex _resumeMutex;
-	DspWaitCondition _resumeCondt, _pauseCondt;
+  DspComponent& _component;
+  bool _stop, _pause;
+  bool _stopped;
+  DspMutex _resumeMutex;
+  DspWaitCondition _resumeCondt, _pauseCondt;
 
-	void _Run();
+  void _Run();
 };
 
 //=================================================================================================

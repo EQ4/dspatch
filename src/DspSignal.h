@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -49,28 +49,28 @@ audio buffer: array of byte / int / float).
 class DLLEXPORT DspSignal
 {
 public:
-	DspSignal( std::string signalName = "" );
+  DspSignal( std::string signalName = "" );
 
-	virtual ~DspSignal();
+  virtual ~DspSignal();
 
-	template< class ValueType >
-	bool SetValue( const ValueType& newValue );
+  template< class ValueType >
+  bool SetValue( const ValueType& newValue );
 
-	template< class ValueType >
-	bool GetValue( ValueType& returnValue );
+  template< class ValueType >
+  bool GetValue( ValueType& returnValue );
 
-	bool SetSignal( const DspSignal* newSignal );
+  bool SetSignal( const DspSignal* newSignal );
 
-	void ClearValue();
+  void ClearValue();
 
-	const std::type_info& GetSignalType();
+  const std::type_info& GetSignalType();
 
-	std::string GetSignalName() const;
+  std::string GetSignalName() const;
 
 private:
-	DspRunType _signalValue;
-	std::string _signalName;
-	bool _valueAvailable;
+  DspRunType _signalValue;
+  std::string _signalName;
+  bool _valueAvailable;
 };
 
 //=================================================================================================
@@ -78,9 +78,9 @@ private:
 template< class ValueType >
 bool DspSignal::SetValue( const ValueType& newValue )
 {
-	_signalValue = newValue;
-	_valueAvailable = true;
-	return true;
+  _signalValue = newValue;
+  _valueAvailable = true;
+  return true;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -88,23 +88,23 @@ bool DspSignal::SetValue( const ValueType& newValue )
 template< class ValueType >
 bool DspSignal::GetValue( ValueType& returnValue )
 {
-	if( _valueAvailable )
-	{
-		ValueType* returnValuePtr = DspRunType::RunTypeCast< ValueType >( &_signalValue );
-		if( returnValuePtr != NULL )
-		{
-			returnValue = *returnValuePtr;
-			return true;
-		}
-		else
-		{
-			return false; // incorrect type matching
-		}
-	}
-	else
-	{
-		return false; // no value available
-	}
+  if( _valueAvailable )
+  {
+    ValueType* returnValuePtr = DspRunType::RunTypeCast< ValueType >( &_signalValue );
+    if( returnValuePtr != NULL )
+    {
+      returnValue = *returnValuePtr;
+      return true;
+    }
+    else
+    {
+      return false; // incorrect type matching
+    }
+  }
+  else
+  {
+    return false; // no value available
+  }
 }
 
 //=================================================================================================

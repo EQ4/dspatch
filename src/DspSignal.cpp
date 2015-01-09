@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -28,7 +28,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 DspSignal::DspSignal( std::string signalName )
 : _signalName( signalName ),
-	_valueAvailable( false ) {}
+  _valueAvailable( false ) {}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -38,44 +38,44 @@ DspSignal::~DspSignal() {};
 
 bool DspSignal::SetSignal( const DspSignal* newSignal )
 {
-	if( newSignal != NULL )
-	{
-		if( newSignal->_valueAvailable == false )
-		{
-			return false;
-		}
-		else
-		{
-			_signalValue = newSignal->_signalValue;
-			_valueAvailable = true;
-			return true;
-		}
-	}
-	else
-	{
-		return false;
-	}
+  if( newSignal != NULL )
+  {
+    if( newSignal->_valueAvailable == false )
+    {
+      return false;
+    }
+    else
+    {
+      _signalValue = newSignal->_signalValue;
+      _valueAvailable = true;
+      return true;
+    }
+  }
+  else
+  {
+    return false;
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspSignal::ClearValue()
 {
-	_valueAvailable = false;
+  _valueAvailable = false;
 }
 
 //-------------------------------------------------------------------------------------------------
 
 const std::type_info& DspSignal::GetSignalType()
 {
-	return _signalValue.GetType();
+  return _signalValue.GetType();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 std::string DspSignal::GetSignalName() const
 {
-	return _signalName;
+  return _signalName;
 }
 
 //=================================================================================================

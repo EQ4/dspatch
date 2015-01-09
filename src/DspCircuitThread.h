@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -62,24 +62,24 @@ return immediately.
 class DLLEXPORT DspCircuitThread : public DspThread
 {
 public:
-	DspCircuitThread( std::vector< DspComponent* >& components, unsigned long threadNo );
-	~DspCircuitThread();
+  DspCircuitThread( std::vector< DspComponent* >& components, unsigned short threadNo );
+  ~DspCircuitThread();
 
-	void Start( Priority priority = TimeCriticalPriority );
-	void Stop();
-	void Sync();
-	void Resume();
+  void Start( Priority priority = TimeCriticalPriority );
+  void Stop();
+  void Sync();
+  void Resume();
 
 private:
-	std::vector< DspComponent* >& _components;
-	unsigned long _threadNo;
-	bool _stop;
-	bool _stopped;
-	bool _gotResume, _gotSync;
-	DspMutex _resumeMutex;
-	DspWaitCondition _resumeCondt, _syncCondt;
+  std::vector< DspComponent* >& _components;
+  unsigned short _threadNo;
+  bool _stop;
+  bool _stopped;
+  bool _gotResume, _gotSync;
+  DspMutex _resumeMutex;
+  DspWaitCondition _resumeCondt, _syncCondt;
 
-	void _Run();
+  void _Run();
 };
 
 //=================================================================================================

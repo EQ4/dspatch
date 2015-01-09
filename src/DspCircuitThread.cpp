@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -27,110 +27,106 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 //=================================================================================================
 
-DspCircuitThread::DspCircuitThread( std::vector< DspComponent* >& components, unsigned long threadNo )
+DspCircuitThread::DspCircuitThread( std::vector< DspComponent* >& components, unsigned short threadNo )
 : _components( components ),
-	_threadNo( threadNo )
+  _threadNo( threadNo )
 {
-	Start();
+  Start();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 DspCircuitThread::~DspCircuitThread()
 {
-	Stop();
+  Stop();
 }
 
 //=================================================================================================
 
 void DspCircuitThread::Start( Priority priority )
 {
-	_stop = false;
-	_stopped = false;
-	_gotResume = false;
-	_gotSync = true;
-	DspThread::Start( priority );
+  _stop = false;
+  _stopped = false;
+  _gotResume = false;
+  _gotSync = true;
+  DspThread::Start( priority );
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspCircuitThread::Stop()
 {
-	_stop = true;
+  _stop = true;
 
-	while( _stopped != true )
-	{
-		_syncCondt.WakeAll();
-		_resumeCondt.WakeAll();
-		MsSleep( 1 );
-	}
+  while( _stopped != true )
+  {
+    _syncCondt.WakeAll();
+    _resumeCondt.WakeAll();
+    MsSleep( 1 );
+  }
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspCircuitThread::Sync()
 {
-	_resumeMutex.Lock();
+  _resumeMutex.Lock();
 
-	if( !_gotSync )												//if haven't already got resume
-	{
-		_syncCondt.Wait( _resumeMutex );		//wait for resume
-	}
+  if( !_gotSync ) // if haven't already got resume
+  {
+    _syncCondt.Wait( _resumeMutex ); // wait for resume
+  }
 
-	_resumeMutex.Unlock();
+  _resumeMutex.Unlock();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 void DspCircuitThread::Resume()
 {
-	_resumeMutex.Lock();
+  _resumeMutex.Lock();
 
-	if( !_gotSync )												//if haven't already got resume
-	{
-		_syncCondt.Wait( _resumeMutex );		//wait for resume
-	}
-	_gotSync = false;											//reset the release flag
+  _gotSync = false; // reset the release flag
 
-	_gotResume = true;
-	_resumeCondt.WakeAll();
+  _gotResume = true;
+  _resumeCondt.WakeAll();
 
-	_resumeMutex.Unlock();
+  _resumeMutex.Unlock();
 }
 
 //=================================================================================================
 
 void DspCircuitThread::_Run()
 {
-	while( !_stop )
-	{
-		_resumeMutex.Lock();
+  while( !_stop )
+  {
+    _resumeMutex.Lock();
 
-		_gotSync = true;
-		_syncCondt.WakeAll();
+    _gotSync = true;
+    _syncCondt.WakeAll();
 
-		if( !_gotResume )												//if haven't already got resume
-		{
-			_resumeCondt.Wait( _resumeMutex );		//wait for resume
-		}
-		_gotResume = false;											//reset the release flag
+    if( !_gotResume ) // if haven't already got resume
+    {
+      _resumeCondt.Wait( _resumeMutex ); // wait for resume
+    }
+    _gotResume = false; // reset the release flag
 
-		if( !_stop )
-		{
-			for( unsigned long i = 0; i < _components.size(); i++ )
-			{
-				_components[i]->ThreadTick( _threadNo );
-			}
-			for( unsigned long i = 0; i < _components.size(); i++ )
-			{
-				_components[i]->ThreadReset( _threadNo );
-			}
-		}
+    if( !_stop )
+    {
+      for( unsigned short i = 0; i < _components.size(); i++ )
+      {
+        _components[i]->ThreadTick( _threadNo );
+      }
+      for( unsigned short i = 0; i < _components.size(); i++ )
+      {
+        _components[i]->ThreadReset( _threadNo );
+      }
+    }
 
-		_resumeMutex.Unlock();
-	}
+    _resumeMutex.Unlock();
+  }
 
-	_stopped = true;
+  _stopped = true;
 }
 
 //=================================================================================================

@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2013 Marcus Tomlinson
+Copyright (c) 2012-2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -32,50 +32,50 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class DspGain : public DspComponent
 {
 public:
-	DspGain()
-	: _gain( 1.0 )
-	{
-		AddInput_();
-		AddOutput_();
-	}
-	~DspGain() {}
+  DspGain()
+  : _gain( 1.0 )
+  {
+    AddInput_();
+    AddOutput_();
+  }
+  ~DspGain() {}
 
-	void SetGain( float gain )
-	{
-		if( gain < 0.0 )
-		{
-			_gain = 0;
-		}
-		else
-		{
-			_gain = gain;
-		}
-	}
+  void SetGain( float gain )
+  {
+    if( gain < 0.0 )
+    {
+      _gain = 0;
+    }
+    else
+    {
+      _gain = gain;
+    }
+  }
 
-	float GetGain()
-	{
-		return _gain;
-	}
+  float GetGain()
+  {
+    return _gain;
+  }
 
 protected:
-	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
-	{
-		if( !inputs.GetValue( 0, _stream ) )
-		{
-			_stream.assign( _stream.size(), 0 );
-		}
+  virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs )
+  {
+    if( !inputs.GetValue( 0, _stream ) )
+    {
+      _stream.assign( _stream.size(), 0 );
+    }
 
-		for( unsigned long i = 0; i < _stream.size(); i++ )
-		{
-			_stream[i] *= _gain;
-		}
+    for( unsigned long i = 0; i < _stream.size(); i++ )
+    {
+      _stream[i] *= _gain;
+    }
 
-		outputs.SetValue( 0, _stream );
-	}
+    outputs.SetValue( 0, _stream );
+  }
 
 private:
-	std::vector< float > _stream;
-	float _gain;
+  std::vector< float > _stream;
+  float _gain;
 };
 
 //=================================================================================================

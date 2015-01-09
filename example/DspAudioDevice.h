@@ -38,88 +38,88 @@ struct PaStreamCallbackTimeInfo;
 class DspAudioDevice : public DspComponent
 {
 public:
-	enum ApiType
-	{
-		Unknown=0,
-		DirectSound=1,
-		MME=2,
-		ASIO=3,
-		SoundManager=4,
-		CoreAudio=5,
-		OSS=7,
-		ALSA=8,
-		AL=9,
-		BeOS=10,
-		WDMKS=11,
-		JACK=12,
-		WASAPI=13,
-		AudioScienceHPI=14
-	};
+  enum ApiType
+  {
+    Unknown=0,
+    DirectSound=1,
+    MME=2,
+    ASIO=3,
+    SoundManager=4,
+    CoreAudio=5,
+    OSS=7,
+    ALSA=8,
+    AL=9,
+    BeOS=10,
+    WDMKS=11,
+    JACK=12,
+    WASAPI=13,
+    AudioScienceHPI=14
+  };
 
-	DspAudioDevice();
-	~DspAudioDevice();
+  DspAudioDevice();
+  ~DspAudioDevice();
 
-	short SetSampleRate( unsigned long sampleRate );
+  short SetSampleRate( unsigned long sampleRate );
 
-	short SetDevice( short deviceIndex );
+  short SetDevice( short deviceIndex );
 
-	const char* GetDeviceName( short deviceIndex );
-	const char* GetDeviceApiName( short deviceIndex );
-	ApiType GetDeviceApiType( short deviceIndex );
-	long GetDeviceInputCount( short deviceIndex );
-	long GetDeviceOutputCount( short deviceIndex );
+  const char* GetDeviceName( short deviceIndex );
+  const char* GetDeviceApiName( short deviceIndex );
+  ApiType GetDeviceApiType( short deviceIndex );
+  long GetDeviceInputCount( short deviceIndex );
+  long GetDeviceOutputCount( short deviceIndex );
 
-	short GetCurrentDevice();
-	short GetDeviceCount();
-	bool IsStreaming();
-	unsigned long GetSampleRate();
+  short GetCurrentDevice();
+  short GetDeviceCount();
+  bool IsStreaming();
+  unsigned long GetSampleRate();
 
 protected:
-	virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs );
+  virtual void Process_( DspSignalBus& inputs, DspSignalBus& outputs );
 
 private:
-	std::vector< std::vector< float > > _outputChannels;
-	std::vector< std::vector< float > > _inputChannels;
+  std::vector< std::vector< float > > _outputChannels;
+  std::vector< std::vector< float > > _inputChannels;
 
-	unsigned long _sampleRate;
-	unsigned long _bufferSize;
+  unsigned long _sampleRate;
+  unsigned long _bufferSize;
 
-	short _deviceCount;
-	PaDeviceInfo* _deviceList;
+  short _deviceCount;
+  PaDeviceInfo* _deviceList;
 
-	short _inputDevice;
-	short _outputDevice;
+  short _inputDevice;
+  short _outputDevice;
 
-	bool _prioritySet;
+  bool _prioritySet;
 
-	PaStream* _audioStream;
-	PaStreamParameters* _outputParams;
-	PaStreamParameters* _inputParams;
+  PaStream* _audioStream;
+  PaStreamParameters* _outputParams;
+  PaStreamParameters* _inputParams;
 
-	DspMutex _buffersMutex, _syncMutex;
-	DspWaitCondition _waitCondt, _syncCondt;
-	bool _gotWaitReady, _gotSyncReady;
+  DspMutex _buffersMutex, _syncMutex;
+  DspWaitCondition _waitCondt, _syncCondt;
+  bool _gotWaitReady, _gotSyncReady;
 
-	bool _streamStop, _isStreaming;
+  bool _streamStop, _isStreaming;
 
-	short _currentBufferIndex;
-	short _currentDevice;
+  short _currentBufferIndex;
+  short _currentDevice;
 
-	void _WaitForBuffer();
-	void _SyncBuffer();
+  void _WaitForBuffer();
+  void _SyncBuffer();
 
-	short _StopStream();
-	short _StartStream();
+  short _StopStream();
+  short _StartStream();
 
-	int _DynamicCallback( const void* inputBuffer, void* outputBuffer );
+  int _DynamicCallback( const void* inputBuffer, void* outputBuffer );
 
-	static int _StaticCallback( const void* inputBuffer, void* outputBuffer,
-															unsigned long framesPerBuffer,
-															const PaStreamCallbackTimeInfo* timeInfo,
-															PaStreamCallbackFlags statusFlags,
-															void* userData );
+  static int _StaticCallback( const void* inputBuffer, void* outputBuffer,
+                              unsigned long framesPerBuffer,
+                              const PaStreamCallbackTimeInfo* timeInfo,
+                              PaStreamCallbackFlags statusFlags,
+                              void* userData );
 
-	static void _CallbackComplete( void* userData );
+  static void _CallbackComplete( void* userData );
 };
 
 //-------------------------------------------------------------------------------------------------
