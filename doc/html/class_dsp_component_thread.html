@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.31</span>
+   &#160;<span id="projectnumber">v.2.32</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -148,14 +148,16 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>MsSleep</b> (u
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Thread class for ticking and reseting a single component. </p>
 <p>A <a class="el" href="class_dsp_component_thread.html" title="Thread class for ticking and reseting a single component.">DspComponentThread</a> is responsible for ticking and reseting a single component continuously in a separate free-running thread. On construction, a reference to the component must be provided for the <a class="el" href="class_dsp_thread.html" title="Cross-platform, object-oriented thread.">DspThread</a>'s _Run() method to use. Once Start() has been called, the thread will begin repeatedly executing the _Run() method. On each thread iteration, <a class="el" href="class_dsp_component_thread.html" title="Thread class for ticking and reseting a single component.">DspComponentThread</a> simply calls the reference component's Tick() and Reset() methods. The Pause() method causes <a class="el" href="class_dsp_component_thread.html" title="Thread class for ticking and reseting a single component.">DspComponentThread</a> to wait until instructed to Resume() again. </p>
+
+<p>Definition at line <a class="el" href="_dsp_component_thread_8h_source.html#l00046">46</a> of file <a class="el" href="_dsp_component_thread_8h_source.html">DspComponentThread.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_dsp_component_thread_8h_source.html">DspComponentThread.h</a></li>
-<li>DspComponentThread.cpp</li>
+<li><a class="el" href="_dsp_component_thread_8cpp_source.html">DspComponentThread.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 24 2012 10:04:02 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 25 2013 05:37:13 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

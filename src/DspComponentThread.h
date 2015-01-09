@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2012 Marcus Tomlinson
+Copyright (c) 2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -58,7 +58,7 @@ private:
 	DspComponent& _component;
 	bool _stop, _pause;
 	bool _stopped;
-	DspMutex _resumeMutex, _pauseMutex;
+	DspMutex _resumeMutex;
 	DspWaitCondition _resumeCondt, _pauseCondt;
 
 	void _Run();

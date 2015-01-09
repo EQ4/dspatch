@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2012 Marcus Tomlinson
+Copyright (c) 2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -372,9 +372,14 @@ void main()
 
 \section release_notes Release Notes
 
+\subsection v232 v.2.32 (24 January 2013)
+	- Reduced component thread mutex locking.
+	- Fixed DspCircuit AddInput() run-time error.
+	- Documentation updates.
+
 \subsection v231 v.2.31 (19 December 2012)
-- Improved synchronization in AddComponent().
-- Component routing upgraded to template methods.
+	- Improved synchronization in AddComponent().
+	- Component routing upgraded to template methods.
 
 \subsection v230 v.2.30 (15 December 2012)
 	- Circuit routing simplified.
@@ -405,7 +410,7 @@ void main()
 	- Completed circuit-in-circuit logic.
 
 \subsection v11 v.1.1 (17 October 2012)
-	- Varies bug fixes.
+	- Various bug fixes.
 	- Added 2 more components to the DspDemo project.
 	- Optimized threaded circuit processing.
 	- AddComponent() updated to accept pre-constructed DspComponents.

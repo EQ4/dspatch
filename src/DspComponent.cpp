@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2012 Marcus Tomlinson
+Copyright (c) 2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -322,7 +322,7 @@ void DspComponent::StopAutoTick()
 void DspComponent::PauseAutoTick()
 {
 	// A call to PauseAutoTick() recursively traverses it's parent circuits until it reaches the
-	// global circuit. When the global circuit is reach, it's auto-tick is paused.
+	// global circuit. When the global circuit is reached, it's auto-tick is paused.
 
 	// if this is the global circuit
 	if( DSPatch::IsThisGlobalCircuit( this ) && _componentThread != NULL )
@@ -345,7 +345,7 @@ void DspComponent::PauseAutoTick()
 void DspComponent::ResumeAutoTick()
 {
 	// A call to ResumeAutoTick() recursively traverses it's parent circuits until it reaches the
-	// global circuit. When the global circuit is reach, it's auto-tick is resumed.
+	// global circuit. When the global circuit is reached, it's auto-tick is resumed.
 
 	// if this is the global circuit
 	if( DSPatch::IsThisGlobalCircuit( this ) && _isAutoTickPaused )

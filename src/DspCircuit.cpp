@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2012 Marcus Tomlinson
+Copyright (c) 2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -229,14 +229,22 @@ void DspCircuit::DisconnectComponent( std::string component )
 
 bool DspCircuit::AddInput( std::string inputName )
 {
-	return AddInput_( inputName );
+	PauseAutoTick();
+	bool result = AddInput_( inputName );
+	ResumeAutoTick();
+
+	return result;
 }
 
 //-------------------------------------------------------------------------------------------------
 
 bool DspCircuit::AddOutput( std::string outputName )
 {
-	return AddOutput_( outputName );
+	PauseAutoTick();
+	bool result = AddOutput_( outputName );
+	ResumeAutoTick();
+
+	return result;
 }
 
 //-------------------------------------------------------------------------------------------------

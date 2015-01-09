@@ -1,6 +1,6 @@
 /************************************************************************
 DSPatch - Cross-Platform, Object-Oriented, Flow-Based Programming Library
-Copyright (c) 2012 Marcus Tomlinson
+Copyright (c) 2013 Marcus Tomlinson
 
 This file is part of DSPatch.
 
@@ -68,13 +68,13 @@ void DspComponentThread::Stop()
 
 void DspComponentThread::Pause()
 {
-	_pauseMutex.Lock();
+	_resumeMutex.Lock();
 
 	_pause = true;
-	_pauseCondt.Wait( _pauseMutex );		//wait for resume
+	_pauseCondt.Wait( _resumeMutex );		//wait for resume
 	_pause = false;
 
-	_pauseMutex.Unlock();
+	_resumeMutex.Unlock();
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -99,9 +99,7 @@ void DspComponentThread::_Run()
 		{
 			_resumeMutex.Lock();
 
-			_pauseMutex.Lock();
 			_pauseCondt.WakeAll();
-			_pauseMutex.Unlock();
 
 			_resumeCondt.Wait( _resumeMutex );		//wait for resume
 

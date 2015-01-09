@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.31</span>
+   &#160;<span id="projectnumber">v.2.32</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -126,14 +126,16 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Finalize</b> (
 <div class="textblock"><p>System-wide <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> functionality. </p>
 <p>At the core of the <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> framework is what's known as the "global circuit". The <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> class and hence, the global circuit provides a transparent workspace for "global scoped components" (components not within a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>) to benefit from circuit parallel processing. As it is not required that components be explicitly added to a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a> in order to be routed etc., in order for these global scoped components to benefit from the multi threading associated with the circuit scheduler, they are automatically added to the <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> global circuit when parallel processing is required (i.e. StartAutoTick() is called). Although global circuit operations are automatic and transparent to the user, if required, the user is may set the number of threads used by the global circuit by calling SetGlobalThreadCount().</p>
 <p>Lastly, the Finalize() method must be called on application exit in order for <a class="el" href="class_d_s_patch.html" title="System-wide DSPatch functionality.">DSPatch</a> to perform the necessary memory cleanup. </p>
+
+<p>Definition at line <a class="el" href="_d_s_patch_8h_source.html#l00050">50</a> of file <a class="el" href="_d_s_patch_8h_source.html">DSPatch.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_d_s_patch_8h_source.html">DSPatch.h</a></li>
-<li>DSPatch.cpp</li>
+<li><a class="el" href="_d_s_patch_8cpp_source.html">DSPatch.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 24 2012 10:04:02 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 25 2013 05:37:13 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

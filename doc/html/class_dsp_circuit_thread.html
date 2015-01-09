@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="heartbeat.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">DSPatch
-   &#160;<span id="projectnumber">v.2.31</span>
+   &#160;<span id="projectnumber">v.2.32</span>
    </div>
    <div id="projectbrief">C++ Cross-Platform, Object-Oriented, Flow-Based Programming Library</div>
   </td>
@@ -150,14 +150,16 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>MsSleep</b> (u
 <p>A <a class="el" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a> is responsible for ticking and reseting all components in a <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>. On construction, a reference to the vector of circuit components must be provided for the thread _Run() method to loop through. Each <a class="el" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a> has a thread number (threadNo), which also can be provided on construction. When creating multiple DspCircuitThreads, each thread must have their own unique thread number, beginning at 0 and incrementing by 1 for every thread added. This thread number corresponds with the <a class="el" href="class_dsp_component.html" title="Abstract base class for all DSPatch components.">DspComponent</a>'s buffer number when calling it's ThreadTick() and ThreadReset() methods in the <a class="el" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a>'s component loop. Hence, for every circuit thread created, each component's buffer count within that circuit must be incremented to match.</p>
 <p>The Resume() method causes the <a class="el" href="class_dsp_circuit_thread.html" title="Thread class for ticking and reseting circuit components.">DspCircuitThread</a> to tick and reset all circuit components once, after which the thread will wait until instructed to resume again. As each component is done processing it hands over control to the next waiting circuit thread, therefore, from an external control loop (I.e. <a class="el" href="class_dsp_circuit.html" title="Workspace for adding and routing components.">DspCircuit</a>'s Process_() method) we simply loop through our array of DspCircuitThreads calling Resume() on each. If a circuit thread is busy processing, a call to Resume() will block momentarily until processing is complete, then begin the next iteration immediately upon unblocking the calling thread.</p>
 <p>The Sync() method, when called, will block the calling thread until the circuit thread is done processing. If the circuit thread is already awaiting the next Resume() request, this method will return immediately. </p>
+
+<p>Definition at line <a class="el" href="_dsp_circuit_thread_8h_source.html#l00062">62</a> of file <a class="el" href="_dsp_circuit_thread_8h_source.html">DspCircuitThread.h</a>.</p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_dsp_circuit_thread_8h_source.html">DspCircuitThread.h</a></li>
-<li>DspCircuitThread.cpp</li>
+<li><a class="el" href="_dsp_circuit_thread_8cpp_source.html">DspCircuitThread.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Dec 24 2012 10:04:02 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 25 2013 05:37:13 for DSPatch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

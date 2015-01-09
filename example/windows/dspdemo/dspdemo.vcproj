@@ -59,7 +59,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="DspDemoComponents_d.lib"
-				AdditionalLibraryDirectories="../"
+				AdditionalLibraryDirectories="../dependencies_vs2008/"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -131,7 +131,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="DspDemoComponents.lib"
-				AdditionalLibraryDirectories="../"
+				AdditionalLibraryDirectories="../dependencies_vs2008/"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
