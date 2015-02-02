@@ -136,12 +136,12 @@ class DspWaitCondition
 public:
   DspWaitCondition()
   {
-    _hEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
+    _hEvent = CreateEventA( NULL, TRUE, FALSE, NULL );
   }
 
   DspWaitCondition( DspWaitCondition const& )
   {
-    _hEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
+    _hEvent = CreateEventA( NULL, TRUE, FALSE, NULL );
   }
 
   virtual ~DspWaitCondition()
